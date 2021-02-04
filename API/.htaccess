@@ -1,0 +1,16 @@
+<Files ~ "db.php">  
+    Order Allow,Deny
+    Deny from All
+</Files>
+<Files ~ "db_account.php">  
+    Order Allow,Deny
+    Deny from All
+</Files>
+<Files ~ "jwt.php">  
+    Order Allow,Deny
+    Deny from All
+</Files>
+<Files ~ "functions.php">  
+    Order Allow,Deny
+    Deny from All
+</Files>
