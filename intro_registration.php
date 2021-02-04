@@ -31,7 +31,7 @@
             <div class="shadow">
                 <ul class="nav nav-tabs" id="myTab" role="tablist">
                     <li class="nav-item" role="presentation">
-                        <a class="nav-link " id="download-tab" data-toggle="tab" href="#download" role="tab" aria-controls="download" aria-selected="true">下載電子簡章</a>
+                        <a class="nav-link " id="download-tab" data-toggle="tab" href="#download" role="tab" aria-controls="download" aria-selected="false">下載電子簡章</a>
                         <!--active-->
                     </li>
                     <li class="nav-item" role="presentation">
@@ -52,7 +52,7 @@
 
 
                 <div class="tab-content" id="prointroTabContent">
-                    <div class="tab-pane fade show " id="download" role="tabpanel" aria-labelledby="download-tab">
+                    <div class="tab-pane fade " id="download" role="tabpanel" aria-labelledby="download-tab">
                         <!--active-->
                         <div class="card p-4">
                             <p>在網路報名前，您可以先利用「<a href="https://acadaff.ncue.edu.tw/files/11-1021-2399-1.php?Lang=zh-tw">招生簡章</a>」功能，免費下載簡章。</p>

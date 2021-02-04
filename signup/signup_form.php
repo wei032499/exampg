@@ -241,22 +241,103 @@
                 <hr />
                 <fieldset class="form-group row">
                     <legend class="col-form-label col-sm-3 float-sm-left">應考學歷</legend>
-                    <div class="col-sm-8">
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="prove_type" id="prove1" value="1" required>
-                            <label class="form-check-label" for="prove1">學士學位</label>
+                    <div class="col-xl">
+                        <div class="row col form-group">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="prove_type" id="prove1" value="1" href="#tab_prove1" required>
+                                <label class="form-check-label" for="prove1">學士學位</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="prove_type" id="prove2" value="2" href="#tab_prove2" required>
+                                <label class="form-check-label" for="prove2">同等學力</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="prove_type" id="prove3" value="3" href="#tab_prove3" required>
+                                <label class="form-check-label" for="prove3">國家考試及格</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="prove_type" id="prove4" value="4" href="#tab_prove4" required>
+                                <label class="form-check-label" for="prove4">技能檢定合格</label>
+                            </div>
                         </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="prove_type" id="prove2" value="2" required>
-                            <label class="form-check-label" for="prove2">同等學力</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="prove_type" id="prove3" value="3" required>
-                            <label class="form-check-label" for="prove3">國家考試及格</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="prove_type" id="prove4" value="4" required>
-                            <label class="form-check-label" for="prove4">技能檢定合格</label>
+                        <div class="row col form-group tab-content" id="proveTabContent">
+                            <div class="tab-pane fade" id="tab_prove1" role="tabpanel" aria-labelledby="prove1" style="width: 100%;">
+                                <div class="card p-4">
+                                    <div class="row form-group">
+                                        <label for="inputGrad_schol" class="col-sm-2" style="min-width: 7rem;">學校名稱：</label>
+                                        <div class="row col-sm align-items-center">
+                                            <input type="text" class="form-control col-sm" id="inputGrad_schol" name="grad_schol" required>
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <label for="inputGrad_dept" class="col-sm-2" style="min-width: 7rem;">科系：</label>
+                                        <div class="row col-sm align-items-center">
+                                            <input type="text" class="form-control col-sm" id="inputGrad_dept" name="grad_dept" required>
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <label for="inputGrad_date" class="col-sm-2" style="min-width: 7rem;">畢業年月：</label>
+                                        <input style="min-width: 10rem;" type="month" class="form-control col-sm-3" aria-describedby="grad_dateHelp" id="inputGrad_date" placeholder="yyyy-mm" pattern="(1\d{3}|2\d{3})-(0[1-9]|1[0-2])" name="grad_date" required>
+                                        <small id="grad_dateHelp" class="form-text text-muted col-sm">(yyyy-mm)<br>*西元年 = 民國年 + 1911</small>
+                                    </div>
+                                    <div class="form-group">
+                                        <span style="color:red">※學校名稱及科系請填寫全銜</span><br>
+                                        <span style="color:red">※應屆畢業生（109年6月畢業）請點選「學士學位」</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="tab_prove2" role="tabpanel" aria-labelledby="prove2" style="width: 100%;">
+                                <div class="card p-4">
+                                    <div class="row form-group">
+                                        <label for="inputAc_schol" class="col-sm-2" style="min-width: 7rem;">學校名稱：</label>
+                                        <div class="row col-sm align-items-center">
+                                            <input type="text" class="form-control col-sm" id="inputAc_schol" name="ac_schol" required>
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <label for="inputAc_schol_type" class="col-sm-2" style="min-width: 7rem;">類型：</label>
+                                        <select id="inputAc_schol_type" class="form-control col-sm" name="ac_schol_type" required>
+                                            <option selected hidden disabled></option>
+                                            <option value="1">大學</option>
+                                            <option value="2">三專</option>
+                                            <option value="3">二專或五專</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="row form-group">
+                                        <label for="inputAc_dept" class="col-sm-2" style="min-width: 7rem;">科系：</label>
+                                        <div class="row col-sm align-items-center">
+                                            <input type="text" class="form-control col-sm" id="inputAc_dept" name="ac_dept" required>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <span style="color:red">※學校名稱及科系請填寫全銜</span><br>
+                                    </div>
+                                    <div class="  form-group align-items-center" style="padding-left: 15px;">
+                                        <div class="row form-group align-items-center">
+                                            於&nbsp;<input type="month" style="max-width: 80%;min-width:10rem" class="form-control col-sm-4" aria-describedby="grad_dateHelp" id="inputGrad_date" placeholder="yyyy-mm" pattern="(1\d{3}|2\d{3})-(0[1-9]|1[0-2])" name="grad_date" required>&emsp;
+                                        </div>
+                                        <div class="row form-group align-items-center">
+                                            &emsp;&nbsp;
+                                            <select style="max-width: 80%;" id="inputAc_schol_type" class="form-control col-sm-4" name="ac_schol_type" required>
+                                                <option value="1">畢業</option>
+                                                <option value="2">肄業</option>
+                                            </select>，
+                                        </div>
+                                        <div class=" form-group align-items-center">
+                                            <small id="grad_dateHelp" style="max-width: 11.5rem;" class="form-text text-muted col-sm">(yyyy-mm)<br>*西元年 = 民國年 + 1911</small>
+                                        </div>
+                                    </div>
+                                    <div class="row  form-group align-items-center " style="padding-left: 15px;">
+                                        <div class="col form-group row align-items-center" style="min-width: 12rem;max-width: 12rem;">
+                                            修業&nbsp;<input type="number" style="max-width: 5rem;" class="form-control col-sm-3" min="0" step="1" aria-describedby="grad_dateHelp" id="inputGrad_date" pattern="\d" name="grad_date" required>&nbsp;年，
+                                        </div>
+                                        <div class="col form-group row align-items-center" style="min-width: 13rem;">
+                                            已離校&nbsp;<input type="number" style="max-width: 5rem;" class="form-control col-sm-3" min="0" step="1" aria-describedby="grad_dateHelp" id="inputGrad_date" pattern="\d" name="grad_date" required>&nbsp;年。
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </fieldset>
@@ -314,6 +395,21 @@
             for (let i = 0; i < deptObj.status[$("form [name='dept']").val()][$("form [name='dept_group']").val()].length; i++)
                 $("form [name='dept_status']").append("<option value='" + deptObj.status[$("form [name='dept']").val()][$("form [name='dept_group']").val()][i].group_id + "'>" + deptObj.status[$("form [name='dept']").val()][$("form [name='dept_group']").val()][i].name + "</option>");
 
+        });
+
+        $("form [name='prove_type']").on('change', function() {
+            $("#proveTabContent .tab-pane").removeClass("active");
+            $("#proveTabContent .tab-pane").removeClass("show");
+            $("form [name='prove_type']").removeClass("active");
+            $("form [name='prove_type']").removeClass("active");
+            $(this).tab('show');
+        });
+        $(function() {
+            $("#proveTabContent .tab-pane").removeClass("active");
+            $("#proveTabContent .tab-pane").removeClass("show");
+            $("form [name='prove_type']").removeClass("active");
+            $("form [name='prove_type']").removeClass("active");
+            $("form [name='prove_type']:checked").tab('show');
         });
         $(function() {
             $('form #fileLink').text('');
