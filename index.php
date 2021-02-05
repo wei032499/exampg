@@ -5,7 +5,8 @@
     <meta charset="utf-8">
     <title>網路報名</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" type="image/x-icon" href="http://www.csie.ncue.edu.tw/csie/resources/images/ncue-logo.png">
+    <link rel="icon" type="image/x-icon" href="./images/favicon.ico">
+    <!--http://www.csie.ncue.edu.tw/csie/resources/images/ncue-logo.png-->
     <!-- bootstrap 5.0.x
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
@@ -15,15 +16,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
     <script src="./js/custom.js"></script>
-    <script>
-        const username = getCookie('username');
-        if (username !== null) {
-            $(function() {
-                $("#username").text(username);
-                $("#loginInfo").css('display', '');
-            });
-        }
-    </script>
+
     <script>
         if (sessionStorage === undefined) {
             alert("未支援Web Storage！\n請更換瀏覽器再試。");

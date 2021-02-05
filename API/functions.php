@@ -61,6 +61,8 @@ function setHeader($code)
         header($_SERVER["SERVER_PROTOCOL"] . " 404 Not Found");
     } else if ($code === 409) {
         header($_SERVER["SERVER_PROTOCOL"] . " 409 Conflict");
+    } else if ($code === 429) {
+        header($_SERVER["SERVER_PROTOCOL"] . " 429 Too Many Requests");
     } else
         header($_SERVER["SERVER_PROTOCOL"] . " 500 Internal Server Error");
 }

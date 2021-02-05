@@ -12,12 +12,12 @@ if (!$conn) {
     $e = oci_error();
     throw new Exception($e['message']);
 }
-// if ($conn->connect_error) // Check connection
-//     throw new Exception($conn->connect_error);
 
-// $conn->query('SET CHARACTER SET utf8');
-// $conn->query("SET collation_connection = 'AL32UTF8'"); //utf8mb4_unicode_ci
-
+$SCHOOL_ID = "3"; ///?
+$ACT_YEAR_NO = (int)date("Y") - 1911;
+if ((int)date("m") < 8)
+    $ACT_YEAR_NO = $ACT_YEAR_NO - 1;
+$ACT_YEAR_NO = $ACT_YEAR_NO . "";
 
 function DynamicBindVariables($stmt, $params)
 {
@@ -73,11 +73,11 @@ function DynamicInsert($conn, $table, $params)
     foreach ($params as $key => $value) {
         oci_bind_by_name($stmt, $key, $params[$key]);
     }
-    if (!oci_execute($stmt)) {
+    if (!oci_execute($stmt, OCI_NO_AUTO_COMMIT)) {
         $error = analyzeError(oci_error()['message']);
         throw new Exception($error['message'], $error['code']);
     }
-    oci_close($conn);
+    oci_free_statement($stmt);
 }
 
 function DynamicUpdate($conn, $table, $params, $where)
@@ -101,10 +101,10 @@ function DynamicUpdate($conn, $table, $params, $where)
     foreach ($params as $key => $value) {
         oci_bind_by_name($stmt, $key, $params[$key]);
     }
-    if (!oci_execute($stmt)) {
+    if (!oci_execute($stmt, OCI_NO_AUTO_COMMIT)) {
         $error = analyzeError(oci_error()['message']);
         throw new Exception($error['message'], $error['code']);
     }
 
-    oci_close($conn);
+    oci_free_statement($stmt);
 }

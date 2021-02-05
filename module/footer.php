@@ -10,12 +10,3 @@
         </address>
     </div>
 </footer>
-
-<script>
-    $("#logout").on('click', function() {
-        if (confirm('確定登出嗎？')) {
-            logout();
-        }
-
-    });
-</script>

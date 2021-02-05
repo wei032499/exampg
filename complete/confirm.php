@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <title>網路報名</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" type="image/x-icon" href="http://www.csie.ncue.edu.tw/csie/resources/images/ncue-logo.png">
+    <link rel="icon" type="image/x-icon" href="./images/favicon.ico">
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
     <link rel="stylesheet" href="./css/custom.css" />
@@ -173,7 +173,7 @@
                 </p>
                 <div class="row justify-content-end">
                     <button type="button" id="logout" style="min-width:4rem" class="btn btn-info btn-sm col-1 mx-3">登出</button>
-                    <button type="reset" style="min-width:4rem" class="btn btn-danger btn-sm col-1 mx-1">取消</button>
+                    <button type="button" style="min-width:4rem" class="btn btn-danger btn-sm col-1 mx-1 btn-cancel">取消</button>
                     <button type="submit" style="min-width:4rem" class="btn btn-primary btn-sm col-1 mx-1">下一步</button>
                 </div>
             </form>
@@ -183,14 +183,6 @@
 
     <?php require_once("./module/footer.php") ?>
 
-    <script>
-        $("form button[type='reset']").on('click', function(e) {
-            e.preventDefault();
-            if (confirm('確定取消嗎？'))
-                logout();
-
-        });
-    </script>
 
 </body>
 

@@ -9,8 +9,6 @@ try {
     clearCookie();
     $result['result'] = "success";
 } catch (Exception $e) {
-    @oci_rollback($conn);
-    @oci_close($conn);
     setHeader($e->getCode());
     $result['code'] = $e->getCode();
     $result['message'] = $e->getMessage();

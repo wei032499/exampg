@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <title>網路報名</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" type="image/x-icon" href="http://www.csie.ncue.edu.tw/csie/resources/images/ncue-logo.png">
+    <link rel="icon" type="image/x-icon" href="./images/favicon.ico">
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
     <link rel="stylesheet" href="./css/custom.css" />
@@ -18,7 +18,8 @@
         if (sessionStorage === undefined) {
             alert("未支援Web Storage！\n請更換瀏覽器再試。");
             window.location.replace('./');
-        }
+        } else
+            fillByStorage('order');
     </script>
 </head>
 
@@ -45,27 +46,28 @@
                     <legend class="col-form-label col-sm-3 float-sm-left">性別</legend>
                     <div class="col-sm-4">
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="gender" id="inlineRadio1" value="male" required>
+                            <input class="form-check-input" type="radio" name="gender" id="inlineRadio1" value="1" required>
                             <label class="form-check-label" for="inlineRadio1">男</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="gender" id="inlineRadio2" value="female" required>
+                            <input class="form-check-input" type="radio" name="gender" id="inlineRadio2" value="0" required>
                             <label class="form-check-label" for="inlineRadio2">女</label>
                         </div>
                     </div>
                 </fieldset>
                 <div class="form-group row">
-                    <label for="inputStatus" class="col-sm-3">繳費身分別</label>
-                    <select id="inputStatus" class="form-control col-sm-4" name="status" required>
+                    <label for="inputIdentity" class="col-sm-3">繳費身分別</label>
+                    <select id="inputIdentity" class="form-control col-sm-4" name="identity" required>
                         <option selected hidden disabled></option>
-                        <option value="0">一般考生</option>
-                        <option value="1">特殊考生</option>
+                        <option value="1">一般考生</option>
+                        <option value="2">中低收入戶考生</option>
+                        <option value="3">低收入戶考生</option>
                     </select>
                 </div>
                 <div class="form-group row">
-                    <label for="inputIDNumber" class="col-sm-3">身分證字號</label>
-                    <input type="text" class="form-control col-sm-4" id="inputIDNumber" aria-describedby="IDNumberHelp" pattern="[A-Z]\d{9}" name="IDNumber" required>
-                    <small id="IDNumberHelp" class="form-text text-muted col-sm-4">*僑外生請填寫居留證號碼</small>
+                    <label for="inputId" class="col-sm-3">身分證字號</label>
+                    <input type="text" class="form-control col-sm-4" id="inputId" aria-describedby="inputIdHelp" pattern="[A-Z]\d{9}" name="id" required>
+                    <small id="inputIdHelp" class="form-text text-muted col-sm-4">*僑外生請填寫居留證號碼</small>
                 </div>
                 <div class="form-group row">
                     <label for="inputTel" class="col-sm-3">電話</label>
@@ -77,27 +79,22 @@
                 </div>
                 <div class="form-group row">
                     <label for="inputDep" class="col-sm-3">報考系所</label>
-                    <select id="inputDep" class="form-control col-sm-4" name="dep" required>
+                    <select id="inputDep" class="form-control col-sm-4" name="dept_id" required>
                         <option selected hidden disabled></option>
-                        <option value="0">英語系、美術系藝教班、兒英所、翻譯所報名費 1800元</option>
-                        <option value="1">其他系所 1300元</option>
+                        <option value="1">英語系、美術系藝教班、兒英所、翻譯所報名費 1800元</option>
+                        <option value="2">其他系所 1300元</option>
                     </select>
                 </div>
                 <hr />
                 <div class="line-height-1">
                     注意事項：<br>
                     <ol style="list-style-type:upper-roman;">
-                        <li><span style="color:red">凡本校畢業校友(含應屆畢業生)，報名費用一律以八折計算。</span></li>
-                        <li><span style="color:red">曾報考本校110學年度碩士班推薦甄試生報考本次招生考試者，免繳報名費；序號及密碼將於繳費帳號取得完成後直接由系統寄發至所留電子信箱。</span></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
+                        <li><span style="color:red">凡本校畢業校友（含應屆畢業生），報名費用一律以八折計算。</span></li>
+                        <li><span style="color:red">曾報考本校109學年度碩士班推薦甄試生報考本次招生考試者，免繳報名費；序號及密碼將於繳費帳號取得完成後直接由系統寄發至所留電子信箱。</span></li>
+                        <li>資料送出後，即無法修改，請仔細檢查您所填之各項資料。</li>
+                        <li>若資料送出後始查覺錯誤者，請勿繳費，並請重新上網填寫本表單，取得新的繳費帳號。</li>
+                        <li>請確認您所填的E-mail信箱是正確可用的，系統銷帳後，將依您所填之資料寄件。</li>
                     </ol>
-                    一、<br>
-                    二、<br>
-                    三、資料送出後，即無法修改，請仔細檢查您所填之各項資料。<br>
-                    四、若資料送出後始查覺錯誤者請勿繳費，並請重新上網填寫本表單，取得新的繳費帳號。<br>
-                    五、請確認您所填的Emai信箱是正確可用的，系統銷帳後，將依您所填之資料寄件。<br>
                 </div>
                 <div class="row justify-content-center">
                     <button type="reset" style="min-width:4rem" class="btn btn-danger btn-sm col-1 mx-1">重填</button>
@@ -111,42 +108,11 @@
     <?php require_once("./module/footer.php") ?>
 
     <script>
-        $(function() {
-
-            if (sessionStorage.hasOwnProperty('order') && sessionStorage.getItem('order') !== null) {
-                let array = sessionStorage.getItem('order').split('&');
-                for (let i = 0; i < array.length; i++) {
-                    let strParts = array[i].split("=");
-                    strParts[0] = decodeURIComponent(strParts[0]);
-                    strParts[1] = decodeURIComponent(strParts[1]);
-                    if (strParts[0] === "gender") {
-                        $("form [name=" + strParts[0] + "][value='" + strParts[1] + "']").attr('checked', true)
-                        $("form [name=" + strParts[0] + "][value='" + strParts[1] + "']").removeAttr("disabled");
-                    } else {
-                        if (strParts[0] === "status" || strParts[0] === "dep")
-                            $("form [name='" + strParts[0] + "']>option[value='" + strParts[1] + "']").removeAttr("disabled");
-                        $("form [name='" + strParts[0] + "']").val(strParts[1]).change();
-
-                    }
-                }
-                sessionStorage.removeItem('order');
-
-            }
-        });
         $("form").on('submit', function(e) {
             e.preventDefault();
 
             sessionStorage.setItem("order", $("form").serialize());
             window.location.replace('./order.php?step=2');
-
-        });
-
-        $("form button[type='reset']").on('click', function(e) {
-            e.preventDefault();
-            if (confirm('確定清除嗎？')) {
-                $("form")[0].reset();
-                sessionStorage.removeItem('order');
-            }
 
         });
     </script>

@@ -18,6 +18,8 @@ function fillByStorage(item) {
                 if ($("form [name='" + keys[i] + "']").attr('type') === "radio") {
                     $("form [name='" + keys[i] + "'][value='" + sessionItems[keys[i]] + "']").removeAttr("disabled");
                     $("form [name='" + keys[i] + "'][value='" + sessionItems[keys[i]] + "']")[0].checked = true;
+
+                    $("form [name='" + keys[i] + "']:checked").change();
                 } else if ($("form [name='" + keys[i] + "']").attr('type') === "select") {
                     $("form [name='" + keys[i] + "']>option[value='" + sessionItems[keys[i]] + "']").removeAttr("disabled");
                     $("form [name='" + keys[i] + "']").val(sessionItems[keys[i]]).change();
@@ -46,6 +48,8 @@ function fillByData(url) {
                             if ($("form [name='" + keys[i] + "']").attr('type') === "radio") {
                                 $("form [name='" + keys[i] + "'][value='" + response.data[i][keys[i]] + "']").removeAttr("disabled");
                                 $("form [name='" + keys[i] + "'][value='" + response.data[i][keys[i]] + "']")[0].checked = true;
+
+                                $("form [name='" + keys[i] + "']:checked").change();
                             } else if ($("form [name='" + keys[i] + "']").attr('type') === "select") {
                                 $("form [name='" + keys[i] + "']>option[value='" + response.data[i][keys[i]] + "']").removeAttr("disabled");
                                 $("form [name='" + keys[i] + "']").val(response.data[i][keys[i]]).change();
@@ -123,4 +127,38 @@ function getCookie(name) {
             return cookieValue;
     }
     return null;
+}
+
+$(function () {
+    $("form button[type='reset']").on('click', function (e) {
+        e.preventDefault();
+        if (confirm('確定清除嗎？'))
+            $("form")[0].reset();
+
+    });
+
+    $("#logout").on('click', function () {
+        if (confirm('確定登出嗎？')) {
+            logout();
+        }
+
+    });
+
+    $("form .btn-cancel").on('click', function (e) {
+        e.preventDefault();
+        if (confirm('確定取消嗎？'))
+            window.location.replace('./');
+
+    });
+
+
+});
+
+
+const username = getCookie('username');
+if (username !== null) {
+    $(function () {
+        $("#username").text(username);
+        $("#loginInfo").css('display', '');
+    });
 }

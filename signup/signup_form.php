@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <title>網路報名</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" type="image/x-icon" href="http://www.csie.ncue.edu.tw/csie/resources/images/ncue-logo.png">
+    <link rel="icon" type="image/x-icon" href="./images/favicon.ico">
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
     <link rel="stylesheet" href="./css/custom.css" />
@@ -207,8 +207,8 @@
                         <div class="row form-group">
                             <label for="inputTel_o" class="col-sm-2" style="min-width: 7rem;">公司：</label>
                             <div class="row col-sm align-items-center">
-                                (&nbsp;<input type="text" class="form-control col-sm-2" style="max-width: 3rem;" name="tel_o_a" required>&nbsp;)&nbsp;
-                                <input type="text" class="form-control col-sm-3" style="max-width: 10rem;" id="inputTel_o" name="tel_o" required>
+                                (&nbsp;<input type="text" class="form-control col-sm-2" style="max-width: 3rem;" name="tel_o_a">&nbsp;)&nbsp;
+                                <input type="text" class="form-control col-sm-3" style="max-width: 10rem;" id="inputTel_o" name="tel_o">
                             </div>
                         </div>
                         <div class="row form-group">
@@ -315,25 +315,25 @@
                                     </div>
                                     <div class="  form-group align-items-center" style="padding-left: 15px;">
                                         <div class="row form-group align-items-center">
-                                            於&nbsp;<input type="month" style="max-width: 80%;min-width:10rem" class="form-control col-sm-4" aria-describedby="grad_dateHelp" id="inputGrad_date" placeholder="yyyy-mm" pattern="(1\d{3}|2\d{3})-(0[1-9]|1[0-2])" name="grad_date" required>&emsp;
+                                            於&nbsp;<input type="month" style="max-width: 80%;min-width:10rem" class="form-control col-sm-4" aria-describedby="ac_dateHelp" placeholder="yyyy-mm" pattern="(1\d{3}|2\d{3})-(0[1-9]|1[0-2])" name="ac_date" required>&emsp;
                                         </div>
                                         <div class="row form-group align-items-center">
                                             &emsp;&nbsp;
-                                            <select style="max-width: 80%;" id="inputAc_schol_type" class="form-control col-sm-4" name="ac_schol_type" required>
+                                            <select style="max-width: 80%;" class="form-control col-sm-4" name="ac_g" required>
                                                 <option value="1">畢業</option>
                                                 <option value="2">肄業</option>
                                             </select>，
                                         </div>
                                         <div class=" form-group align-items-center">
-                                            <small id="grad_dateHelp" style="max-width: 11.5rem;" class="form-text text-muted col-sm">(yyyy-mm)<br>*西元年 = 民國年 + 1911</small>
+                                            <small id="ac_dateHelp" style="max-width: 11.5rem;" class="form-text text-muted col-sm">(畢/肄業年月：yyyy-mm)<br>*西元年 = 民國年 + 1911</small>
                                         </div>
                                     </div>
                                     <div class="row  form-group align-items-center " style="padding-left: 15px;">
                                         <div class="col form-group row align-items-center" style="min-width: 12rem;max-width: 12rem;">
-                                            修業&nbsp;<input type="number" style="max-width: 5rem;" class="form-control col-sm-3" min="0" step="1" aria-describedby="grad_dateHelp" id="inputGrad_date" pattern="\d" name="grad_date" required>&nbsp;年，
+                                            修業&nbsp;<input type="number" style="max-width: 5rem;" class="form-control col-sm-3" min="0" step="1" pattern="\d" name="ac_m_y" required>&nbsp;年，
                                         </div>
                                         <div class="col form-group row align-items-center" style="min-width: 13rem;">
-                                            已離校&nbsp;<input type="number" style="max-width: 5rem;" class="form-control col-sm-3" min="0" step="1" aria-describedby="grad_dateHelp" id="inputGrad_date" pattern="\d" name="grad_date" required>&nbsp;年。
+                                            已離校&nbsp;<input type="number" style="max-width: 5rem;" class="form-control col-sm-3" min="0" step="1" pattern="\d" name="ac_leave_y" required>&nbsp;年。
                                         </div>
                                     </div>
                                 </div>
@@ -403,13 +403,23 @@
             $("form [name='prove_type']").removeClass("active");
             $("form [name='prove_type']").removeClass("active");
             $(this).tab('show');
+
+            $("form #proveTabContent input").removeAttr('required')
+            $("form #proveTabContent input").attr('disabled', true);
+            $("form #proveTabContent select").removeAttr('required')
+            $("form #proveTabContent select").attr('disabled', true);
+
+            $("form #proveTabContent .active input").removeAttr('disabled')
+            $("form #proveTabContent .active input").attr('required', true);
+            $("form #proveTabContent .active select").removeAttr('disabled')
+            $("form #proveTabContent .active select").attr('required', true);
         });
         $(function() {
             $("#proveTabContent .tab-pane").removeClass("active");
             $("#proveTabContent .tab-pane").removeClass("show");
             $("form [name='prove_type']").removeClass("active");
             $("form [name='prove_type']").removeClass("active");
-            $("form [name='prove_type']:checked").tab('show');
+            $("form [name='prove_type']:checked").change();
         });
         $(function() {
             $('form #fileLink').text('');
@@ -464,19 +474,6 @@
                 window.location.replace('./signup.php?step=4');
             }
 
-
-        });
-
-        $("form button[type='reset']").on('click', function(e) {
-            e.preventDefault();
-            if (confirm('確定清除嗎？')) {
-                $("form")[0].reset();
-                /*$('form #fileLink').removeClass('color-info');
-                $('form #fileLink').css('color', 'red');
-                $('form #fileLink').text('備審資料檔案尚未上傳');
-                $('form #fileLink').removeAttr('href');*/
-                sessionStorage.removeItem('signup');
-            }
 
         });
 

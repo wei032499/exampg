@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <title>網路報名</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" type="image/x-icon" href="http://www.csie.ncue.edu.tw/csie/resources/images/ncue-logo.png">
+    <link rel="icon" type="image/x-icon" href="./images/favicon.ico">
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
     <link rel="stylesheet" href="./css/custom.css" />
@@ -17,7 +17,9 @@
         if (sessionStorage === undefined) {
             alert("未支援Web Storage！\n請更換瀏覽器再試。");
             window.location.replace('./');
-        }
+        } else
+            sessionStorage.clear();
+    </script>
     </script>
 </head>
 

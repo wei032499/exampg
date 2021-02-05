@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <title>網路報名</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" type="image/x-icon" href="http://www.csie.ncue.edu.tw/csie/resources/images/ncue-logo.png">
+    <link rel="icon" type="image/x-icon" href="./images/favicon.ico">
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
     <link rel="stylesheet" href="./css/custom.css" />
@@ -47,27 +47,28 @@
                     <legend class="col-form-label col-sm-3 float-sm-left">性別</legend>
                     <div class="col-sm-4">
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="gender" id="inlineRadio1" value="male" disabled required>
+                            <input class="form-check-input" type="radio" name="gender" id="inlineRadio1" value="1" disabled required>
                             <label class="form-check-label" for="inlineRadio1">男</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="gender" id="inlineRadio2" value="female" disabled required>
+                            <input class="form-check-input" type="radio" name="gender" id="inlineRadio2" value="0" disabled required>
                             <label class="form-check-label" for="inlineRadio2">女</label>
                         </div>
                     </div>
                 </fieldset>
                 <div class="form-group row">
-                    <label for="inputStatus" class="col-sm-3">繳費身分別</label>
-                    <select id="inputStatus" class="form-control-plaintext col-sm-4" name="status" readonly required>
+                    <label for="inputIdentity" class="col-sm-3">繳費身分別</label>
+                    <select id="inputIdentity" class="form-control-plaintext col-sm-4" name="identity" readonly required>
                         <option selected hidden disabled></option>
-                        <option value="0" hidden disabled>一般考生</option>
-                        <option value="1" hidden disabled>特殊考生</option>
+                        <option value="1">一般考生</option>
+                        <option value="2">中低收入戶考生</option>
+                        <option value="3">低收入戶考生</option>
                     </select>
                 </div>
                 <div class="form-group row">
-                    <label for="inputIDNumber" class="col-sm-3">身分證字號</label>
-                    <input type="text" class="form-control-plaintext col-sm-4" id="inputIDNumber" pattern="[A-Z]\d{9}" aria-describedby="IDNumberHelp" name="IDNumber" readonly required>
-                    <small id="IDNumberHelp" class="form-text text-muted col-sm-4">*僑外生請填寫居留證號碼</small>
+                    <label for="inputId" class="col-sm-3">身分證字號</label>
+                    <input type="text" class="form-control-plaintext col-sm-4" id="inputId" pattern="[A-Z]\d{9}" aria-describedby="inputIdHelp" name="id" readonly required>
+                    <small id="inputIdHelp" class="form-text text-muted col-sm-4">*僑外生請填寫居留證號碼</small>
                 </div>
                 <div class="form-group row">
                     <label for="inputTel" class="col-sm-3">電話</label>
@@ -79,10 +80,10 @@
                 </div>
                 <div class="form-group row">
                     <label for="inputDep" class="col-sm-3">報考系所</label>
-                    <select id="inputDep" class="form-control-plaintext col-sm-4" name="dep" readonly required>
+                    <select id="inputDep" class="form-control-plaintext col-sm-4" name="dept_id" readonly required>
                         <option selected hidden disabled></option>
-                        <option value="0" hidden disabled>英語系、美術系藝教班、兒英所、翻譯所報名費 1800元</option>
-                        <option value="1" hidden disabled>其他系所 1300元</option>
+                        <option value="1">英語系、美術系藝教班、兒英所、翻譯所報名費 1800元</option>
+                        <option value="2">其他系所 1300元</option>
                     </select>
                 </div>
                 <hr />
@@ -90,7 +91,7 @@
                     <span style="color:red">請確認您的資料，正確請按"下一步"繼續，修改資料請按"上一步"。</span>
                 </p>
                 <div class="row justify-content-center">
-                    <button type="reset" style="min-width:4rem" class="btn btn-danger btn-sm col-1 mx-1">取消</button>
+                    <button type="button" style="min-width:4rem" class="btn btn-danger btn-sm col-1 mx-1 btn-cancel">取消</button>
                     <button type="button" style="min-width:4rem" class="btn btn-warning btn-sm col-1 mx-1" onclick="window.location.replace('./order.php')">上一步</button>
                     <button type="submit" style="min-width:4rem" class="btn btn-primary btn-sm col-1 mx-1">下一步</button>
                 </div>
@@ -105,11 +106,13 @@
 
             $.ajax({
                     type: 'POST',
-                    url: "./API/signup/order.php",
+                    url: "./API/order/order.php",
+                    data: $("form").serialize(),
                     dataType: 'json'
                 }).done(function(response) {
-                    let str = "email=" + response['data']['email'] + "&account_no=" + response['data']['account_no'];
-                    sessionStorage.setItem('order', str);
+                    sessionStorage.setItem('account_no', response['data']['account_no']);
+                    sessionStorage.setItem('pay_money', response['data']['pay_money']);
+                    sessionStorage.setItem('email', response['data']['email']);
                     window.location.replace('./order.php?step=3');
                 })
                 .fail(function(jqXHR, exception) {
@@ -126,14 +129,9 @@
                 });
 
         });
-        $("form button[type='reset']").on('click', function(e) {
-            e.preventDefault();
-            if (confirm('確定取消嗎？')) {
-                $("form")[0].reset();
-                sessionStorage.removeItem('order');
-                window.location.replace('./');
-            }
 
+        $(function() {
+            $("form select option").not(":selected").remove().end();
         });
     </script>
 
