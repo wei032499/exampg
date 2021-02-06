@@ -3,7 +3,7 @@
 header('Content-Type:application/json');
 $result = array();
 try {
-    require_once('../db.php');
+    require_once('../common/db.php');
     if (!isset($_COOKIE['token']))
         throw new Exception("Unauthorized", 401);
 
@@ -18,6 +18,7 @@ try {
 } catch (Exception $e) {
     @oci_rollback($conn);
     setHeader($e->getCode());
+    $result = array();
     $result['code'] = $e->getCode();
     $result['message'] = $e->getMessage();
     //$e->getMessage() . " on line " . $e->getLine()

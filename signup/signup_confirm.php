@@ -67,7 +67,7 @@
                     </div>
                     <div class="form-group col-md-6">
                         <label for="inputOrganize">報考組(科)別</label>
-                        <select id="inputOrganize" class="form-control-plaintext" name="dept_group" readonly>
+                        <select id="inputOrganize" class="form-control-plaintext" name="organize_id" readonly>
                             <option selected disabled hidden></option>
                         </select>
                     </div>
@@ -75,7 +75,7 @@
                 <div class="form-row">
                     <div class="form-group col-md-6">
                         <label for="inputStatus">報考身分</label>
-                        <select id="inputStatus" class="form-control-plaintext" name="dept_status" readonly>
+                        <select id="inputStatus" class="form-control-plaintext" name="orastatus_id" readonly>
                             <option selected disabled hidden></option>
                         </select>
                     </div>
@@ -84,14 +84,28 @@
                 </div>
                 <fieldset class="form-group row">
                     <legend class="col-form-label col-sm-3 float-sm-left" style="min-width: 9rem;"><span style="color:red">身心障礙考生</span></legend>
-                    <div class="col-sm-5 row mx-0">
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" id="cripple1" name="cripple" value="true" disabled readonly required>
-                            <label class="form-check-label" for="cripple1"><span style="color:red">是</span></label>
+                    <div class="col-xl row mx-0">
+                        <div class="col row" style="max-width: 10rem;">
+                            <div class="form-check form-check-inline form-group">
+                                <input class="form-check-input" type="radio" id="disabled1" name="disabled" value="1" disabled readonly required>
+                                <label class="form-check-label" for="disabled1"><span style="color:red">是</span></label>
+                            </div>
+                            <div class="form-check form-check-inline form-group">
+                                <input class="form-check-input" type="radio" id="disabled2" name="disabled" value="0" disabled readonly checked required>
+                                <label class="form-check-label font-weight-bold" for="disabled2"><span style="color:red"><u>否</u></span></label>
+                            </div>
                         </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" id="cripple2" name="cripple" value="false" disabled checked readonly required>
-                            <label class="form-check-label font-weight-bold" for="cripple2"><span style="color:red"><u>否</u></span></label>
+                        <div class="col-sm " id="disabled_extra" style="display: none;">
+                            <select class="form-control-plaintext form-group" name="disabled_type">
+                                <option selected hidden disabled></option>
+                                <option value="1">聽覺障礙</option>
+                                <option value="2">視覺障礙</option>
+                                <option value="3">腦性麻庳</option>
+                                <option value="4">自閉症</option>
+                                <option value="5">學習障礙</option>
+                                <option value="6">其他障礙</option>
+                            </select>
+                            <input class="form-control-plaintext form-group" type="text" name="comments" style="display: none;" readonly>
                         </div>
                     </div>
                 </fieldset>
@@ -99,8 +113,8 @@
                     <legend class="col-form-label col-sm-3 float-sm-left" style="min-width: 9rem;"><span style="color:red">報名考區</span></legend>
                     <div class="col-sm-5 row mx-0">
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" id="area1" name="area" value="true" disabled checked readonly required>
-                            <label class="form-check-label color-info" for="area1">彰化考區</label>
+                            <input class="form-check-input" type="radio" id="place" name="place" value="1" disabled checked readonly required>
+                            <label class="form-check-label color-info" for="place">彰化考區</label>
                         </div>
                     </div>
                 </fieldset>
@@ -331,7 +345,7 @@
                 <div class="line-height-1">
                     <span style="color:red">請確認您的資料，正確請按"下一步"繼續，修改資料請按"上一步"。</span>
                 </div>
-                <div class="row justify-content-end">
+                <div class="row justify-content-center">
                     <button type="reset" style="min-width:4rem" class="btn btn-danger btn-sm col-1 mx-1">清除</button>
                     <button type="button" style="min-width:4rem" class="btn btn-warning btn-sm col-1 mx-1" onclick="window.location.replace('./signup.php?step=3');">上一步</button>
                     <button type="submit" style="min-width:4rem" class="btn btn-primary btn-sm col-1 mx-1">下一步</button>
@@ -374,8 +388,8 @@
         $(function() {
 
             $("form [name='dept']").append('<option value="' + sessionItems.dept + '" selected>' + sessionStorage.getItem('dept') + '</option>');
-            $("form [name='dept_group']").append('<option value="' + sessionItems.dept_group + '" selected>' + sessionStorage.getItem('dept_group') + '</option>');
-            $("form [name='dept_status']").append('<option value="' + sessionItems.dept_status + '" selected>' + sessionStorage.getItem('dept_status') + '</option>');
+            $("form [name='organize_id']").append('<option value="' + sessionItems.organize_id + '" selected>' + sessionStorage.getItem('organize_id') + '</option>');
+            $("form [name='orastatus_id']").append('<option value="' + sessionItems.orastatus_id + '" selected>' + sessionStorage.getItem('orastatus_id') + '</option>');
 
             $("form select option").not(":selected").remove().end();
 
@@ -418,6 +432,28 @@
             });
         });
 
+        $(function() {
+            if ($("form [name='disabled']:checked").val() === "1") {
+                $("#disabled_extra").css('display', '');
+                $("form [name='disabled_type']").attr('required', true);
+                $("form [name='disabled_type']").removeAttr('disabled');
+            } else {
+                $("#disabled_extra").css('display', 'none');
+                $("form [name='disabled_type']").removeAttr('required');
+                $("form [name='disabled_type']").attr('disabled', true);
+            }
+
+            if ($("form [name='disabled_type']").val() === "6") {
+                $("form [name='comments']").css('display', '');
+                $("form [name='comments']").attr('required', true);
+                $("form [name='comments']").removeAttr('disabled');
+            } else {
+                $("form [name='comments']").css('display', 'none');
+                $("form [name='comments']").removeAttr('required');
+                $("form [name='comments']").attr('disabled', true);
+            }
+        });
+
 
 
         $("form").on('submit', function(e) {
@@ -428,7 +464,10 @@
                     data: $("form").serialize(),
                     dataType: 'json'
                 }).done(function(response) {
-                    // sessionStorage.setItem("signup", $("form").serialize());
+                    sessionStorage.clear();
+                    sessionStorage.setItem('email', response['data']['email']);
+                    sessionStorage.setItem('card_start_date', response['data']['card_start_date']);
+                    sessionStorage.setItem('card_end_date', response['data']['card_end_date']);
                     window.location.replace('./signup.php?step=5');
 
                 })

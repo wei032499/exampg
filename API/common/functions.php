@@ -96,7 +96,25 @@ class Token
 
     private function getStatus()
     {
-        return 0;
+        $sql = "SELECT SIGNUP_ENABLE,LOCK_UP,CHECKED FROM SN_DB WHERE  SN=:sn";
+        $stmt = oci_parse($this->conn, $sql);
+        oci_bind_by_name($stmt, ':sn', $this->payload['sn']);
+        oci_execute($stmt, OCI_DEFAULT);
+        oci_fetch($stmt);
+        $signup_enable = oci_result($stmt, "SIGNUP_ENABLE"); // what is this?
+        $lockup = oci_result($stmt, "LOCK_UP"); // what is this?
+        $checked = oci_result($stmt, "CHECKED"); // 0：未銷帳；1：已銷帳
+        oci_free_statement($stmt);
+        if ($checked === "0")
+            return 0; //尚未銷帳
+        else if ($lockup === "1")
+            return 3; //報名完成，資料已鎖定
+        else if ($signup_enable === "1")
+            return 1; //尚未填寫報名表
+        else if ($signup_enable === "0")
+            return 2; //報名完成，資料尚未確認
+        else
+            return -1; //error
     }
 
     /**
@@ -107,18 +125,18 @@ class Token
     {
         if ($this->payload === false)
             return false;
-        $stmt = oci_parse($this->conn, "SELECT * FROM  signupdata  WHERE sn=:sn ");
+        $stmt = oci_parse($this->conn, "SELECT PWD FROM  SN_DB  WHERE SN=:sn ");
         oci_bind_by_name($stmt, ':sn', $this->payload['sn']);
-
-        if (!oci_execute($stmt)) //oci_execute($stmt) 
+        if (!oci_execute($stmt, OCI_DEFAULT)) //oci_execute($stmt) 
             return false;
-        if ($row = oci_fetch_assoc($stmt)) {
-            $this->payload['last_modified'] = $row['LAST_MODIFIED'];
+        if (oci_fetch($stmt)) {
+            $this->payload['pwd'] = hash('sha256', oci_result($stmt, "PWD"));
             $this->payload['iat'] = time();
             $this->payload['exp'] =  time() + 1800;
             $this->payload['status'] = $this->getStatus();
         } else
             return false;
+        oci_free_statement($stmt);
 
         return JWT::getToken($this->payload);;
     }
@@ -133,15 +151,11 @@ class Token
             clearCookie();
             return false;
         }
-        $stmt = oci_parse($this->conn, "SELECT * FROM  signupdata  WHERE sn=:sn ");
+
+        $stmt = oci_parse($this->conn, "SELECT PWD FROM  SN_DB  WHERE SN=:sn ");
         oci_bind_by_name($stmt, ':sn', $this->payload['sn']);
 
-        if (!oci_execute($stmt)) {
-            clearCookie();
-            return false;
-        }
-        $row = oci_fetch_assoc($stmt);
-        if (!$row || $this->payload['last_modified'] !== $row['LAST_MODIFIED']) {
+        if (!oci_execute($stmt, OCI_DEFAULT) || !oci_fetch($stmt) || $this->payload['pwd'] !== hash('sha256', oci_result($stmt, "PWD"))) {
             clearCookie();
             return false;
         }

@@ -40,8 +40,9 @@ function fillByData(url) {
         dataType: 'json'
     }).done(function (response) {
         $(function () {
+            console.log(response);
             if (response.hasOwnProperty('data')) {
-                if (Array.isArray(response.data)) {
+                /*if (Array.isArray(response.data)) {
                     for (let i = 0; i < response.data.length; i++) {
                         let keys = Object.keys(response.data[i]);
                         for (let i = 0; i < keys.length; i++) {
@@ -58,19 +59,20 @@ function fillByData(url) {
                         }
 
                     }
-                } else {
-                    let keys = Object.keys(response.data);
-                    for (let i = 0; i < keys.length; i++) {
-                        if ($("form [name='" + keys[i] + "']").attr('type') === "radio") {
-                            $("form [name='" + keys[i] + "'][value='" + response.data[i][keys[i]] + "']").removeAttr("disabled");
-                            $("form [name='" + keys[i] + "'][value='" + response.data[i][keys[i]] + "']")[0].checked = true;
-                        } else if ($("form [name='" + keys[i] + "']").attr('type') === "select") {
-                            $("form [name='" + keys[i] + "']>option[value='" + response.data[i][keys[i]] + "']").removeAttr("disabled");
-                            $("form [name='" + keys[i] + "']").val(response.data[i][keys[i]]).change();
-                        } else
-                            $("form [name='" + keys[i] + "']").val(response.data[i][keys[i]]).change();
-                    }
+                } else {*/
+                let keys = Object.keys(response.data);
+                for (let i = 0; i < keys.length; i++) {
+                    if ($("form [name='" + keys[i] + "']").attr('type') === "radio") {
+                        $("form [name='" + keys[i] + "'][value='" + response.data[keys[i]] + "']").removeAttr("disabled");
+                        $("form [name='" + keys[i] + "'][value='" + response.data[keys[i]] + "']")[0].checked = true;
+                        $("form [name='" + keys[i] + "']:checked").change();
+                    } else if ($("form [name='" + keys[i] + "']").attr('type') === "select") {
+                        $("form [name='" + keys[i] + "']>option[value='" + response.data[keys[i]] + "']").removeAttr("disabled");
+                        $("form [name='" + keys[i] + "']").val(response.data[keys[i]]).change();
+                    } else
+                        $("form [name='" + keys[i] + "']").val(response.data[keys[i]]).change();
                 }
+                //}
             }
 
         });

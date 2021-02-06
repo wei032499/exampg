@@ -1,5 +1,5 @@
 <?php
-require_once('./API/db.php');
+require_once('./API/common/db.php');
 try {
     if (!isset($_COOKIE['token']))
         require_once('./signup/signup_login.php');
@@ -11,9 +11,18 @@ try {
 
         if ($payload === false)
             require_once('./signup/signup_login.php');
-        else if ($payload['status'] !== 0)
-            echo "<script>alert('報名表已填寫完成！');window.location.replace('./intro_registration.php#signup_form');</script>";
-        else if (!isset($_GET['step']))
+        else if ($payload['status'] !== 1) {
+            if ($payload['status'] === 0)
+                echo "<script>alert('報名費尚未銷帳！');window.location.replace('./');</script>";
+            else if ($payload['status'] === 1)
+                echo "<script>alert('尚未填寫報名表！');window.location.replace('./signup.php');</script>";
+            else if ($payload['status'] === 2)
+                echo "<script>alert('報名表已填寫完成！');window.location.replace('./intro_registration.php#signup_form');</script>";
+            else if ($payload['status'] === 3)
+                echo "<script>alert('報名完成，資料已鎖定！');window.location.replace('./');</script>";
+            else
+                echo "<script>alert('ERROR！');window.location.replace('./');</script>";
+        } else if (!isset($_GET['step']))
             header("Location: ./signup.php?step=2");
         else if ($_GET['step'] === "2")
             require_once('./signup/signup_consent.php');
@@ -28,6 +37,7 @@ try {
     }
 } catch (Exception $e) {
     setHeader($e->getCode());
+    $result = array();
     $result['code'] = $e->getCode();
     $result['message'] = $e->getMessage();
     $result['line'] = $e->getLine();

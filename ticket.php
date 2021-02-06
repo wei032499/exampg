@@ -1,5 +1,5 @@
 <?php
-require_once('./API/db.php');
+require_once('./API/common/db.php');
 try {
 
     if (!isset($_COOKIE['token']))
@@ -22,6 +22,7 @@ try {
     }
 } catch (Exception $e) {
     setHeader($e->getCode());
+    $result = array();
     $result['code'] = $e->getCode();
     $result['message'] = $e->getMessage();
     header('Content-Type:application/json');

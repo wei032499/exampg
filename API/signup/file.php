@@ -3,7 +3,8 @@
 header('Content-Type:application/json');
 $result = array();
 try {
-    require_once('../db.php');
+    require_once('../common/db.php');
+    require_once('../common/variables.php');
     if (!isset($_COOKIE['token']))
         throw new Exception("Unauthorized", 401);
     $Token = new Token($conn, $_COOKIE['token']);
@@ -30,33 +31,6 @@ try {
             }
         } else
             throw new Exception("Not Found", 404);
-
-        /*$stmt = $conn->prepare("SELECT * FROM  signupdata  WHERE sn=? "); //oci_parse($conn, $sql);
-        $params[] =  $payload['sn'];
-        DynamicBindVariables($stmt, $params);
-
-        if (!oci_execute($stmt)) //oci_execute($stmt) 
-        {
-            $error = analyzeError(oci_error()['message']);
-            throw new Exception($error['message'], $error['code']);
-        }
-        if ($row = oci_fetch_assoc($stmt)) //$row = oci_fetch_assoc($stmt)
-        {
-            $attachment_location = $location . $row['file'];
-            if (file_exists($attachment_location)) {
-
-                header($_SERVER["SERVER_PROTOCOL"] . " 200 OK");
-                header("Cache-Control: public"); // needed for internet explorer
-                header("Content-Type: application/pdf");
-                header("Content-Transfer-Encoding: Binary");
-                header("Content-Length:" . filesize($attachment_location));
-                header("Content-Disposition: attachment; filename=" . $payload['sn'] . ".pdf");
-                readfile($attachment_location);
-            } else
-                throw new Exception("Not Found", 404);
-        } else
-            throw new Exception("尚未上傳備審資料", 404);
-        $stmt->close();*/
     } else if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if ($payload['status'] !== 0)
@@ -85,8 +59,19 @@ try {
                 $result['filename'] = $payload['sn'] . "." . $fileType;
             } else
                 throw new Exception("請上傳正確的檔案類型", 400);
-        }
-        throw new Exception("Bad Request", 400);
+
+
+            $sql = "UPDATE SIGNUPDATA SET DOC_UPLOAD='1' WHERE SCHOOL_ID='" . $SCHOOL_ID . "' AND YEAR='" . $ACT_YEAR_NO . "' AND SIGNUP_SN=:sn";
+            $stmt = oci_parse($conn, $sql);
+            oci_bind_by_name($stmt, ':sn',  $payload['sn']);
+            if (!oci_execute($stmt, OCI_DEFAULT)) {
+                $error = analyzeError(oci_error()['message']);
+                throw new Exception($error['message'], $error['code']);
+            }
+
+            oci_commit($conn);
+        } else
+            throw new Exception("Bad Request", 400);
     }
 
     setcookie('token', $Token->refresh(), $cookie_options_httponly);
@@ -94,6 +79,7 @@ try {
 } catch (Exception $e) {
     @oci_rollback($conn);
     setHeader($e->getCode());
+    $result = array();
     $result['code'] = $e->getCode(); //$e->getCode();
     $result['message'] = $e->getMessage();
 

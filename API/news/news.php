@@ -3,31 +3,9 @@ header('Content-Type:application/json');
 $result = array();
 
 try {
-    require_once('../functions.php');
+    require_once('../common/functions.php');
+    require('../common/variables.php');
     if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-        $ACT_YEAR_NO = (int)date("Y") - 1911;
-        if ((int)date("m") < 8)
-            $ACT_YEAR_NO = $ACT_YEAR_NO - 1;
-        $PSELL_DL_START_DATE = "108-12-20 09:00:00";
-        $PSELL_DL_END_DATE = "109-09-14 23:59:59";
-        $ACC_START_DATE = "108-12-20 09:00:00";
-        $ACC_END_DATE = "110-07-08 17:00:00";
-        $ACC2_START_DATE = "108-12-20";
-        $ACC2_END_DATE = "109-01-08";
-        $SU_START_DATE = "109-12-20 09:00:00";
-        $SU_END_DATE = "110-07-09 17:00:00";
-        $CARD_START_DATE = "109-01-22 09:00:00";
-        $CARD_END_DATE = "109-03-27 23:59:59";
-        $SCORE_START_DATE = "109-03-27 17:00:00";
-        $SCORE_END_DATE = "109-09-14 23:59:59";
-        $SCORE2_START_DATE = "109-04-13 17:00:00";
-        $SCORE2_END_DATE = "109-09-14 23:59:59";
-        $UBI_START_DATE = "109-03-27 17:00:00";
-        $UBI_END_DATE = "109-04-20 17:00:00";
-        $UBI2_START_DATE = "109-04-13 17:00:00";
-        $UBI2_END_DATE = "109-04-20 17:00:00";
-        $FSTAT_START_DATE = "111-04-21 13:00:00";
-        $FSTAT_END_DATE = "111-09-14 23:59:59";
         $result[] = array('date' => "12月18日", "content" => "<span class='font-weight-bold'>本系統僅供報考『" . $ACT_YEAR_NO . "學年度碩士班』考試，欲報考其他招生考試者<span style='color:red'>(如在職進修專班碩士學位班等)</span>請勿使用，<span style='color:red'>若已誤繳報名費，請勿填寫報名表並依簡章規定申請退費。</span></span>");
         $result[] = array('date' => "12月18日", "content" => "<span class='font-weight-bold' style='color:red'>部分電子郵件信箱(如:Gmail、Hotmail..等)可能會將系統寄發之郵件攔截為垃圾郵件，繳費後如未收到序號密碼通知信，請先檢查是否在垃圾郵件匣。</span>");
         $result[] = array('date' => "12月18日", "content" => "本招生考試電子檔簡章免費下載，歡迎多加使用；<u>一律採網路報名，請先上網取得報名費繳費帳號並完成繳費後再行上網填寫報名表；低收入戶/中低收入戶若欲申請免繳報名費須提前作業，請詳閱簡章相關規定。</u>");

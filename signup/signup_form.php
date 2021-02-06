@@ -92,7 +92,7 @@
                     </div>
                     <div class="form-group col-md-6">
                         <label for="inputOrganize">報考組(科)別</label>
-                        <select id="inputOrganize" class="form-control" name="dept_group" required>
+                        <select id="inputOrganize" class="form-control" name="organize_id" required>
                             <option selected hidden disabled></option>
                         </select>
                     </div>
@@ -100,7 +100,7 @@
                 <div class="form-row">
                     <div class="form-group col-md-6">
                         <label for="inputStatus">報考身分</label>
-                        <select id="inputStatus" class="form-control" name="dept_status" required>
+                        <select id="inputStatus" class="form-control" name="orastatus_id" required>
                             <option selected hidden disabled></option>
                         </select>
                     </div>
@@ -109,23 +109,38 @@
                 </div>
                 <fieldset class="form-group row">
                     <legend class="col-form-label col-sm-3 float-sm-left" style="min-width: 9rem;"><span style="color:red">身心障礙考生</span></legend>
-                    <div class="col-sm-5 row mx-0">
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" id="cripple1" name="cripple" value="true" required>
-                            <label class="form-check-label" for="cripple1"><span style="color:red">是</span></label>
+                    <div class="col-xl row mx-0">
+                        <div class="col row" style="max-width: 10rem;">
+                            <div class="form-check form-check-inline form-group">
+                                <input class="form-check-input" type="radio" id="disabled1" name="disabled" value="1" required>
+                                <label class="form-check-label" for="disabled1"><span style="color:red">是</span></label>
+                            </div>
+                            <div class="form-check form-check-inline form-group">
+                                <input class="form-check-input" type="radio" id="disabled2" name="disabled" value="0" checked required>
+                                <label class="form-check-label font-weight-bold" for="disabled2"><span style="color:red"><u>否</u></span></label>
+                            </div>
                         </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" id="cripple2" name="cripple" value="false" checked required>
-                            <label class="form-check-label font-weight-bold" for="cripple2"><span style="color:red"><u>否</u></span></label>
+                        <div class="col-sm " id="disabled_extra" style="display: none;">
+                            <select class="form-control form-group" name="disabled_type">
+                                <option selected hidden disabled></option>
+                                <option value="1">聽覺障礙</option>
+                                <option value="2">視覺障礙</option>
+                                <option value="3">腦性麻庳</option>
+                                <option value="4">自閉症</option>
+                                <option value="5">學習障礙</option>
+                                <option value="6">其他障礙</option>
+                            </select>
+                            <input class="form-control form-group" type="text" name="comments" style="display: none;">
                         </div>
                     </div>
+
                 </fieldset>
                 <fieldset class="form-group row">
                     <legend class="col-form-label col-sm-3 float-sm-left" style="min-width: 9rem;"><span style="color:red">報名考區</span></legend>
                     <div class="col-sm-5 row mx-0">
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" id="area1" name="area" value="true" checked required>
-                            <label class="form-check-label color-info" for="area1">彰化考區</label>
+                            <input class="form-check-input" type="radio" id="place" name="place" value="1" checked required>
+                            <label class="form-check-label color-info" for="place">彰化考區</label>
                         </div>
                     </div>
                 </fieldset>
@@ -366,7 +381,7 @@
                         <li>年資年數計算至 入學年度當學期本校行事曆所訂之註冊截止日止。</li>
                     </ol>
                 </div>
-                <div class="row justify-content-end">
+                <div class="row justify-content-center">
                     <button type="reset" style="min-width:4rem" class="btn btn-danger btn-sm col-1 mx-1">清除</button>
                     <button type="submit" style="min-width:4rem" class="btn btn-primary btn-sm col-1 mx-1">下一步</button>
                 </div>
@@ -384,16 +399,16 @@
                 $("form [name='dept']").append("<option value='" + deptObj.dept[i].dept_id + "'>" + deptObj.dept[i].name + "</option>");
         });
         $("form [name='dept']").on('change', function() {
-            $("form [name='dept_group']").find('option').remove().end().append('<option selected hidden disabled></option>');
-            $("form [name='dept_status']").find('option').remove().end().append('<option selected hidden disabled></option>');
+            $("form [name='organize_id']").find('option').remove().end().append('<option selected hidden disabled></option>');
+            $("form [name='orastatus_id']").find('option').remove().end().append('<option selected hidden disabled></option>');
             for (let i = 0; i < deptObj.group[$("form [name='dept']").val()].length; i++)
-                $("form [name='dept_group']").append("<option value='" + deptObj.group[$("form [name='dept']").val()][i].group_id + "'>" + deptObj.group[$("form [name='dept']").val()][i].name + "</option>");
+                $("form [name='organize_id']").append("<option value='" + deptObj.group[$("form [name='dept']").val()][i].group_id + "'>" + deptObj.group[$("form [name='dept']").val()][i].name + "</option>");
 
         });
-        $("form [name='dept_group']").on('change', function() {
-            $("form [name='dept_status']").find('option').remove().end().append('<option selected hidden disabled></option>');
-            for (let i = 0; i < deptObj.status[$("form [name='dept']").val()][$("form [name='dept_group']").val()].length; i++)
-                $("form [name='dept_status']").append("<option value='" + deptObj.status[$("form [name='dept']").val()][$("form [name='dept_group']").val()][i].group_id + "'>" + deptObj.status[$("form [name='dept']").val()][$("form [name='dept_group']").val()][i].name + "</option>");
+        $("form [name='organize_id']").on('change', function() {
+            $("form [name='orastatus_id']").find('option').remove().end().append('<option selected hidden disabled></option>');
+            for (let i = 0; i < deptObj.status[$("form [name='dept']").val()][$("form [name='organize_id']").val()].length; i++)
+                $("form [name='orastatus_id']").append("<option value='" + deptObj.status[$("form [name='dept']").val()][$("form [name='organize_id']").val()][i].status_id + "'>" + deptObj.status[$("form [name='dept']").val()][$("form [name='organize_id']").val()][i].name + "</option>");
 
         });
 
@@ -469,8 +484,8 @@
             if (!isUploading) {
                 sessionStorage.setItem("signup", $("form").serialize());
                 sessionStorage.setItem("dept", $("form [name='dept']>option[value=" + $("form [name='dept']").val() + "]").text());
-                sessionStorage.setItem("dept_group", $("form [name='dept_group']>option[value=" + $("form [name='dept_group']").val() + "]").text());
-                sessionStorage.setItem("dept_status", $("form [name='dept_status']>option[value=" + $("form [name='dept_status']").val() + "]").text());
+                sessionStorage.setItem("organize_id", $("form [name='organize_id']>option[value=" + $("form [name='organize_id']").val() + "]").text());
+                sessionStorage.setItem("orastatus_id", $("form [name='orastatus_id']>option[value=" + $("form [name='orastatus_id']").val() + "]").text());
                 window.location.replace('./signup.php?step=4');
             }
 
@@ -527,6 +542,52 @@
                         toastr.error(msg);
                         isUploading = false;
                     });
+            }
+        });
+
+        $("form [name='disabled']").on('change', function() {
+            if (this.value === '1') {
+                $("#disabled_extra").css('display', '');
+                $("form [name='disabled_type']").attr('required', true);
+                $("form [name='disabled_type']").removeAttr('disabled');
+            } else {
+                $("#disabled_extra").css('display', 'none');
+                $("form [name='disabled_type']").removeAttr('required');
+                $("form [name='disabled_type']").attr('disabled', true);
+            }
+        });
+
+        $("form [name='disabled_type']").on('change', function() {
+            if (this.value === '6') {
+                $("form [name='comments']").css('display', '');
+                $("form [name='comments']").attr('required', true);
+                $("form [name='comments']").removeAttr('disabled');
+            } else {
+                $("form [name='comments']").css('display', 'none');
+                $("form [name='comments']").removeAttr('required');
+                $("form [name='comments']").attr('disabled', true);
+            }
+        });
+
+        $(function() {
+            if ($("form [name='disabled']:checked").val() === "1") {
+                $("#disabled_extra").css('display', '');
+                $("form [name='disabled_type']").attr('required', true);
+                $("form [name='disabled_type']").removeAttr('disabled');
+            } else {
+                $("#disabled_extra").css('display', 'none');
+                $("form [name='disabled_type']").removeAttr('required');
+                $("form [name='disabled_type']").attr('disabled', true);
+            }
+
+            if ($("form [name='disabled_type']").val() === "6") {
+                $("form [name='comments']").css('display', '');
+                $("form [name='comments']").attr('required', true);
+                $("form [name='comments']").removeAttr('disabled');
+            } else {
+                $("form [name='comments']").css('display', 'none');
+                $("form [name='comments']").removeAttr('required');
+                $("form [name='comments']").attr('disabled', true);
             }
         });
 

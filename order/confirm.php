@@ -110,9 +110,12 @@
                     data: $("form").serialize(),
                     dataType: 'json'
                 }).done(function(response) {
+                    sessionStorage.clear();
                     sessionStorage.setItem('account_no', response['data']['account_no']);
                     sessionStorage.setItem('pay_money', response['data']['pay_money']);
                     sessionStorage.setItem('email', response['data']['email']);
+                    sessionStorage.setItem('low_income_end_date', response['data']['low_income_end_date']);
+                    sessionStorage.setItem('acc2_end_date', response['data']['acc2_end_date']);
                     window.location.replace('./order.php?step=3');
                 })
                 .fail(function(jqXHR, exception) {

@@ -35,7 +35,7 @@ td { color:#464646; font: 10pt; line-height: 150% }
 							</tr>
 							<tr> 
 								<td>　　
-								  台端參加本校act_year_no學年度碩士班招生考試，成績業經招生委員會評定錄取為備取生（錄取系所：dept_group ，備取順位：第 backnumber 名），請依本通知單規定辦理<u>備取生報到</u>事宜。<br>
+								  台端參加本校act_year_no學年度碩士班招生考試，成績業經招生委員會評定錄取為備取生（錄取系所：organize_id ，備取順位：第 backnumber 名），請依本通知單規定辦理<u>備取生報到</u>事宜。<br>
 								  <table width="100%" border="0">
                                     <tr>
                                       <td valign="top">一、</td>

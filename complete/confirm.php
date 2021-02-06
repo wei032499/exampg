@@ -87,12 +87,12 @@
                     <legend class="col-form-label col-sm-3 float-sm-left">身心障礙考生</legend>
                     <div class="col-sm-4">
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineCripple1" value="true" disabled required>
-                            <label class="form-check-label" for="inlineCripple1">是</label>
+                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineDisabled1" value="true" disabled required>
+                            <label class="form-check-label" for="inlineDisabled1">是</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineCripple2" value="false" disabled required>
-                            <label class="form-check-label" for="inlineCripple2">否</label>
+                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineDisabled2" value="false" disabled required>
+                            <label class="form-check-label" for="inlineDisabled2">否</label>
                         </div>
                     </div>
                 </fieldset>

@@ -87,12 +87,12 @@
                     <legend class="col-form-label col-sm-3 float-sm-left">身心障礙考生</legend>
                     <div class="col-sm-4">
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineCripple1" value="true" disabled required>
-                            <label class="form-check-label" for="inlineCripple1">是</label>
+                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineDisabled1" value="true" disabled required>
+                            <label class="form-check-label" for="inlineDisabled1">是</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineCripple2" value="false" disabled required>
-                            <label class="form-check-label" for="inlineCripple2">否</label>
+                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineDisabled2" value="false" disabled required>
+                            <label class="form-check-label" for="inlineDisabled2">否</label>
                         </div>
                     </div>
                 </fieldset>
@@ -171,8 +171,7 @@
                 <p class="line-height-1">
                     <span style="color:red">請確認您的資料，正確請按"下一步"繼續，修改資料請按"上一步"。</span>
                 </p>
-                <div class="row justify-content-end">
-                    <button type="button" id="logout" style="min-width:4rem" class="btn btn-info btn-sm col-1 mx-3">登出</button>
+                <div class="row justify-content-center">
                     <button type="reset" style="min-width:4rem" class="btn btn-danger btn-sm col-1 mx-1">清除</button>
                     <button type="button" style="min-width:4rem" class="btn btn-warning btn-sm col-1 mx-1" onclick="window.location.replace('./alter.php?step=2')">上一步</button>
                     <button type="submit" style="min-width:4rem" class="btn btn-primary btn-sm col-1 mx-1">下一步</button>
