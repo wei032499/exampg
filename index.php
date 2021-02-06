@@ -21,6 +21,29 @@
         if (sessionStorage === undefined) {
             alert("未支援Web Storage！\n請更換瀏覽器再試。");
         } else sessionStorage.clear();
+
+        $.ajax({
+                type: 'GET',
+                url: "./API/news/news.php",
+                dataType: 'json'
+            }).done(function(response) {
+                $(function() {
+                    for (let i = 0; i < response.length; i++)
+                        $("table tbody").append("<tr><td>" + response[i]['content'] + "</td><td>" + response[i]['date'] + "</td></tr>")
+                });
+            })
+            .fail(function(jqXHR, exception) {
+                let response = jqXHR.responseJSON;
+                let msg = '';
+                if (response === undefined)
+                    msg = exception;
+                else if (response.hasOwnProperty('message')) {
+                    msg = response.message;
+                } else {
+                    msg = 'Uncaught Error.\n' + jqXHR.responseText;
+                }
+                alert(msg);
+            });
     </script>
 </head>
 
@@ -50,178 +73,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>
-                                <span style="color:#000000"><b>本系統僅供報考『110學年度碩士班』考試，欲報考其他招生考試者<span style="color:red">(如在職進修專班碩士學位班等)</span>請勿使用，<span style="color:red">若已誤繳報名費，請勿填寫報名表並依簡章規定申請退費。</span></b>
-                                </span>
-                            </td>
-                            <td>12月18日</td>
-                        </tr>
-                        <tr>
-                            <td><span class="style3"><u>部分電子郵件信箱(如:Gmail、Hotmail..等)可能會將系統寄發之郵件攔截為垃圾郵件，繳費後如未收到序號密碼通知信，請先檢查是否在垃圾郵件匣。</u></span></td>
-                            <td>12月18日</td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <span style="color:#000000">成績下載開放日期：【
-                                    <span style="color:#FF0000">
-                                        110-03-26 17:00:00 </span>】 至 【
-                                    <span style="color:#FF0000">
-                                        110-09-13 23:59:59 </span>】 止。
-                                    <br>輔諮系、輔諮系婚家班面試成績查詢：【
-                                    <span style="color:#FF0000">
-                                        110-04-12 17:00:00 </span>】 至 【
-                                    <span style="color:#FF0000">
-                                        110-09-13 23:59:59 </span>】 止。
-                                </span>
-                            </td>
-                            <td>12月18日</td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <span style="color:#000000">正(備)取生申明就讀(遞補)意願開放日期：【
-                                    <span style="color:#FF0000">
-                                        110-03-26 17:00:00 </span>】 至 【
-                                    <span style="color:#FF0000">
-                                        110-04-19 17:00:00 </span>】 止(招生系所另有規定，從其規定，請詳見簡章)。
-                                    <br> 輔諮系、輔諮系婚家班正(備)取生申請就讀(遞補)意願開放日期：【
-                                    <span style="color:#FF0000">
-                                        110-04-12 17:00:00 </span>】 至 【
-                                    <span style="color:#FF0000">
-                                        110-04-19 17:00:00 </span>】 止。
-                                </span>
-                            </td>
-                            <td>12月18日</td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <span style="color:#000000"><b>本系統僅供報考『110學年度碩士班』考試，欲報考其他招生考試者<span style="color:red">(如在職進修專班碩士學位班等)</span>請勿使用，<span style="color:red">若已誤繳報名費，請勿填寫報名表並依簡章規定申請退費。</span></b>
-                                </span>
-                            </td>
-                            <td>12月18日</td>
-                        </tr>
-                        <tr>
-                            <td><span class="style3"><u>部分電子郵件信箱(如:Gmail、Hotmail..等)可能會將系統寄發之郵件攔截為垃圾郵件，繳費後如未收到序號密碼通知信，請先檢查是否在垃圾郵件匣。</u></span></td>
-                            <td>12月18日</td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <span style="color:#000000">成績下載開放日期：【
-                                    <span style="color:#FF0000">
-                                        110-03-26 17:00:00 </span>】 至 【
-                                    <span style="color:#FF0000">
-                                        110-09-13 23:59:59 </span>】 止。
-                                    <br>輔諮系、輔諮系婚家班面試成績查詢：【
-                                    <span style="color:#FF0000">
-                                        110-04-12 17:00:00 </span>】 至 【
-                                    <span style="color:#FF0000">
-                                        110-09-13 23:59:59 </span>】 止。
-                                </span>
-                            </td>
-                            <td>12月18日</td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <span style="color:#000000">正(備)取生申明就讀(遞補)意願開放日期：【
-                                    <span style="color:#FF0000">
-                                        110-03-26 17:00:00 </span>】 至 【
-                                    <span style="color:#FF0000">
-                                        110-04-19 17:00:00 </span>】 止(招生系所另有規定，從其規定，請詳見簡章)。
-                                    <br> 輔諮系、輔諮系婚家班正(備)取生申請就讀(遞補)意願開放日期：【
-                                    <span style="color:#FF0000">
-                                        110-04-12 17:00:00 </span>】 至 【
-                                    <span style="color:#FF0000">
-                                        110-04-19 17:00:00 </span>】 止。
-                                </span>
-                            </td>
-                            <td>12月18日</td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <span style="color:#000000"><b>本系統僅供報考『110學年度碩士班』考試，欲報考其他招生考試者<span style="color:red">(如在職進修專班碩士學位班等)</span>請勿使用，<span style="color:red">若已誤繳報名費，請勿填寫報名表並依簡章規定申請退費。</span></b>
-                                </span>
-                            </td>
-                            <td>12月18日</td>
-                        </tr>
-                        <tr>
-                            <td><span class="style3"><u>部分電子郵件信箱(如:Gmail、Hotmail..等)可能會將系統寄發之郵件攔截為垃圾郵件，繳費後如未收到序號密碼通知信，請先檢查是否在垃圾郵件匣。</u></span></td>
-                            <td>12月18日</td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <span style="color:#000000">成績下載開放日期：【
-                                    <span style="color:#FF0000">
-                                        110-03-26 17:00:00 </span>】 至 【
-                                    <span style="color:#FF0000">
-                                        110-09-13 23:59:59 </span>】 止。
-                                    <br>輔諮系、輔諮系婚家班面試成績查詢：【
-                                    <span style="color:#FF0000">
-                                        110-04-12 17:00:00 </span>】 至 【
-                                    <span style="color:#FF0000">
-                                        110-09-13 23:59:59 </span>】 止。
-                                </span>
-                            </td>
-                            <td>12月18日</td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <span style="color:#000000">正(備)取生申明就讀(遞補)意願開放日期：【
-                                    <span style="color:#FF0000">
-                                        110-03-26 17:00:00 </span>】 至 【
-                                    <span style="color:#FF0000">
-                                        110-04-19 17:00:00 </span>】 止(招生系所另有規定，從其規定，請詳見簡章)。
-                                    <br> 輔諮系、輔諮系婚家班正(備)取生申請就讀(遞補)意願開放日期：【
-                                    <span style="color:#FF0000">
-                                        110-04-12 17:00:00 </span>】 至 【
-                                    <span style="color:#FF0000">
-                                        110-04-19 17:00:00 </span>】 止。
-                                </span>
-                            </td>
-                            <td>12月18日</td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <span style="color:#000000"><b>本系統僅供報考『110學年度碩士班』考試，欲報考其他招生考試者<span style="color:red">(如在職進修專班碩士學位班等)</span>請勿使用，<span style="color:red">若已誤繳報名費，請勿填寫報名表並依簡章規定申請退費。</span></b>
-                                </span>
-                            </td>
-                            <td>12月18日</td>
-                        </tr>
-                        <tr>
-                            <td><span class="style3"><u>部分電子郵件信箱(如:Gmail、Hotmail..等)可能會將系統寄發之郵件攔截為垃圾郵件，繳費後如未收到序號密碼通知信，請先檢查是否在垃圾郵件匣。</u></span></td>
-                            <td>12月18日</td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <span style="color:#000000">成績下載開放日期：【
-                                    <span style="color:#FF0000">
-                                        110-03-26 17:00:00 </span>】 至 【
-                                    <span style="color:#FF0000">
-                                        110-09-13 23:59:59 </span>】 止。
-                                    <br>輔諮系、輔諮系婚家班面試成績查詢：【
-                                    <span style="color:#FF0000">
-                                        110-04-12 17:00:00 </span>】 至 【
-                                    <span style="color:#FF0000">
-                                        110-09-13 23:59:59 </span>】 止。
-                                </span>
-                            </td>
-                            <td>12月18日</td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <span style="color:#000000">正(備)取生申明就讀(遞補)意願開放日期：【
-                                    <span style="color:#FF0000">
-                                        110-03-26 17:00:00 </span>】 至 【
-                                    <span style="color:#FF0000">
-                                        110-04-19 17:00:00 </span>】 止(招生系所另有規定，從其規定，請詳見簡章)。
-                                    <br> 輔諮系、輔諮系婚家班正(備)取生申請就讀(遞補)意願開放日期：【
-                                    <span style="color:#FF0000">
-                                        110-04-12 17:00:00 </span>】 至 【
-                                    <span style="color:#FF0000">
-                                        110-04-19 17:00:00 </span>】 止。
-                                </span>
-                            </td>
-                            <td>12月18日</td>
-                        </tr>
+
                     </tbody>
                 </table>
             </div>

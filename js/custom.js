@@ -155,10 +155,9 @@ $(function () {
 });
 
 
-const username = getCookie('username');
-if (username !== null) {
+if (getCookie('username') !== null) {
     $(function () {
-        $("#username").text(username);
+        $("#username").text(getCookie('username'));
         $("#loginInfo").css('display', '');
     });
 }
