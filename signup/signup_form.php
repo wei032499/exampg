@@ -15,15 +15,6 @@
     <script src="./js/toastr.min.js"></script>
     <script src="./js/custom.js"></script>
     <script>
-        const username = getCookie('username');
-        if (username !== null) {
-            $(function() {
-                $("#username").text(username);
-                $("#loginInfo").css('display', '');
-            });
-        }
-    </script>
-    <script>
         $.holdReady(true);
         var deptObj;
         if (sessionStorage === undefined) {

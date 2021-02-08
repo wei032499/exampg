@@ -15,15 +15,6 @@
     <script src="./js/toastr.min.js"></script>
     <script src="./js/custom.js"></script>
     <script>
-        const username = getCookie('username');
-        if (username !== null) {
-            $(function() {
-                $("#username").text(username);
-                $("#loginInfo").css('display', '');
-            });
-        }
-    </script>
-    <script>
         if (sessionStorage === undefined) {
             alert("未支援Web Storage！\n請更換瀏覽器再試。");
             window.location.replace('./');
