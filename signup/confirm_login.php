@@ -13,6 +13,14 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
     <script src="./js/toastr.min.js"></script>
+    <script src="./js/custom.js"></script>
+    <script>
+        if (sessionStorage === undefined) {
+            alert("未支援Web Storage！\n請更換瀏覽器再試。");
+            window.location.replace('./');
+        } else
+            sessionStorage.clear();
+    </script>
 </head>
 
 <body>
@@ -26,7 +34,7 @@
                     <div style='width: 8px;height: 8px;display: block;background: #3a7eb8;'></div>
                 </div>
                 <h3 style="letter-spacing: 0.2rem;">
-                    :::資料確認 <span style="color:red">(使用者登入)</span>
+                    :::報名資料確認 <span style="color:red">(使用者登入)</span>
                 </h3>
             </div>
             <form class="border p-4 bg-white shadow rounded ">
@@ -47,7 +55,7 @@
                     ※往意：必須利用<span style="color:red">報名費繳款帳號(99216-31xxxxxx-x)</span>繳完報名費後才可填寫報名表※<br>
                 </p>
                 <div class="row justify-content-center mt-2">
-                    <button type="button" style="min-width:8.5rem" class="btn btn-warning btn-sm col-1 mx-1" onclick="window.location.assign('./forget.php');">忘記序號、密碼</button>
+                    <button type="button" style="min-width:8.5rem" class="btn btn-warning btn-sm col-1 mx-1" onclick="window.location.assign('./query_pwd.php');">忘記序號、密碼</button>
                     <button type="submit" style="min-width:4rem" class="btn btn-primary btn-sm col-1 mx-1">下一步</button>
                 </div>
 

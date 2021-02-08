@@ -1,5 +1,24 @@
 <?php
-$SCHOOL_ID = "3"; // what is this?
+
+require_once(dirname(__FILE__) . '/db.php');
+
+$sql = "SELECT NAME,VALUE FROM SCHEDULE WHERE SCHOOL_ID='3'";
+$stmt = oci_parse($conn, $sql);
+
+if (!oci_execute($stmt, OCI_DEFAULT))
+    throw new Exception(oci_error()['message']);
+
+
+$nrows = oci_fetch_all($stmt, $results); //$nrows -->總筆數
+oci_free_statement($stmt);
+
+for ($i = 0; $i < $nrows; $i++) {
+    $name = $results['NAME'][$i];
+    $value = $results['VALUE'][$i];
+    $$name = $value;
+}
+
+/*$SCHOOL_ID = "3"; // what is this?
 
 $ACT_YEAR_NO = (int)date("Y") - 1911;
 if ((int)date("m") < 8)
@@ -25,4 +44,4 @@ $UBI2_END_DATE = "109-04-20 17:00:00";
 $FSTAT_START_DATE = "111-04-21 13:00:00";
 $FSTAT_END_DATE = "111-09-14 23:59:59";
 
-$LOW_INCOME_END_DATE = "109年1月3日";
+$LOW_INCOME_END_DATE = "109年1月3日";*/

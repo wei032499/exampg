@@ -13,15 +13,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
     <script src="./js/custom.js"></script>
     <script>
-        const username = getCookie('username');
-        if (username !== null) {
-            $(function() {
-                $("#username").text(username);
-                $("#loginInfo").css('display', '');
-            });
-        }
-    </script>
-    <script>
         if (sessionStorage === undefined) {
             alert("未支援Web Storage！\n請更換瀏覽器再試。");
             window.location.replace('./');
@@ -64,10 +55,15 @@
                         <li>准考證由考生自行下載列印，請於開放列印日期：<span id="card_start_date"></span> 起至 <span id="card_end_date"></span> 止，至<b>網路報名系統 / 網路報名 / 准考證列印</b> 下載(不限次數)後，以A4白紙單面紙張自行列印，並妥為保存，本校不再另行寄發。</li>
                         <li>以同等學力報考者，須將同等學力證件影本於報名截止前寄送達本校招生委員會審查。未繳驗證件者，如獲錄取，於報到時學力證件審查不合格，須撤銷錄取資格，不得異議。</li>
                         <li>招生系所如須備審資料，其繳交方式：
-                            <ul style="margin:0px">
+                            <ul>
                                 <li>網路上傳：請依限完成上傳作業，欲於報名截止前再修正或重新上傳者，請至網路報名→修改報名資料進行上傳作業。</li>
                                 <li>郵寄或親自繳交：請填妥後依簡章規定將審查資料依限寄送至招生系所(詳招生簡章各系所「資料審查繳交方式」規定)。</li>
                             </ul>
+                        </li>
+                        <li>【請下載以下兩項表格】<br>
+                            <a href="exampg_report1.php" target=_blank>下載審查資料一覽表(PDF檔)</a><br>
+                            <a href="exampg_report2.php" target=_blank>下載信封封面(PDF檔)</a><br>
+                            (您亦可利用資料查詢功能裡的「<span class='font-weight-bold'>報名資料查詢、下載審查資料一覽表及信封封面</span>」下載表格)
                         </li>
                     </ol>
                 </div>

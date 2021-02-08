@@ -24,41 +24,30 @@
         }
     </script>
     <script>
+        $.holdReady(true);
+        var deptObj;
         if (sessionStorage === undefined) {
             alert("未支援Web Storage！\n請更換瀏覽器再試。");
             window.location.replace('./');
         } else if (!sessionStorage.hasOwnProperty('agree') || sessionStorage.getItem('agree') !== "true")
             window.location.replace('./signup.php?step=2');
-        else if (sessionStorage.hasOwnProperty('signup') && sessionStorage.getItem('signup') !== null)
-            $(function() {
-                fillByStorage('signup');
-            });
-    </script>
-    <script>
-        $.holdReady(true);
-        var deptObj = null;
-        $.ajax({
-                type: 'GET',
-                url: "./API/dept/list.php",
-                dataType: 'json'
-            }).done(function(response) {
-                deptObj = response['data'];
+        else {
+            $.when(getData("./API/dept/list.php")).done(function(_deptObj) {
                 $.holdReady(false);
-            })
-            .fail(function(jqXHR, exception) {
-                let response = jqXHR.responseJSON;
-                let msg = '';
-                if (response === undefined)
-                    msg = exception;
-                else if (response.hasOwnProperty('message')) {
-                    msg = response.message;
-                } else {
-                    msg = 'Uncaught Error.\n' + jqXHR.responseText;
-                }
-                alert(msg);
-            });
-    </script>
+                deptObj = _deptObj.data;
+                $(function() {
+                    // fill department list
+                    $("form [name='dept']").find('option').remove().end().append('<option selected hidden disabled></option>');
+                    for (let i = 0; i < deptObj.dept.length; i++)
+                        $("form [name='dept']").append("<option value='" + deptObj.dept[i].dept_id + "'>" + deptObj.dept[i].name + "</option>");
 
+                    let formData = getSessionItems('signup');
+                    fillForm(formData);
+                });
+            });
+
+        }
+    </script>
 </head>
 
 <body>
@@ -110,7 +99,7 @@
                 <fieldset class="form-group row">
                     <legend class="col-form-label col-sm-3 float-sm-left" style="min-width: 9rem;"><span style="color:red">身心障礙考生</span></legend>
                     <div class="col-xl row mx-0">
-                        <div class="col row" style="max-width: 10rem;">
+                        <div class="col " style="max-width: 10rem;">
                             <div class="form-check form-check-inline form-group">
                                 <input class="form-check-input" type="radio" id="disabled1" name="disabled" value="1" required>
                                 <label class="form-check-label" for="disabled1"><span style="color:red">是</span></label>
@@ -130,7 +119,7 @@
                                 <option value="5">學習障礙</option>
                                 <option value="6">其他障礙</option>
                             </select>
-                            <input class="form-control form-group" type="text" name="comments" style="display: none;">
+                            <input class="form-control form-group" type="text" name="comments" placeholder="請填入說明" style="display: none;">
                         </div>
                     </div>
 
@@ -149,11 +138,11 @@
                     <label for="inputName" class="col-sm-3">姓名</label>
                     <input type="text" class="form-control col-sm-5" id="inputName" name="name" required>
                 </div>
-                <div class="form-group row">
+                <!--<div class="form-group row">
                     <label for="inputIDNumber" class="col-sm-3">身分證字號</label>
                     <input type="text" class="form-control col-sm-5" id="inputIDNumber" aria-describedby="IDNumberHelp" pattern="[A-Z]\d{9}" name="id" required>
                     <small id="IDNumberHelp" class="form-text text-muted col-sm-4">*僑外生請填寫居留證號碼</small>
-                </div>
+                </div>-->
                 <fieldset class="form-group row">
                     <legend class="col-form-label col-sm-3 float-sm-left">性別</legend>
                     <div class="col-sm-5">
@@ -232,10 +221,10 @@
                         </div>
                     </div>
                 </div>
-                <div class="form-group row">
+                <!--<div class="form-group row">
                     <label for="inputEmail" class="col-sm-3">Email信箱</label>
                     <input type="email" class="form-control col-sm-5" id="inputEmail" name="email" placeholder="example@gmail.com" required>
-                </div>
+                </div>-->
                 <div class="form-group row">
                     <label class="col-sm-3">緊急連絡人</label>
                     <div class="row col-xl">
@@ -304,14 +293,14 @@
                             <div class="tab-pane fade" id="tab_prove2" role="tabpanel" aria-labelledby="prove2" style="width: 100%;">
                                 <div class="card p-4">
                                     <div class="row form-group">
-                                        <label for="inputAc_schol" class="col-sm-2" style="min-width: 7rem;">學校名稱：</label>
+                                        <label for="inputac_school" class="col-sm-2" style="min-width: 7rem;">學校名稱：</label>
                                         <div class="row col-sm align-items-center">
-                                            <input type="text" class="form-control col-sm" id="inputAc_schol" name="ac_schol" required>
+                                            <input type="text" class="form-control col-sm" id="inputac_school" name="ac_school" required>
                                         </div>
                                     </div>
                                     <div class="row form-group">
-                                        <label for="inputAc_schol_type" class="col-sm-2" style="min-width: 7rem;">類型：</label>
-                                        <select id="inputAc_schol_type" class="form-control col-sm" name="ac_schol_type" required>
+                                        <label for="inputac_school_type" class="col-sm-2" style="min-width: 7rem;">類型：</label>
+                                        <select id="inputac_school_type" class="form-control col-sm" name="ac_school_type" required>
                                             <option selected hidden disabled></option>
                                             <option value="1">大學</option>
                                             <option value="2">三專</option>
@@ -356,11 +345,6 @@
                         </div>
                     </div>
                 </fieldset>
-                <!--<div class="form-group row">
-                    <label for="inputData" class="col-sm-3">備審資料上傳</label>
-                    <input type="file" class="form-control-file col-sm-4" id="inputData" name="file">
-                    <div class="form-control-file col-sm-5"><a id="fileLink" target="_blank" style="color:red"></a></div>
-                </div>-->
                 <div class="form-group row">
                     <label class="col-sm-3">繳驗證件</label>
                     <div class="col-sm-9 color-info line-height-1">
@@ -369,6 +353,11 @@
                             <li>招生系所如須郵寄或上傳備審資料，請依招生簡章【重點項目一覽表】之「資料審查繳交方式」辦理。</li>
                         </ol>
                     </div>
+                </div>
+                <div class="form-group row" id="upload_row" style="display: none;">
+                    <label for="inputData" class="col-sm-3">備審資料上傳</label>
+                    <input type="file" class="form-control-file col-sm-4" id="inputData" name="file" disabled>
+                    <div class="form-control-file col-sm-5"><a id="fileLink" target="_blank" style="color:red"></a></div>
                 </div>
                 <hr />
                 <div class="line-height-1">
@@ -392,18 +381,28 @@
 
     <?php require_once("./module/footer.php") ?>
 
+
     <script>
-        $(function() {
-            $("form [name='dept']").find('option').remove().end().append('<option selected hidden disabled></option>');
-            for (let i = 0; i < deptObj.dept.length; i++)
-                $("form [name='dept']").append("<option value='" + deptObj.dept[i].dept_id + "'>" + deptObj.dept[i].name + "</option>");
-        });
+        //報考系所
         $("form [name='dept']").on('change', function() {
             $("form [name='organize_id']").find('option').remove().end().append('<option selected hidden disabled></option>');
             $("form [name='orastatus_id']").find('option').remove().end().append('<option selected hidden disabled></option>');
             for (let i = 0; i < deptObj.group[$("form [name='dept']").val()].length; i++)
                 $("form [name='organize_id']").append("<option value='" + deptObj.group[$("form [name='dept']").val()][i].group_id + "'>" + deptObj.group[$("form [name='dept']").val()][i].name + "</option>");
 
+            //upload_type 審查資料繳交方式:  1:郵寄  2:上傳  3:郵寄+上傳
+            for (let i = 0; i < deptObj.dept.length; i++) {
+                if (deptObj.dept[i].dept_id === $("form [name='dept']").val()) {
+                    if (deptObj.dept[i].upload_type > 1) {
+                        $("#upload_row").css('display', '');
+                        $("form [name='file']").removeAttr('disabled');
+                    } else {
+                        $("#upload_row").css('display', 'none');
+                        $("form [name='file']").attr('disabled', true);
+                    }
+                    break;
+                }
+            }
         });
         $("form [name='organize_id']").on('change', function() {
             $("form [name='orastatus_id']").find('option').remove().end().append('<option selected hidden disabled></option>');
@@ -412,139 +411,8 @@
 
         });
 
-        $("form [name='prove_type']").on('change', function() {
-            $("#proveTabContent .tab-pane").removeClass("active");
-            $("#proveTabContent .tab-pane").removeClass("show");
-            $("form [name='prove_type']").removeClass("active");
-            $("form [name='prove_type']").removeClass("active");
-            $(this).tab('show');
 
-            $("form #proveTabContent input").removeAttr('required')
-            $("form #proveTabContent input").attr('disabled', true);
-            $("form #proveTabContent select").removeAttr('required')
-            $("form #proveTabContent select").attr('disabled', true);
-
-            $("form #proveTabContent .active input").removeAttr('disabled')
-            $("form #proveTabContent .active input").attr('required', true);
-            $("form #proveTabContent .active select").removeAttr('disabled')
-            $("form #proveTabContent .active select").attr('required', true);
-        });
-        $(function() {
-            $("#proveTabContent .tab-pane").removeClass("active");
-            $("#proveTabContent .tab-pane").removeClass("show");
-            $("form [name='prove_type']").removeClass("active");
-            $("form [name='prove_type']").removeClass("active");
-            $("form [name='prove_type']:checked").change();
-        });
-        $(function() {
-            $('form #fileLink').text('');
-            $.ajax({
-                type: 'GET',
-                url: './API/signup/file.php',
-                dataType: 'text'
-            }).done(function(response) {
-                $('form #fileLink').css('color', '');
-                $('form #fileLink').addClass('color-info');
-                $('form #fileLink').text('檔案已上傳');
-                $('form #fileLink').attr('href', './API/signup/file.php?export=download'); //'./upload/' + sessionItems['filename']
-
-            }).fail(function(jqXHR, exception) {
-                if (jqXHR.status === 404) {
-                    $('form #fileLink').removeClass('color-info');
-                    $('form #fileLink').css('color', 'red');
-                    $('form #fileLink').text('備審資料檔案尚未上傳');
-                    $('form #fileLink').removeAttr('href');
-                } else {
-                    toastr.clear();
-                    let response = jqXHR.responseJSON;
-                    let msg = '';
-                    if (response === undefined)
-                        msg = exception;
-                    else if (response.hasOwnProperty('message')) {
-                        msg = response.message;
-                    } else {
-                        msg = 'Uncaught Error.\n' + jqXHR.responseText;
-                    }
-                    toastr.error(msg);
-                }
-
-
-            });
-            /*if (Object.keys(sessionItems).indexOf('filename') !== -1) {
-                $('form #fileLink').css('color', '');
-                $('form #fileLink').addClass('color-info');
-                $('form #fileLink').text('檔案已上傳');
-                $('form #fileLink').attr('href', './API/signup/file.php'); //'./upload/' + sessionItems['filename']
-            }*/
-        });
-
-        var isUploading = false;
-        $("form").on('submit', function(e) {
-            e.preventDefault();
-            if (!isUploading) {
-                sessionStorage.setItem("signup", $("form").serialize());
-                sessionStorage.setItem("dept", $("form [name='dept']>option[value=" + $("form [name='dept']").val() + "]").text());
-                sessionStorage.setItem("organize_id", $("form [name='organize_id']>option[value=" + $("form [name='organize_id']").val() + "]").text());
-                sessionStorage.setItem("orastatus_id", $("form [name='orastatus_id']>option[value=" + $("form [name='orastatus_id']").val() + "]").text());
-                window.location.replace('./signup.php?step=4');
-            }
-
-
-        });
-
-
-        $("form [name='file']").on('change', function() {
-
-            // $("form [name='filename']").val('');
-            $('form #fileLink').removeClass('color-info');
-            $('form #fileLink').css('color', 'red');
-            $('form #fileLink').text('備審資料檔案尚未上傳');
-            $('form #fileLink').removeAttr('href');
-
-            var fd = new FormData();
-            var files = $(this)[0].files;
-
-            // Check file selected or not
-            if (files.length > 0) {
-                isUploading = true;
-                toastr.clear();
-                toastr.info("檔案上傳中");
-                fd.append('file', files[0]);
-
-                $.ajax({
-                        url: './API/signup/form.php',
-                        type: 'POST',
-                        data: fd,
-                        contentType: false,
-                        processData: false
-                    }).done(function(response) {
-                        toastr.clear();
-                        toastr.success("檔案上傳成功成功！");
-                        // $("form [name='filename']").val(response.filename);
-                        $('form #fileLink').css('color', '');
-                        $('form #fileLink').addClass('color-info');
-                        $('form #fileLink').text('檔案已上傳');
-                        $('form #fileLink').attr('href', './API/signup/file.php'); //'./upload/' + response.filename
-                        isUploading = false;
-                    })
-                    .fail(function(jqXHR, exception) {
-                        // toastr.remove();
-                        toastr.clear();
-                        let response = jqXHR.responseJSON;
-                        let msg = '';
-                        if (response === undefined)
-                            msg = exception;
-                        else if (response.hasOwnProperty('message')) {
-                            msg = response.message;
-                        } else {
-                            msg = 'Uncaught Error.\n' + jqXHR.responseText;
-                        }
-                        toastr.error(msg);
-                        isUploading = false;
-                    });
-            }
-        });
-
+        //身心障礙
         $("form [name='disabled']").on('change', function() {
             if (this.value === '1') {
                 $("#disabled_extra").css('display', '');
@@ -569,6 +437,32 @@
             }
         });
 
+        //應考學歷
+        $("form [name='prove_type']").on('change', function() {
+            $("#proveTabContent .tab-pane").removeClass("active");
+            $("#proveTabContent .tab-pane").removeClass("show");
+            $("form [name='prove_type']").removeClass("active");
+            $("form [name='prove_type']").removeClass("active");
+            $(this).tab('show');
+
+            $("form #proveTabContent input").removeAttr('required')
+            $("form #proveTabContent input").attr('disabled', true);
+            $("form #proveTabContent select").removeAttr('required')
+            $("form #proveTabContent select").attr('disabled', true);
+
+            $("form #proveTabContent .active input").removeAttr('disabled')
+            $("form #proveTabContent .active input").attr('required', true);
+            $("form #proveTabContent .active select").removeAttr('disabled')
+            $("form #proveTabContent .active select").attr('required', true);
+        });
+
+        //"同上"按鈕
+        $("#address2_btn").on('click', function() {
+            $("form [name='zipcode2']").val($("form [name='zipcode']").val());
+            $("form [name='address2']").val($("form [name='address']").val());
+        });
+
+        //initail
         $(function() {
             if ($("form [name='disabled']:checked").val() === "1") {
                 $("#disabled_extra").css('display', '');
@@ -591,12 +485,122 @@
             }
         });
 
-        $("#address2_btn").on('click', function() {
-            $("form [name='zipcode2']").val($("form [name='zipcode']").val());
-            $("form [name='address2']").val($("form [name='address']").val());
+
+
+        //備審資料上傳狀態
+        $(function() {
+            $('form #fileLink').text('');
+            $.ajax({
+                type: 'GET',
+                url: './API/signup/file.php',
+                dataType: 'text'
+            }).done(function(response) {
+                $('form #fileLink').css('color', '');
+                $('form #fileLink').addClass('color-info');
+                $('form #fileLink').text('檔案已上傳');
+                $('form #fileLink').attr('href', './API/signup/file.php?export=download');
+
+            }).fail(function(jqXHR, exception) {
+                if (jqXHR.status === 404) {
+                    $('form #fileLink').removeClass('color-info');
+                    $('form #fileLink').css('color', 'red');
+                    $('form #fileLink').text('備審資料檔案尚未上傳');
+                    $('form #fileLink').removeAttr('href');
+                } else {
+                    toastr.clear();
+                    let response = jqXHR.responseJSON;
+                    let msg = '';
+                    if (response === undefined)
+                        msg = exception;
+                    else if (response.hasOwnProperty('message')) {
+                        msg = response.message;
+                    } else {
+                        msg = 'Uncaught Error.\n' + jqXHR.responseText;
+                    }
+                    toastr.error(msg);
+                }
+
+
+            });
+        });
+
+        //備審資料上傳
+        $("form [name='file']").on('change', function() {
+
+            $('form #fileLink').removeClass('color-info');
+            $('form #fileLink').css('color', 'red');
+            $('form #fileLink').text('備審資料檔案尚未上傳');
+            $('form #fileLink').removeAttr('href');
+
+            var fd = new FormData();
+            var files = $(this)[0].files;
+
+            // Check file selected or not
+            if (files.length > 0) {
+                $("form [name='file']").attr('disabled', true);
+                $("form [type='submit']").attr('disabled', true);
+                $(window).on('beforeunload', function() {
+                    return confirm('資料上傳中，您確定要離開此網頁嗎？');
+                });
+
+                toastr.clear();
+                toastr.info("檔案上傳中");
+                fd.append('file', files[0]);
+
+                $.ajax({
+                        url: './API/signup/file.php',
+                        type: 'POST',
+                        data: fd,
+                        contentType: false,
+                        processData: false
+                    }).done(function(response) {
+                        toastr.clear();
+                        toastr.success("檔案上傳成功成功！");
+                        $('form #fileLink').css('color', '');
+                        $('form #fileLink').addClass('color-info');
+                        $('form #fileLink').text('檔案已上傳');
+                        $('form #fileLink').attr('href', './API/signup/file.php');
+                        $(window).off('beforeunload');
+                        $("form [name='file']").removeAttr('disabled');
+                        $("form [type='submit']").removeAttr('disabled');
+
+                    })
+                    .fail(function(jqXHR, exception) {
+                        // toastr.remove();
+                        toastr.clear();
+                        let response = jqXHR.responseJSON;
+                        let msg = '';
+                        if (response === undefined)
+                            msg = exception;
+                        else if (response.hasOwnProperty('message')) {
+                            msg = response.message;
+                        } else {
+                            msg = 'Uncaught Error.\n' + jqXHR.responseText;
+                        }
+                        toastr.error(msg);
+                        $(window).off('beforeunload');
+                        $("form [name='file']").removeAttr('disabled');
+                        $("form [type='submit']").removeAttr('disabled');
+
+                    });
+            }
+        });
+
+
+        $("form").on('submit', function(e) {
+            e.preventDefault();
+
+
+            sessionStorage.setItem("signup", $("form").serialize());
+            sessionStorage.setItem("dept", $("form [name='dept']>option[value=" + $("form [name='dept']").val() + "]").text());
+            sessionStorage.setItem("organize_id", $("form [name='organize_id']>option[value=" + $("form [name='organize_id']").val() + "]").text());
+            sessionStorage.setItem("orastatus_id", $("form [name='orastatus_id']>option[value=" + $("form [name='orastatus_id']").val() + "]").text());
+            window.location.replace('./signup.php?step=4');
+
+
+
         });
     </script>
-
 
 
 </body>

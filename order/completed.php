@@ -19,7 +19,7 @@
         if (sessionStorage === undefined) {
             alert("未支援Web Storage！\n請更換瀏覽器再試。");
             window.location.replace('./');
-        } else if (!sessionStorage.hasOwnProperty('account_no') || sessionStorage.getItem('account_no') === null)
+        } else if (!sessionStorage.hasOwnProperty('account_no') || !sessionStorage.hasOwnProperty('pay_money') || !sessionStorage.hasOwnProperty('email') || !sessionStorage.hasOwnProperty('low_income_end_date') || !sessionStorage.hasOwnProperty('acc2_end_date'))
             window.location.replace('./order.php');
     </script>
 </head>

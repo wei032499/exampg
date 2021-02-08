@@ -4,7 +4,6 @@ header('Content-Type:application/json');
 $result = array();
 try {
     require_once('../common/db.php');
-    require_once('../common/variables.php');
     if (!isset($_COOKIE['token']))
         throw new Exception("Unauthorized", 401);
     $Token = new Token($conn, $_COOKIE['token']);
@@ -16,9 +15,7 @@ try {
 
     if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
-        $params = array();
-
-        $attachment_location = $location . $payload['sn'] . ".pdf";
+        $attachment_location = $location . $ACT_YEAR_NO . "-" . $payload['sn'] . ".pdf";
         if (file_exists($attachment_location)) {
             if (isset($_GET['export']) && $_GET['export'] === "download") {
                 header($_SERVER["SERVER_PROTOCOL"] . " 200 OK");
@@ -33,7 +30,7 @@ try {
             throw new Exception("Not Found", 404);
     } else if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-        if ($payload['status'] !== 0)
+        if ($payload['status'] !== 1 && $payload['status'] !== 2)
             throw new Exception("Forbidden", 403);
 
         if (isset($_FILES['file'])) {
@@ -54,14 +51,14 @@ try {
             /* Check file extension */
             if (in_array(strtolower($fileType), $valid_extensions)) {
                 /* Upload file */
-                if (!move_uploaded_file($_FILES['file']['tmp_name'], $location . $payload['sn'] . "." . $fileType))
+                if (!move_uploaded_file($_FILES['file']['tmp_name'], $location . $ACT_YEAR_NO . "-" . $payload['sn'] . "." . $fileType))
                     throw new Exception("檔案上傳錯誤");
                 $result['filename'] = $payload['sn'] . "." . $fileType;
             } else
                 throw new Exception("請上傳正確的檔案類型", 400);
 
 
-            $sql = "UPDATE SIGNUPDATA SET DOC_UPLOAD='1' WHERE SCHOOL_ID='" . $SCHOOL_ID . "' AND YEAR='" . $ACT_YEAR_NO . "' AND SIGNUP_SN=:sn";
+            $sql = "UPDATE SIGNUPDATA SET DOC_UPLOAD='1' WHERE SCHOOL_ID='$SCHOOL_ID' AND YEAR='$ACT_YEAR_NO' AND SIGNUP_SN=:sn";
             $stmt = oci_parse($conn, $sql);
             oci_bind_by_name($stmt, ':sn',  $payload['sn']);
             if (!oci_execute($stmt, OCI_DEFAULT)) {

@@ -1,5 +1,5 @@
 <?php
-require('../common/variables.php');
+require_once('../common/config.php');
 function genSN($conn)
 {
     do {
@@ -36,11 +36,11 @@ function genPassword()
 }
 function genOrder($graduated)
 {
-    $ORG_NO = "99216"; // what is this?
-
+    global $ORG_NO;
+    global  $SIGNUP_FEE_1, $SIGNUP_FEE_2, $SIGNUP_FEE_3, $SIGNUP_FEE_4, $SIGNUP_FEE_5, $SIGNUP_FEE_6, $SIGNUP_FEE_7, $SIGNUP_FEE_8, $SIGNUP_FEE_9;
     if ($graduated === 2) //曾報考當年度碩推者
     {
-        $SIGNUP_FEE = "0"; //免繳報名費
+        $SIGNUP_FEE = $SIGNUP_FEE_9; //免繳報名費
         $acc_file = "./acc/" .  "signup_acc_9.txt"; //帳號為99216-39xxxxxx-x
     } else if ($_POST['dept_id'] === "2") //1300
     {
@@ -48,19 +48,19 @@ function genOrder($graduated)
         {
             if ($graduated === 1) //校友
             {
-                $SIGNUP_FEE = "1040"; //一般考生(校友)1040
+                $SIGNUP_FEE = $SIGNUP_FEE_2; //一般考生(校友)1040
                 $acc_file = "./acc/" .  "signup_acc_2.txt"; //帳號為99216-32xxxxxx-x
 
             } else {
-                $SIGNUP_FEE = "1300"; //一般考生1300
+                $SIGNUP_FEE = $SIGNUP_FEE_1; //一般考生1300
                 $acc_file = "./acc/" .  "signup_acc_1.txt"; //帳號為99216-31xxxxxx-x
 
             }
         } else if ($_POST['identity'] === "2") {
-            $SIGNUP_FEE = "0"; //中低收入戶0
+            $SIGNUP_FEE = $SIGNUP_FEE_3; //中低收入戶0
             $acc_file = "./acc/" .  "signup_acc_3.txt"; //帳號為99216-33xxxxxx-x
         } else if ($_POST['identity'] === "3") {
-            $SIGNUP_FEE = "0"; //低收入戶0
+            $SIGNUP_FEE = $SIGNUP_FEE_4; //低收入戶0
             $acc_file = "./acc/" .  "signup_acc_4.txt"; //帳號為99216-34xxxxxx-x
         }
     } else if ($_POST['dept_id'] === "1") //1800
@@ -69,23 +69,23 @@ function genOrder($graduated)
         {
             if ($graduated === 1) //校友
             {
-                $SIGNUP_FEE = "1440"; //一般考生(校友)1440
+                $SIGNUP_FEE = $SIGNUP_FEE_6; //一般考生(校友)1440
                 $acc_file = "./acc/" .  "signup_acc_6.txt"; //帳號為99216-36xxxxxx-x
             } else {
-                $SIGNUP_FEE = "1800"; //一般考生1800
+                $SIGNUP_FEE = $SIGNUP_FEE_5; //一般考生1800
                 $acc_file = "./acc/" .  "signup_acc_5.txt"; //帳號為99216-35xxxxxx-x
 
             }
         } else if ($_POST['identity'] === "2") {
-            $SIGNUP_FEE = "0"; //中低收入戶0
+            $SIGNUP_FEE = $SIGNUP_FEE_7; //中低收入戶0
             $acc_file = "./acc/" .  "signup_acc_7.txt"; //帳號為99216-37xxxxxx-x
         } else if ($_POST['identity'] === "3") {
-            $SIGNUP_FEE = "0"; //低收入戶0
+            $SIGNUP_FEE = $SIGNUP_FEE_8; //低收入戶0
             $acc_file = "./acc/" .  "signup_acc_8.txt"; //帳號為99216-38xxxxxx-x
         }
     } else {
         $dept_id = $_POST['dept_id'];
-        mail('bob@cc.ncue.edu.tw', 'dept_id(碩士班)', $dept_id);
+        mail('wei032499@gmail.com', 'dept_id(碩士班)', $dept_id);
         throw new Exception("報考系所資料錯誤，請重新填寫！", 400);
     }
 
@@ -128,11 +128,9 @@ function checkGraduated($conn, $id, $ACT_YEAR_NO)
     $graduated = 0;
     if (strlen($id) === 10) {
         //曾報考當年度碩推者(29x為博推),免繳報名費
-        $sql = "SELECT count(*) from signupdata WHERE  id=:id and SCHOOL_ID='2' and year=:ACT_YEAR_NO and substr(dept_id,1,2)<>'29'";
+        $sql = "SELECT count(*) from signupdata WHERE  id=:id and SCHOOL_ID='2' and year='$ACT_YEAR_NO' and substr(dept_id,1,2)<>'29'";
         $stmt = oci_parse($conn, $sql);
-        $params = array(':id' => $id, ':ACT_YEAR_NO' => $ACT_YEAR_NO);
-        foreach ($params as $key => $val)
-            oci_bind_by_name($stmt, $key, $params[$key]);
+        oci_bind_by_name($stmt, ':id', $id);
         oci_execute($stmt, OCI_DEFAULT);
         oci_fetch($stmt);
         $nrows = oci_result($stmt, 1); //$nrows -->總筆數

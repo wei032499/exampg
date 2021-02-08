@@ -34,18 +34,16 @@
                     <div style='width: 8px;height: 8px;display: block;background: #3a7eb8;'></div>
                 </div>
                 <h3 style="letter-spacing: 0.2rem;">
-                    :::查詢序號密碼
+                    :::銷帳查詢
                 </h3>
             </div>
             <form class="border p-4 bg-white shadow rounded ">
                 <div class="form-group row justify-content-center">
-                    <label for="inputEmail" class="col-sm-1" style="min-width:6rem">電子信箱</label>
-                    <input type="email" class="form-control col-sm-4" id="inputEmail" name="email" required>
+                    <label for="inputEmail" class="col-sm-1" style="min-width:6rem">繳費帳號</label>
+                    <input type="text" class="form-control col-sm-4" id="inputEmail" name="account_no" placeholder="99216-3xxxxxxx-x" pattern="99216-3\d{7}-\d" required>
                 </div>
-
                 <p style="text-align: center;">
-                    <span class="color-info">請輸入您申請繳費帳號時所登錄的電子郵件信箱!</span><br>
-                    <span style="color:red">(需繳完報名費並銷帳後才可查詢序號密碼！)</span><br>
+                    <span class="color-info">繳費帳號：99216-3xxxxxxx-x</span><br>
                 </p>
                 <div class="row justify-content-center mt-2">
                     <button type="submit" style="min-width:4rem" class="btn btn-primary btn-sm col-1 mx-1">送出</button>
@@ -61,21 +59,21 @@
     <script>
         $("form").on('submit', function(e) {
             e.preventDefault();
-
+            $("form [type='submit']").attr('disabled', true);
             $.ajax({
                     type: 'POST',
-                    url: '',
+                    url: './API/order/status.php',
                     data: $("form").serialize(),
                     dataType: 'json'
 
                 }).done(function(response) {
                     toastr.clear();
-                    toastr.success("登入成功！");
-                    window.location.replace('./signup.php?step=2')
+                    alert(response.message);
+                    $("form [type='submit']").removeAttr('disabled');
 
                 })
                 .fail(function(jqXHR, exception) {
-                    // toastr.remove();
+                    $("form [type='submit']").removeAttr('disabled');
                     toastr.clear();
                     let response = jqXHR.responseJSON;
                     let msg = '';

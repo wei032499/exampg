@@ -1,8 +1,7 @@
-var sessionItems = {};
 
-function fillByStorage(item) {
-    sessionItems = {};
-    let storage = sessionStorage.getItem(item);
+function getSessionItems(itemName) {
+    let sessionItems = {};
+    let storage = sessionStorage.getItem(itemName);
     if (storage !== null) {
         let elements = storage.split('&');
         for (let i = 0; i < elements.length; i++) {
@@ -11,72 +10,19 @@ function fillByStorage(item) {
             strParts[1] = decodeURIComponent(strParts[1]);
             sessionItems[strParts[0]] = strParts[1];
         }
-
-        $(function () {
-            let keys = Object.keys(sessionItems);
-            for (let i = 0; i < keys.length; i++) {
-                if ($("form [name='" + keys[i] + "']").attr('type') === "radio") {
-                    $("form [name='" + keys[i] + "'][value='" + sessionItems[keys[i]] + "']").removeAttr("disabled");
-                    $("form [name='" + keys[i] + "'][value='" + sessionItems[keys[i]] + "']")[0].checked = true;
-
-                    $("form [name='" + keys[i] + "']:checked").change();
-                } else if ($("form [name='" + keys[i] + "']").attr('type') === "select") {
-                    $("form [name='" + keys[i] + "']>option[value='" + sessionItems[keys[i]] + "']").removeAttr("disabled");
-                    $("form [name='" + keys[i] + "']").val(sessionItems[keys[i]]).change();
-                } else
-                    $("form [name='" + keys[i] + "']").val(sessionItems[keys[i]]).change();
-            }
-
-        });
     }
-
-
+    return sessionItems;
 }
-
-function fillByData(url) {
-    $.ajax({
+function getData(url, cache) {
+    if (cache === undefined)
+        cache = true;
+    return $.ajax({
         type: 'GET',
         url: url,
+        cache: cache,
         dataType: 'json'
     }).done(function (response) {
-        $(function () {
-            console.log(response);
-            if (response.hasOwnProperty('data')) {
-                /*if (Array.isArray(response.data)) {
-                    for (let i = 0; i < response.data.length; i++) {
-                        let keys = Object.keys(response.data[i]);
-                        for (let i = 0; i < keys.length; i++) {
-                            if ($("form [name='" + keys[i] + "']").attr('type') === "radio") {
-                                $("form [name='" + keys[i] + "'][value='" + response.data[i][keys[i]] + "']").removeAttr("disabled");
-                                $("form [name='" + keys[i] + "'][value='" + response.data[i][keys[i]] + "']")[0].checked = true;
-
-                                $("form [name='" + keys[i] + "']:checked").change();
-                            } else if ($("form [name='" + keys[i] + "']").attr('type') === "select") {
-                                $("form [name='" + keys[i] + "']>option[value='" + response.data[i][keys[i]] + "']").removeAttr("disabled");
-                                $("form [name='" + keys[i] + "']").val(response.data[i][keys[i]]).change();
-                            } else
-                                $("form [name='" + keys[i] + "']").val(response.data[i][keys[i]]).change();
-                        }
-
-                    }
-                } else {*/
-                let keys = Object.keys(response.data);
-                for (let i = 0; i < keys.length; i++) {
-                    if ($("form [name='" + keys[i] + "']").attr('type') === "radio") {
-                        $("form [name='" + keys[i] + "'][value='" + response.data[keys[i]] + "']").removeAttr("disabled");
-                        $("form [name='" + keys[i] + "'][value='" + response.data[keys[i]] + "']")[0].checked = true;
-                        $("form [name='" + keys[i] + "']:checked").change();
-                    } else if ($("form [name='" + keys[i] + "']").attr('type') === "select") {
-                        $("form [name='" + keys[i] + "']>option[value='" + response.data[keys[i]] + "']").removeAttr("disabled");
-                        $("form [name='" + keys[i] + "']").val(response.data[keys[i]]).change();
-                    } else
-                        $("form [name='" + keys[i] + "']").val(response.data[keys[i]]).change();
-                }
-                //}
-            }
-
-        });
-
+        return response.data;
     })
         .fail(function (jqXHR, exception) {
             let response = jqXHR.responseJSON;
@@ -92,6 +38,22 @@ function fillByData(url) {
 
         });
 }
+function fillForm(items) {
+    let keys = Object.keys(items);
+    for (let i = 0; i < keys.length; i++) {
+        if ($("form [name='" + keys[i] + "']").attr('type') === "radio") {
+            $("form [name='" + keys[i] + "'][value='" + items[keys[i]] + "']").removeAttr("disabled");
+            $("form [name='" + keys[i] + "'][value='" + items[keys[i]] + "']")[0].checked = true;
+            $("form [name='" + keys[i] + "']:checked").change();
+        } else if ($("form [name='" + keys[i] + "']").attr('type') === "select") {
+            $("form [name='" + keys[i] + "']>option[value='" + items[keys[i]] + "']").removeAttr("disabled");
+            $("form [name='" + keys[i] + "']").val(items[keys[i]]).change();
+        } else
+            $("form [name='" + keys[i] + "']").val(items[keys[i]]).change();
+    }
+}
+
+
 
 function logout(redirect) {
     if (redirect === undefined)
@@ -103,7 +65,7 @@ function logout(redirect) {
     }).done(function (response) {
         sessionStorage.clear();
         if (redirect)
-            window.location.replace('./')
+            window.location.replace('./');
     })
         .fail(function (jqXHR, exception) {
             let response = jqXHR.responseJSON;
@@ -159,7 +121,7 @@ $(function () {
 
 if (getCookie('username') !== null) {
     $(function () {
-        $("#username").text(getCookie('username'));
+        $("#username").text(decodeURIComponent(getCookie('username')));
         $("#loginInfo").css('display', '');
     });
 }

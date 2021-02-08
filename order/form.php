@@ -18,8 +18,7 @@
         if (sessionStorage === undefined) {
             alert("未支援Web Storage！\n請更換瀏覽器再試。");
             window.location.replace('./');
-        } else
-            fillByStorage('order');
+        }
     </script>
 </head>
 
@@ -108,6 +107,11 @@
     <?php require_once("./module/footer.php") ?>
 
     <script>
+        $(function() {
+            let formData = getSessionItems('order');
+            fillForm(formData);
+        });
+
         $("form").on('submit', function(e) {
             e.preventDefault();
 

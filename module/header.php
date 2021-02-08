@@ -39,11 +39,11 @@
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <li><a class="dropdown-item" href="./order.php">取得繳費帳號</a></li>
-                        <!--target="_blank"-->
                         <li><a class="dropdown-item" href="./signup.php">填寫報名表</a></li>
                         <li><a class="dropdown-item" href="./alter.php">修改報名資料</a></li>
-                        <li><a class="dropdown-item" href="./complete.php">資料確認</a></li>
-                        <li><a class="dropdown-item" href="#">准考證列印</a></li>
+                        <li><a class="dropdown-item" href="./confirm.php">資料確認</a></li>
+                        <li><a class="dropdown-item" href="./letter.php">*推薦函作業</a></li>
+                        <li><a class="dropdown-item" href="#">*准考證列印</a></li>
                     </ul>
                 </li>
                 <li class="nav-item dropdown">
@@ -51,11 +51,10 @@
                         資料查詢
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="#">報名費銷帳查詢</a></li>
-                        <li><a class="dropdown-item" href="./score.php">成績查詢</a></li>
-                        <li><a class="dropdown-item" href="https://acadaff.ncue.edu.tw/files/11-1021-2399-1.php?Lang=zh-tw">各系(所)報名人數</a></li>
-                        <li><a class="dropdown-item" href="./forget.php">查詢序號密碼</a></li>
-                        <li><a class="dropdown-item" href="#">報名資料查詢、下載審查資料一覽表及信封封面</a></li>
+                        <li><a class="dropdown-item" href="./query_acc.php">報名費銷帳查詢</a></li>
+                        <li><a class="dropdown-item" href="./score.php">*成績查詢</a></li>
+                        <li><a class="dropdown-item" href="./query_pwd.php">查詢序號密碼</a></li>
+                        <li><a class="dropdown-item" href="#">*報名資料查詢、下載審查資料一覽表及信封封面</a></li>
                     </ul>
                 </li>
                 <li class="nav-item dropdown">
@@ -63,8 +62,8 @@
                         報到相關
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="./list.php">正備取生報到狀況</a></li>
-                        <li><a class="dropdown-item" href="./queue.php">正(備)取生申明就讀(遞補)意願</a></li>
+                        <li><a class="dropdown-item" href="./list.php">*正備取生報到狀況</a></li>
+                        <li><a class="dropdown-item" href="./queue.php">*正(備)取生申明就讀(遞補)意願</a></li>
                     </ul>
                 </li>
                 <li class="nav-item dropdown">
@@ -89,8 +88,10 @@
             $("#navbarSupportedContent>ul>li").eq(0).addClass("active");
         } else if (filename === "intro_registration.php" || filename === "intro_payment.php") {
             $("#navbarSupportedContent>ul>li").eq(1).addClass("active");
-        } else if (filename === "order.php" || filename === "signup.php" || filename === "alter.php" || filename === "complete.php") {
+        } else if (filename === "order.php" || filename === "signup.php" || filename === "alter.php" || filename === "confirm.php") {
             $("#navbarSupportedContent>ul>li").eq(3).addClass("active");
+        } else if (filename.indexOf("query_") !== -1) {
+            $("#navbarSupportedContent>ul>li").eq(4).addClass("active");
         } else if (filename === "intro_sw.php") {
             $("#navbarSupportedContent>ul>li").eq(6).addClass("active");
         }

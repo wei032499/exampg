@@ -6,20 +6,17 @@ $result = array();
 try {
     require_once('../common/db.php');
     require_once('./functions.php');
-    require('../common/variables.php');
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $ip = $_SERVER["REMOTE_ADDR"];
-        $sql = "SELECT count(*)  from sn_db where  SCHOOL_ID=:SCHOOL_ID and year=:ACT_YEAR_NO and from_ip=:ip";
+        $sql = "SELECT count(*)  from sn_db where  SCHOOL_ID='$SCHOOL_ID' and year='$ACT_YEAR_NO' and from_ip=:ip";
         $stmt = oci_parse($conn, $sql);
-        $params = array(':SCHOOL_ID' => $SCHOOL_ID, ':ACT_YEAR_NO' => $ACT_YEAR_NO, ':ip' => $ip);
-        foreach ($params as $key => $val)
-            oci_bind_by_name($stmt, $key, $params[$key]);
+        oci_bind_by_name($stmt, ":ip", $ip);
         oci_execute($stmt, OCI_DEFAULT);
         oci_fetch($stmt);
         $ip_cnt = oci_result($stmt, 1);
         if ($ip_cnt > 30) {
-            mail('bob@cc.ncue.edu.tw', '招生報名費帳號申請次數異常通知(碩士班推薦甄試)', $ip . '申請次數超過上限');
+            mail('wei032499@gmail.com', '招生報名費帳號申請次數異常通知(碩士班推薦甄試)', $ip . '申請次數超過上限');
             throw new Exception("申請次數超過上限！如有問題請與本校招生事務人員聯絡", 429);
         }
         $id = strtoupper($_POST['id']);
@@ -45,21 +42,21 @@ try {
 
         if ($graduated === 2) //曾報考當年度碩推者,直接銷帳
         {
-            $signup_enable = 1;
-            $checked = 1;
+            $signup_enable = 1; //已入帳
+            $checked = 1; //資料已確認，無法再修改
         } else {
             $signup_enable = 0;
             $checked = 0;
         }
-        $sql = "INSERT INTO SN_DB VALUES (:sn,:signup_enable,'0',:pwd,:email,null,:account_no,:checked,'',to_date(:time,'yyyy-mm-dd HH24:MI:SS'),:name,:gender,:id,:tel,:dept_id,:ip,:SCHOOL_ID,:ACT_YEAR_NO)";
+        $sql = "INSERT INTO SN_DB VALUES (:sn,:signup_enable,'0',:pwd,:email,null,:account_no,:checked,'',to_date(:time,'yyyy-mm-dd HH24:MI:SS'),:name,:gender,:id,:tel,:dept_id,:ip,'$SCHOOL_ID',''$ACT_YEAR_NO)";
         $stmt = oci_parse($conn, $sql);
-        $params = array(':sn' => $sn, ':signup_enable' => $signup_enable, ':pwd' => $pwd, ':email' => $_POST['email'], ':account_no' => $account_no, ':checked' => $checked, ':time' => $time, ':name' => $_POST['name'], ':gender' => $_POST['gender'], ':id' => $id, ':tel' => $_POST['tel'], ':dept_id' => $_POST['dept_id'], ':ip' => $ip, ':SCHOOL_ID' => $SCHOOL_ID, ':ACT_YEAR_NO' => $ACT_YEAR_NO);
+        $params = array(':sn' => $sn, ':signup_enable' => $signup_enable, ':pwd' => $pwd, ':email' => $_POST['email'], ':account_no' => $account_no, ':checked' => $checked, ':time' => $time, ':name' => $_POST['name'], ':gender' => $_POST['gender'], ':id' => $id, ':tel' => $_POST['tel'], ':dept_id' => $_POST['dept_id'], ':ip' => $ip);
         foreach ($params as $key => $val)
             oci_bind_by_name($stmt, $key, $params[$key]);
 
         if (!oci_execute($stmt, OCI_DEFAULT)) {
             $oci_err = oci_error();
-            mail('bob@cc.ncue.edu.tw', "碩士班招生寫入資料庫(sn_db)錯誤-- " . $oci_err['message'], $sql);
+            mail('wei032499@gmail.com', "碩士班招生寫入資料庫(sn_db)錯誤-- " . $oci_err['message'], $sql);
             throw new Exception("寫入資料庫錯誤！請檢查資料是否輸入正確", 500);
         }
 
@@ -82,7 +79,7 @@ try {
 
             $subject = "國立彰化師範大學 網路報名系統::報名專用序號密碼通知";
             $subject = "=?UTF-8?B?" . base64_encode($subject) . "?="; //轉換編碼
-            $finc = fopen("./inc/case_6.inc", "r");
+            $finc = fopen("../common/inc/case_6.inc", "r");
             $mail_msg = "";
 
             while (!feof($finc)) {

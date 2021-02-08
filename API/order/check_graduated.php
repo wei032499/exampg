@@ -4,7 +4,6 @@ $result = array();
 try {
 	require_once('../common/db.php');
 	require_once('./functions.php');
-	require('../common/variables.php');
 	if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		$id = strtoupper($_POST['id']);
 		$result['graduated'] = checkGraduated($conn, $id, $ACT_YEAR_NO);

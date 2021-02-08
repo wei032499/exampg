@@ -47,7 +47,7 @@
                     ※往意：必須利用<span style="color:red">報名費繳款帳號(99216-31xxxxxx-x)</span>繳完報名費後才可填寫報名表※<br>
                 </p>
                 <div class="row justify-content-center mt-2">
-                    <button type="button" style="min-width:8.5rem" class="btn btn-warning btn-sm col-1 mx-1" onclick="window.location.assign('./forget.php');">忘記序號、密碼</button>
+                    <button type="button" style="min-width:8.5rem" class="btn btn-warning btn-sm col-1 mx-1" onclick="window.location.assign('./query_pwd.php');">忘記序號、密碼</button>
                     <button type="submit" style="min-width:4rem" class="btn btn-primary btn-sm col-1 mx-1">下一步</button>
                 </div>
 

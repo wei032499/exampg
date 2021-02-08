@@ -15,15 +15,8 @@
     <script src="./js/toastr.min.js"></script>
     <script src="./js/custom.js"></script>
     <script>
-        const username = getCookie('username');
-        if (username !== null) {
-            $(function() {
-                $("#username").text(username);
-                $("#loginInfo").css('display', '');
-            });
-        }
-    </script>
-    <script>
+        $.holdReady(true);
+        var deptObj;
         if (sessionStorage === undefined) {
             alert("未支援Web Storage！\n請更換瀏覽器再試。");
             window.location.replace('./');
@@ -31,9 +24,27 @@
             window.location.replace('./signup.php?step=2');
         else if (!sessionStorage.hasOwnProperty('signup') || sessionStorage.getItem('signup') === null)
             window.location.replace('./signup.php?step=3');
-        else
-            fillByStorage('signup');
+        else {
+            $.when(getData("./API/dept/list.php")).done(function(_deptObj) {
+                $.holdReady(false);
+                deptObj = _deptObj.data;
+                $(function() {
+                    // fill department list
+                    $("form [name='dept']").find('option').remove().end().append('<option selected hidden disabled></option>');
+                    for (let i = 0; i < deptObj.dept.length; i++)
+                        $("form [name='dept']").append("<option value='" + deptObj.dept[i].dept_id + "'>" + deptObj.dept[i].name + "</option>");
+
+                    let formData = getSessionItems('signup');
+                    fillForm(formData);
+
+                    $("form select option").not(":selected").remove().end();
+
+                });
+            });
+
+        }
     </script>
+
 </head>
 
 <body>
@@ -85,7 +96,7 @@
                 <fieldset class="form-group row">
                     <legend class="col-form-label col-sm-3 float-sm-left" style="min-width: 9rem;"><span style="color:red">身心障礙考生</span></legend>
                     <div class="col-xl row mx-0">
-                        <div class="col row" style="max-width: 10rem;">
+                        <div class="col " style="max-width: 10rem;">
                             <div class="form-check form-check-inline form-group">
                                 <input class="form-check-input" type="radio" id="disabled1" name="disabled" value="1" disabled readonly required>
                                 <label class="form-check-label" for="disabled1"><span style="color:red">是</span></label>
@@ -105,7 +116,7 @@
                                 <option value="5">學習障礙</option>
                                 <option value="6">其他障礙</option>
                             </select>
-                            <input class="form-control-plaintext form-group" type="text" name="comments" style="display: none;" readonly>
+                            <input class="form-control-plaintext form-group" type="text" name="comments" placeholder="請填入說明" style="display: none;" readonly>
                         </div>
                     </div>
                 </fieldset>
@@ -123,11 +134,11 @@
                     <label for="inputName" class="col-sm-3">姓名</label>
                     <input type="text" class="form-control-plaintext col-sm-5" id="inputName" name="name" readonly required>
                 </div>
-                <div class="form-group row">
+                <!--<div class="form-group row">
                     <label for="inputIDNumber" class="col-sm-3">身分證字號</label>
                     <input type="text" class="form-control-plaintext col-sm-5" id="inputIDNumber" aria-describedby="IDNumberHelp" pattern="[A-Z]\d{9}" name="id" readonly required>
                     <small id="IDNumberHelp" class="form-text text-muted col-sm-4">*僑外生請填寫居留證號碼</small>
-                </div>
+                </div>-->
                 <fieldset class="form-group row">
                     <legend class="col-form-label col-sm-3 float-sm-left">性別</legend>
                     <div class="col-sm-5">
@@ -203,10 +214,10 @@
                         </div>
                     </div>
                 </div>
-                <div class="form-group row">
+                <!--<div class="form-group row">
                     <label for="inputEmail" class="col-sm-3">Email信箱</label>
                     <input type="email" class="form-control-plaintext col-sm-5" id="inputEmail" name="email" placeholder="example@gmail.com" readonly required>
-                </div>
+                </div>-->
                 <div class="form-group row">
                     <label class="col-sm-3">緊急連絡人</label>
                     <div class="row col-xl">
@@ -275,14 +286,14 @@
                             <div class="tab-pane fade" id="tab_prove2" role="tabpanel" aria-labelledby="prove2" style="width: 100%;">
                                 <div class="card p-4">
                                     <div class="row form-group">
-                                        <label for="inputAc_schol" class="col-sm-2" style="min-width: 7rem;">學校名稱：</label>
+                                        <label for="inputac_school" class="col-sm-2" style="min-width: 7rem;">學校名稱：</label>
                                         <div class="row col-sm align-items-center">
-                                            <input type="text" class="form-control-plaintext col-sm" id="inputAc_schol" name="ac_schol" readonly required>
+                                            <input type="text" class="form-control-plaintext col-sm" id="inputac_school" name="ac_school" readonly required>
                                         </div>
                                     </div>
                                     <div class="row form-group">
-                                        <label for="inputAc_schol_type" class="col-sm-2" style="min-width: 7rem;">類型：</label>
-                                        <select id="inputAc_schol_type" class="form-control-plaintext col-sm" name="ac_schol_type" readonly>
+                                        <label for="inputac_school_type" class="col-sm-2" style="min-width: 7rem;">類型：</label>
+                                        <select id="inputac_school_type" class="form-control-plaintext col-sm" name="ac_school_type" readonly>
                                             <option selected hidden disabled></option>
                                             <option value="1">大學</option>
                                             <option value="2">三專</option>
@@ -328,10 +339,6 @@
                     </div>
 
                 </fieldset>
-                <!--<div class="form-group row">
-                    <label for="inputData" class="col-sm-3">備審資料上傳</label>
-                    <div class="form-control-file col-sm-4"><a id="fileLink" target="_blank" style="color:red"></a></div>
-                </div>-->
                 <div class="form-group row">
                     <label class="col-sm-3">繳驗證件</label>
                     <div class="col-sm-9 color-info line-height-1">
@@ -340,6 +347,10 @@
                             <li>招生系所如須郵寄或上傳備審資料，請依招生簡章【重點項目一覽表】之「資料審查繳交方式」辦理。</li>
                         </ol>
                     </div>
+                </div>
+                <div class="form-group row" id="upload_row" style="display: none;">
+                    <label for="inputData" class="col-sm-3">備審資料上傳</label>
+                    <div class="form-control-file col-sm-4"><a id="fileLink" target="_blank" style="color:red"></a></div>
                 </div>
                 <hr />
                 <div class="line-height-1">
@@ -359,6 +370,61 @@
     <?php require_once("./module/footer.php") ?>
 
     <script>
+        //報考系所
+        $("form [name='dept']").on('change', function() {
+            $("form [name='organize_id']").find('option').remove().end().append('<option selected hidden disabled></option>');
+            $("form [name='orastatus_id']").find('option').remove().end().append('<option selected hidden disabled></option>');
+            for (let i = 0; i < deptObj.group[$("form [name='dept']").val()].length; i++)
+                $("form [name='organize_id']").append("<option value='" + deptObj.group[$("form [name='dept']").val()][i].group_id + "'>" + deptObj.group[$("form [name='dept']").val()][i].name + "</option>");
+
+            //upload_type 審查資料繳交方式:  1:郵寄  2:上傳  3:郵寄+上傳
+            for (let i = 0; i < deptObj.dept.length; i++) {
+                if (deptObj.dept[i].dept_id === $("form [name='dept']").val()) {
+                    if (deptObj.dept[i].upload_type > 1) {
+                        $("#upload_row").css('display', '');
+                        $("form [name='file']").removeAttr('disabled');
+                    } else {
+                        $("#upload_row").css('display', 'none');
+                        $("form [name='file']").attr('disabled', true);
+                    }
+                    break;
+                }
+            }
+        });
+        $("form [name='organize_id']").on('change', function() {
+            $("form [name='orastatus_id']").find('option').remove().end().append('<option selected hidden disabled></option>');
+            for (let i = 0; i < deptObj.status[$("form [name='dept']").val()][$("form [name='organize_id']").val()].length; i++)
+                $("form [name='orastatus_id']").append("<option value='" + deptObj.status[$("form [name='dept']").val()][$("form [name='organize_id']").val()][i].status_id + "'>" + deptObj.status[$("form [name='dept']").val()][$("form [name='organize_id']").val()][i].name + "</option>");
+
+        });
+
+
+        //身心障礙
+        $("form [name='disabled']").on('change', function() {
+            if (this.value === '1') {
+                $("#disabled_extra").css('display', '');
+                $("form [name='disabled_type']").attr('required', true);
+                $("form [name='disabled_type']").removeAttr('disabled');
+            } else {
+                $("#disabled_extra").css('display', 'none');
+                $("form [name='disabled_type']").removeAttr('required');
+                $("form [name='disabled_type']").attr('disabled', true);
+            }
+        });
+
+        $("form [name='disabled_type']").on('change', function() {
+            if (this.value === '6') {
+                $("form [name='comments']").css('display', '');
+                $("form [name='comments']").attr('required', true);
+                $("form [name='comments']").removeAttr('disabled');
+            } else {
+                $("form [name='comments']").css('display', 'none');
+                $("form [name='comments']").removeAttr('required');
+                $("form [name='comments']").attr('disabled', true);
+            }
+        });
+
+        //應考學歷
         $("form [name='prove_type']").on('change', function() {
             $("#proveTabContent .tab-pane").removeClass("active");
             $("#proveTabContent .tab-pane").removeClass("show");
@@ -376,26 +442,39 @@
             $("form #proveTabContent .active select").removeAttr('disabled')
             $("form #proveTabContent .active select").attr('required', true);
         });
+
+        //"同上"按鈕
+        $("#address2_btn").on('click', function() {
+            $("form [name='zipcode2']").val($("form [name='zipcode']").val());
+            $("form [name='address2']").val($("form [name='address']").val());
+        });
+
+        //initail
         $(function() {
-            $("#proveTabContent .tab-pane").removeClass("active");
-            $("#proveTabContent .tab-pane").removeClass("show");
-            $("form [name='prove_type']").removeClass("active");
-            $("form [name='prove_type']").removeClass("active");
-            $("form [name='prove_type']:checked").change();
+            if ($("form [name='disabled']:checked").val() === "1") {
+                $("#disabled_extra").css('display', '');
+                $("form [name='disabled_type']").attr('required', true);
+                $("form [name='disabled_type']").removeAttr('disabled');
+            } else {
+                $("#disabled_extra").css('display', 'none');
+                $("form [name='disabled_type']").removeAttr('required');
+                $("form [name='disabled_type']").attr('disabled', true);
+            }
+
+            if ($("form [name='disabled_type']").val() === "6") {
+                $("form [name='comments']").css('display', '');
+                $("form [name='comments']").attr('required', true);
+                $("form [name='comments']").removeAttr('disabled');
+            } else {
+                $("form [name='comments']").css('display', 'none');
+                $("form [name='comments']").removeAttr('required');
+                $("form [name='comments']").attr('disabled', true);
+            }
         });
 
 
-        $(function() {
 
-            $("form [name='dept']").append('<option value="' + sessionItems.dept + '" selected>' + sessionStorage.getItem('dept') + '</option>');
-            $("form [name='organize_id']").append('<option value="' + sessionItems.organize_id + '" selected>' + sessionStorage.getItem('organize_id') + '</option>');
-            $("form [name='orastatus_id']").append('<option value="' + sessionItems.orastatus_id + '" selected>' + sessionStorage.getItem('orastatus_id') + '</option>');
-
-            $("form select option").not(":selected").remove().end();
-
-        });
-
-
+        //備審資料上傳狀態
         $(function() {
             $('form #fileLink').text('');
             $.ajax({
@@ -432,46 +511,73 @@
             });
         });
 
-        $(function() {
-            if ($("form [name='disabled']:checked").val() === "1") {
-                $("#disabled_extra").css('display', '');
-                $("form [name='disabled_type']").attr('required', true);
-                $("form [name='disabled_type']").removeAttr('disabled');
-            } else {
-                $("#disabled_extra").css('display', 'none');
-                $("form [name='disabled_type']").removeAttr('required');
-                $("form [name='disabled_type']").attr('disabled', true);
-            }
+        //備審資料上傳
+        $("form [name='file']").on('change', function() {
 
-            if ($("form [name='disabled_type']").val() === "6") {
-                $("form [name='comments']").css('display', '');
-                $("form [name='comments']").attr('required', true);
-                $("form [name='comments']").removeAttr('disabled');
-            } else {
-                $("form [name='comments']").css('display', 'none');
-                $("form [name='comments']").removeAttr('required');
-                $("form [name='comments']").attr('disabled', true);
+            $('form #fileLink').removeClass('color-info');
+            $('form #fileLink').css('color', 'red');
+            $('form #fileLink').text('備審資料檔案尚未上傳');
+            $('form #fileLink').removeAttr('href');
+
+            var fd = new FormData();
+            var files = $(this)[0].files;
+
+            // Check file selected or not
+            if (files.length > 0) {
+                toastr.clear();
+                toastr.info("檔案上傳中");
+                fd.append('file', files[0]);
+
+                $.ajax({
+                        url: './API/signup/file.php',
+                        type: 'POST',
+                        data: fd,
+                        contentType: false,
+                        processData: false
+                    }).done(function(response) {
+                        toastr.clear();
+                        toastr.success("檔案上傳成功成功！");
+                        $('form #fileLink').css('color', '');
+                        $('form #fileLink').addClass('color-info');
+                        $('form #fileLink').text('檔案已上傳');
+                        $('form #fileLink').attr('href', './API/signup/file.php');
+                    })
+                    .fail(function(jqXHR, exception) {
+                        // toastr.remove();
+                        toastr.clear();
+                        let response = jqXHR.responseJSON;
+                        let msg = '';
+                        if (response === undefined)
+                            msg = exception;
+                        else if (response.hasOwnProperty('message')) {
+                            msg = response.message;
+                        } else {
+                            msg = 'Uncaught Error.\n' + jqXHR.responseText;
+                        }
+                        toastr.error(msg);
+                    });
             }
         });
 
 
-
         $("form").on('submit', function(e) {
             e.preventDefault();
+            $("form [type='submit']").attr('disabled', true);
+            $(window).on('beforeunload', function() {
+                return confirm('資料上傳中，您確定要離開此網頁嗎？');
+            });
             $.ajax({
                     type: 'POST',
                     url: "./API/signup/form.php",
                     data: $("form").serialize(),
                     dataType: 'json'
                 }).done(function(response) {
-                    sessionStorage.clear();
-                    sessionStorage.setItem('email', response['data']['email']);
-                    sessionStorage.setItem('card_start_date', response['data']['card_start_date']);
-                    sessionStorage.setItem('card_end_date', response['data']['card_end_date']);
+                    $(window).off('beforeunload');
                     window.location.replace('./signup.php?step=5');
 
                 })
                 .fail(function(jqXHR, exception) {
+                    $("form [type='submit']").removeAttr('disabled');
                     let response = jqXHR.responseJSON;
                     let msg = '';
                     if (response === undefined)
@@ -482,13 +588,12 @@
                         msg = 'Uncaught Error.\n' + jqXHR.responseText;
                     }
                     toastr.error(msg);
+                    $(window).off('beforeunload');
+
                 });
 
         });
     </script>
-
-
-
 </body>
 
 </html>

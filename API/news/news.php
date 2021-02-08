@@ -4,9 +4,8 @@ $result = array();
 
 try {
     require_once('../common/functions.php');
-    require('../common/variables.php');
     if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-        $result[] = array('date' => "12月18日", "content" => "<span class='font-weight-bold'>本系統僅供報考『" . $ACT_YEAR_NO . "學年度碩士班』考試，欲報考其他招生考試者<span style='color:red'>(如在職進修專班碩士學位班等)</span>請勿使用，<span style='color:red'>若已誤繳報名費，請勿填寫報名表並依簡章規定申請退費。</span></span>");
+        $result[] = array('date' => "12月18日", "content" => "<span class='font-weight-bold'>本系統僅供報考『$ACT_YEAR_NO 學年度碩士班』考試，欲報考其他招生考試者<span style='color:red'>(如在職進修專班碩士學位班等)</span>請勿使用，<span style='color:red'>若已誤繳報名費，請勿填寫報名表並依簡章規定申請退費。</span></span>");
         $result[] = array('date' => "12月18日", "content" => "<span class='font-weight-bold' style='color:red'>部分電子郵件信箱(如:Gmail、Hotmail..等)可能會將系統寄發之郵件攔截為垃圾郵件，繳費後如未收到序號密碼通知信，請先檢查是否在垃圾郵件匣。</span>");
         $result[] = array('date' => "12月18日", "content" => "本招生考試電子檔簡章免費下載，歡迎多加使用；<u>一律採網路報名，請先上網取得報名費繳費帳號並完成繳費後再行上網填寫報名表；低收入戶/中低收入戶若欲申請免繳報名費須提前作業，請詳閱簡章相關規定。</u>");
         $result[] = array('date' => "12月18日", "content" => "<span class='font-weight-bold'>本校今年部分系所採聯合招生方案，請考生於報名前詳閱簡章相關規定。如有任何問題，請洽詢各承辦人員。</span>");

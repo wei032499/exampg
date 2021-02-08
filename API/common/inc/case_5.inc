@@ -44,9 +44,6 @@ td { color:#464646; font: 10pt; line-height: 150% }
 								<td>　　報名資料如下：</td>
 							</tr>
 							<tr> 
-								<td>　　finaldata</td>
-							</tr>
-							<tr> 
 								<td>　　注意事項：</td>
 							</tr>
 							<tr> 

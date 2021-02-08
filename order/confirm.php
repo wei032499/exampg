@@ -20,7 +20,6 @@
             window.location.replace('./');
         } else if (!sessionStorage.hasOwnProperty('order') || sessionStorage.getItem('order') === null)
             window.location.replace('./order.php');
-        else fillByStorage('order');
     </script>
 
 </head>
@@ -101,8 +100,16 @@
     <?php require_once("./module/footer.php") ?>
 
     <script>
+        $(function() {
+            let formData = getSessionItems('order');
+            fillForm(formData);
+            $("form select option").not(":selected").remove().end();
+        });
+
         $("form").on('submit', function(e) {
             e.preventDefault();
+
+            $("form [type='submit']").attr('disabled', true);
 
             $.ajax({
                     type: 'POST',
@@ -119,6 +126,8 @@
                     window.location.replace('./order.php?step=3');
                 })
                 .fail(function(jqXHR, exception) {
+                    $("form [type='submit']").removeAttr('disabled');
+
                     let response = jqXHR.responseJSON;
                     let msg = '';
                     if (response === undefined)
@@ -129,12 +138,9 @@
                         msg = 'Uncaught Error.\n' + jqXHR.responseText;
                     }
                     toastr.error(msg);
+
                 });
 
-        });
-
-        $(function() {
-            $("form select option").not(":selected").remove().end();
         });
     </script>
 

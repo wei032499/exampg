@@ -4,10 +4,11 @@ $result = array();
 
 try {
     require_once('../common/functions.php');
-    if ($_SERVER['REQUEST_METHOD'] !== 'POST')
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        clearCookie();
+        $result['result'] = "success";
+    } else
         throw new Exception("Method Not Allowed", 405);
-    clearCookie();
-    $result['result'] = "success";
 } catch (Exception $e) {
     setHeader($e->getCode());
     $result = array();
