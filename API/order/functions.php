@@ -128,7 +128,7 @@ function checkGraduated($conn, $id, $ACT_YEAR_NO)
     $graduated = 0;
     if (strlen($id) === 10) {
         //曾報考當年度碩推者(29x為博推),免繳報名費
-        $sql = "SELECT count(*) from signupdata WHERE  id=:id and SCHOOL_ID='2' and year='$ACT_YEAR_NO' and substr(dept_id,1,2)<>'29'";
+        $sql = "SELECT count(*) from signupdata WHERE  id=:id and SCHOOL_ID='2' and year='$ACT_YEAR_NO' and substr(dept_id,1,2)!='29'";
         $stmt = oci_parse($conn, $sql);
         oci_bind_by_name($stmt, ':id', $id);
         oci_execute($stmt, OCI_DEFAULT);
@@ -143,7 +143,7 @@ function checkGraduated($conn, $id, $ACT_YEAR_NO)
                     $graduated = 1;
                 }
                 //畢業生報名費打八折(106/12/6淑琬確認--限在學,畢業生,延長修業 , 108/09/19 淑琬要求排除學分班(94))
-                $sql = "SELECT count(*) from dean.s30_student WHERE  stu_idno=:id and stu_status in ('1','8','29')  and substr(stu_id,4,2)<>'94' ";
+                $sql = "SELECT count(*) from dean.s30_student WHERE  stu_idno=:id and stu_status in ('1','8','29')  and substr(stu_id,4,2)!='94' ";
                 $stmt = oci_parse($conn, $sql);
                 $params = array(':id' => $id);
                 foreach ($params as $key => $val)

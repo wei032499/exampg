@@ -87,10 +87,16 @@
                     <div class="form-group col-md-6">
                     </div>
                 </div>
+                <div class="form-group row" id="subject" style="display: none;">
+                    <label class="col-sm-3">選考科目</label>
+                    <div class="col-sm-6">
+                    </div>
+                </div>
+
                 <fieldset class="form-group row">
                     <legend class="col-form-label col-sm-3 float-sm-left" style="min-width: 9rem;"><span style="color:red">身心障礙考生</span></legend>
                     <div class="col-xl row mx-0">
-                        <div class="col " style="max-width: 10rem;">
+                        <div style="max-width: 10rem;">
                             <div class="form-check form-check-inline form-group">
                                 <input class="form-check-input" type="radio" id="disabled1" name="disabled" value="1" required>
                                 <label class="form-check-label" for="disabled1"><span style="color:red">是</span></label>
@@ -121,6 +127,10 @@
                         <div class="form-check form-check-inline">
                             <input class="form-check-input" type="radio" id="place" name="place" value="1" checked required>
                             <label class="form-check-label color-info" for="place">彰化考區</label>
+                        </div>
+                        <div class="form-check form-check-inline" style="display: none;">
+                            <input class="form-check-input" type="radio" id="place" name="place" value="2" required>
+                            <label class="form-check-label color-info" for="place">台北考區</label>
                         </div>
                     </div>
                 </fieldset>
@@ -376,6 +386,7 @@
     <script>
         //報考系所
         $("form [name='dept']").on('change', function() {
+            $("#subject").css('display', 'none');
             $("form [name='organize_id']").find('option').remove().end().append('<option selected hidden disabled></option>');
             $("form [name='orastatus_id']").find('option').remove().end().append('<option selected hidden disabled></option>');
             for (let i = 0; i < deptObj.group[$("form [name='dept']").val()].length; i++)
@@ -391,6 +402,15 @@
                         $("#upload_row").css('display', 'none');
                         $("form [name='file']").attr('disabled', true);
                     }
+                    if (deptObj.dept[i].e_place === 1) //限彰化考區
+                    {
+                        $("form [name='place'][value='1']")[0].checked = true;
+                        $("form [name='place'][value='2']").parent().css('display', 'none');
+                        $("form [name='place'][value='2']").attr('disabled', true);
+                    } else {
+                        $("form [name='place'][value='2']").parent().css('display', '');
+                        $("form [name='place'][value='2']").removeAttr('disabled');
+                    }
                     break;
                 }
             }
@@ -400,6 +420,31 @@
             for (let i = 0; i < deptObj.status[$("form [name='dept']").val()][$("form [name='organize_id']").val()].length; i++)
                 $("form [name='orastatus_id']").append("<option value='" + deptObj.status[$("form [name='dept']").val()][$("form [name='organize_id']").val()][i].status_id + "'>" + deptObj.status[$("form [name='dept']").val()][$("form [name='organize_id']").val()][i].name + "</option>");
 
+        });
+        $("form [name='orastatus_id']").on('change', function() {
+            //同一section或有多個subjects，即表示可選考科
+            let isOptional = false;
+            $("#subject").css('display', 'none');
+            $("#subject>div").empty();
+            let keys = Object.keys(deptObj.subject[$("form [name='dept']").val()][$("form [name='organize_id']").val()][$("form [name='orastatus_id']").val()]);
+            for (let i = 0; i < keys.length; i++) {
+                let options = "<option selected hidden disabled></option>";
+                let subject_count = deptObj.subject[$("form [name='dept']").val()][$("form [name='organize_id']").val()][$("form [name='orastatus_id']").val()][keys[i]].length;
+
+                if (subject_count > 1) //有1個以上考科才顯示選擇
+                {
+                    isOptional = true;
+                    for (let j = 0; j < subject_count; j++) {
+                        let subject_id = deptObj.subject[$("form [name='dept']").val()][$("form [name='organize_id']").val()][$("form [name='orastatus_id']").val()][keys[i]][j].subject_id;
+                        let subject_name = deptObj.subject[$("form [name='dept']").val()][$("form [name='organize_id']").val()][$("form [name='orastatus_id']").val()][keys[i]][j].name;
+                        options += "<option value='" + subject_id + "'>" + subject_name + "</option>";
+
+                    }
+                    $("#subject>div").append('<select class="form-control form-group" name="subject" required>' + options + '</select>');
+                }
+            }
+            if (isOptional)
+                $("#subject").css('display', '');
         });
 
 
