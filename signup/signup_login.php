@@ -31,7 +31,7 @@
                     <div style='width: 8px;height: 8px;display: block;background: #c84c37;'></div>
                     <div style='width: 8px;height: 8px;display: block;background: #3a7eb8;'></div>
                 </div>
-                <h3 style="letter-spacing: 0.2rem;">
+                <h3 style="letter-spacing: 0.2rem;min-width:14rem">
                     :::填寫報名表 <span style="color:red">(使用者登入)</span>
                 </h3>
             </div>

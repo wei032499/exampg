@@ -34,8 +34,9 @@ try {
         //department
         //E_PLACE：1=>有面試，限彰化考區、2=>可選彰化(1)或台北(2)考區
         //upload_type 審查資料繳交方式:  1:郵寄  2:上傳  3:郵寄+上傳
+        //test_type 0 => 無分組(科)；1 => 分組(科)；2 => 不分組選考；3 => 不分組選考(3選2)
         $interview = "('面試','複試','面試(含資料審查)')";
-        $sql = "SELECT ID,NAME,UPLOAD_TYPE,(SELECT CASE WHEN COUNT(1) > 0 THEN 1 ELSE 2 END FROM SUBJECT WHERE SCHOOL_ID='$SCHOOL_ID' AND YEAR='$ACT_YEAR_NO' AND substr(id,1,3)=DEPARTMENT.ID AND NAME IN $interview) AS E_PLACE FROM DEPARTMENT WHERE  SCHOOL_ID='$SCHOOL_ID' AND YEAR='$ACT_YEAR_NO' AND $sql_add  ORDER BY ID";
+        $sql = "SELECT ID,NAME,UPLOAD_TYPE,TEST_TYPE,CASE WHEN UNION_FLAG IS NULL THEN null ELSE substr(UNION_FLAG,1,1) END  as UNION_TYPE ,(SELECT CASE WHEN COUNT(1) > 0 THEN 1 ELSE 2 END FROM SUBJECT WHERE SCHOOL_ID='$SCHOOL_ID' AND YEAR='$ACT_YEAR_NO' AND substr(id,1,3)=DEPARTMENT.ID AND NAME IN $interview) AS E_PLACE FROM DEPARTMENT WHERE  SCHOOL_ID='$SCHOOL_ID' AND YEAR='$ACT_YEAR_NO' AND $sql_add  ORDER BY ID";
 
         // $sql = "SELECT ID,NAME,UPLOAD_TYPE FROM DEPARTMENT where  school_id='$SCHOOL_ID' and year='$ACT_YEAR_NO' and $sql_add  ORDER BY ID";
         $stmt = oci_parse($conn, $sql);
@@ -43,8 +44,12 @@ try {
             $error = analyzeError(oci_error()['message']);
             throw new Exception($error['message'], $error['code']);
         }
-        while (oci_fetch($stmt))
-            $result['data']['dept'][] = array('dept_id' => oci_result($stmt, 'ID'), 'name' => oci_result($stmt, 'NAME'), 'upload_type' => intval(oci_result($stmt, 'UPLOAD_TYPE')), 'e_place' => intval(oci_result($stmt, 'E_PLACE')));
+        while (oci_fetch($stmt)) {
+            $choose = null;
+            if (oci_result($stmt, 'TEST_TYPE') === "3")
+                $choose = 2; //選2
+            $result['data']['dept'][] = array('dept_id' => oci_result($stmt, 'ID'), 'name' => oci_result($stmt, 'NAME'), 'upload_type' => intval(oci_result($stmt, 'UPLOAD_TYPE')), 'e_place' => intval(oci_result($stmt, 'E_PLACE')), 'union_type' => oci_result($stmt, 'UNION_TYPE'), 'test_type' => oci_result($stmt, 'TEST_TYPE'), 'choose' => $choose);
+        }
         oci_free_statement($stmt);
 
 
@@ -70,8 +75,9 @@ try {
             $result['data']['status'][oci_result($stmt, 'DEPT_ID')][oci_result($stmt, 'ORGANIZE_ID')][] = array('status_id' => oci_result($stmt, 'ID'), 'name' => oci_result($stmt, 'NAME'));
         oci_free_statement($stmt);
 
+        // select substr(a.id,1,4) id,b.name dept_name from  subject a ,department b  where  a.school_id='$SCHOOL_ID' and a.year='$ACT_YEAR_NO' and b.school_id=a.school_id and b.year=a.year and a.name='$subj_name' and a.union_flag is not null and substr(a.id,1,3)=b.id and a.union_flag =(select distinct union_flag from subject where school_id=a.school_id and year=a.year and name='$subj_name' and substr(id,1,3)='$dept_id')order by a.id
         //subect
-        $stmt = oci_parse($conn, "SELECT ID, NAME, ORASTATUS_ID, substr(ID,6,1) as SECTION, substr(ID,1,4) as GROUP_ID, substr(ID,1,3) as DEPT_ID FROM SUBJECT WHERE SCHOOL_ID='$SCHOOL_ID' and YEAR='$ACT_YEAR_NO'");
+        $stmt = oci_parse($conn, "SELECT ID, NAME, ORASTATUS_ID, substr(ID,6,1) as SECTION, substr(ID,1,4) as GROUP_ID, substr(ID,1,3) as DEPT_ID FROM SUBJECT WHERE SCHOOL_ID='$SCHOOL_ID' AND YEAR='$ACT_YEAR_NO'"); //NVL(to_char(SECTION),'nul')!='nul'
         if (!oci_execute($stmt, OCI_DEFAULT)) {
             $error = analyzeError(oci_error()['message']);
             throw new Exception($error['message'], $error['code']);

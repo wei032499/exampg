@@ -38,7 +38,7 @@
                     <div style='width: 8px;height: 8px;display: block;background: #3a7eb8;'></div>
                 </div>
                 <div class="row ">
-                    <h3 class="col-xl" style="letter-spacing: 0.2rem;">
+                    <h3 class="col-xl" style="letter-spacing: 0.2rem;min-width:14rem">
                         :::填寫報名表 <span style="color:red">(個人資料提供同意書)</span>
                     </h3>
                     <div id="loginInfo" class="col row justify-content-end mx-0 align-items-center" style="display: none !important;">

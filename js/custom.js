@@ -8,8 +8,14 @@ function getSessionItems(itemName) {
             let strParts = elements[i].split("=");
             strParts[0] = decodeURIComponent(strParts[0]);
             strParts[1] = decodeURIComponent(strParts[1]);
-            sessionItems[strParts[0]] = strParts[1];
+            if (sessionItems[strParts[0]] === undefined)
+                sessionItems[strParts[0]] = [];
+            sessionItems[strParts[0]].push(strParts[1]);
         }
+        let keys = Object.keys(sessionItems);
+        for (let i = 0; i < keys.length; i++)
+            if (sessionItems[keys[i]].length <= 1)
+                sessionItems[keys[i]] = sessionItems[keys[i]][0];
     }
     return sessionItems;
 }
@@ -41,15 +47,32 @@ function getData(url, cache) {
 function fillForm(items) {
     let keys = Object.keys(items);
     for (let i = 0; i < keys.length; i++) {
-        if ($("form [name='" + keys[i] + "']").attr('type') === "radio") {
-            $("form [name='" + keys[i] + "'][value='" + items[keys[i]] + "']").removeAttr("disabled");
-            $("form [name='" + keys[i] + "'][value='" + items[keys[i]] + "']")[0].checked = true;
-            $("form [name='" + keys[i] + "']:checked").change();
-        } else if ($("form [name='" + keys[i] + "']").attr('type') === "select") {
-            $("form [name='" + keys[i] + "']>option[value='" + items[keys[i]] + "']").removeAttr("disabled");
-            $("form [name='" + keys[i] + "']").val(items[keys[i]]).change();
-        } else
-            $("form [name='" + keys[i] + "']").val(items[keys[i]]).change();
+        if (Array.isArray(items[keys[i]])) {
+            for (let j = 0; j < items[keys[i]].length; j++) {
+                if ($("form [name='" + keys[i] + "']:eq(" + j + ")").prop("tagName") === "SELECT") {
+                    $("form [name='" + keys[i] + "']:eq(" + j + ") >option[value='" + items[keys[i]][j] + "']").removeAttr("disabled");
+                    $("form [name='" + keys[i] + "']:eq(" + j + ") ").val(items[keys[i]][j]).change();
+                }
+                else if ($("form [name='" + keys[i] + "']").attr('type') === "radio") {
+                    $("form [name='" + keys[i] + "'][value='" + items[keys[i]][j] + "']").removeAttr("disabled");
+                    $("form [name='" + keys[i] + "'][value='" + items[keys[i]][j] + "']")[0].checked = true;
+                    $("form [name='" + keys[i] + "']:checked").change();
+                } else if ($("form [name='" + keys[i] + "']:eq(" + j + ")").length > 0)
+                    $("form [name='" + keys[i] + "']:eq(" + j + ") ").val(items[keys[i]][j]).change();
+            }
+        }
+        else {
+            if ($("form [name='" + keys[i] + "']").prop("tagName") === "SELECT") {
+                $("form [name='" + keys[i] + "']>option[value='" + items[keys[i]] + "']").removeAttr("disabled");
+                $("form [name='" + keys[i] + "']").val(items[keys[i]]).change();
+            }
+            else if ($("form [name='" + keys[i] + "']").attr('type') === "radio") {
+                $("form [name='" + keys[i] + "'][value='" + items[keys[i]] + "']").removeAttr("disabled");
+                $("form [name='" + keys[i] + "'][value='" + items[keys[i]] + "']")[0].checked = true;
+                $("form [name='" + keys[i] + "']:checked").change();
+            } else if ($("form [name='" + keys[i] + "']").length > 0)
+                $("form [name='" + keys[i] + "']").val(items[keys[i]]).change();
+        }
     }
 }
 

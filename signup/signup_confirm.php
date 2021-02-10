@@ -15,8 +15,6 @@
     <script src="./js/toastr.min.js"></script>
     <script src="./js/custom.js"></script>
     <script>
-        $.holdReady(true);
-        var deptObj;
         if (sessionStorage === undefined) {
             alert("未支援Web Storage！\n請更換瀏覽器再試。");
             window.location.replace('./');
@@ -24,25 +22,6 @@
             window.location.replace('./signup.php?step=2');
         else if (!sessionStorage.hasOwnProperty('signup') || sessionStorage.getItem('signup') === null)
             window.location.replace('./signup.php?step=3');
-        else {
-            $.when(getData("./API/dept/list.php")).done(function(_deptObj) {
-                $.holdReady(false);
-                deptObj = _deptObj.data;
-                $(function() {
-                    // fill department list
-                    $("form [name='dept']").find('option').remove().end().append('<option selected hidden disabled></option>');
-                    for (let i = 0; i < deptObj.dept.length; i++)
-                        $("form [name='dept']").append("<option value='" + deptObj.dept[i].dept_id + "'>" + deptObj.dept[i].name + "</option>");
-
-                    let formData = getSessionItems('signup');
-                    fillForm(formData);
-
-                    $("form select option").not(":selected").remove().end();
-
-                });
-            });
-
-        }
     </script>
 
 </head>
@@ -58,7 +37,7 @@
                     <div style='width: 8px;height: 8px;display: block;background: #3a7eb8;'></div>
                 </div>
                 <div class="row ">
-                    <h3 class="col-lg" style="letter-spacing: 0.2rem;">
+                    <h3 class="col-lg" style="letter-spacing: 0.2rem;min-width:14rem">
                         :::填寫報名表 <span style="color:red">(資料確認)</span>
                     </h3>
                     <div id="loginInfo" class="col row justify-content-end mx-0 align-items-center" style="display: none !important;">
@@ -93,10 +72,29 @@
                     <div class="form-group col-md-6">
                     </div>
                 </div>
+                <hr>
+                <div class="form-group row" id="subject" style="display: none;">
+                    <label class="col-sm-3" style="min-width: 9rem;">選考科目<br>
+                        <span id="subject_msg" style="color:red;"></span>
+                    </label>
+                    <div class="col-sm-6">
+                    </div>
+                </div>
+                <div class="form-group row" id="union" style="display: none;">
+                    <label class="col-sm-3" style="min-width: 10rem;">聯招志願序<br>(志願序由上到下)</label>
+                    <div class="col-sm-6" style="min-width: 20rem">
+                        <select class="form-control form-group" name="union_priority" required>
+                            <option selected hidden disabled></option>
+                        </select>
+                        <select class="form-control form-group" name="union_priority" required>
+                            <option selected hidden disabled></option>
+                        </select>
+                    </div>
+                </div>
                 <fieldset class="form-group row">
                     <legend class="col-form-label col-sm-3 float-sm-left" style="min-width: 9rem;"><span style="color:red">身心障礙考生</span></legend>
                     <div class="col-xl row mx-0">
-                        <div class="col " style="max-width: 10rem;">
+                        <div style="max-width: 10rem;">
                             <div class="form-check form-check-inline form-group">
                                 <input class="form-check-input" type="radio" id="disabled1" name="disabled" value="1" disabled readonly required>
                                 <label class="form-check-label" for="disabled1"><span style="color:red">是</span></label>
@@ -124,8 +122,12 @@
                     <legend class="col-form-label col-sm-3 float-sm-left" style="min-width: 9rem;"><span style="color:red">報名考區</span></legend>
                     <div class="col-sm-5 row mx-0">
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" id="place" name="place" value="1" disabled checked readonly required>
-                            <label class="form-check-label color-info" for="place">彰化考區</label>
+                            <input class="form-check-input" type="radio" id="place1" name="place" value="1" disabled checked readonly required>
+                            <label class="form-check-label color-info" for="place1">彰化考區</label>
+                        </div>
+                        <div class="form-check form-check-inline" style="display: none;">
+                            <input class="form-check-input" type="radio" id="place2" name="place" value="2" required>
+                            <label class="form-check-label color-info" for="place2">台北考區</label>
                         </div>
                     </div>
                 </fieldset>
@@ -370,58 +372,17 @@
     <?php require_once("./module/footer.php") ?>
 
     <script>
-        //報考系所
-        $("form [name='dept']").on('change', function() {
-            $("form [name='organize_id']").find('option').remove().end().append('<option selected hidden disabled></option>');
-            $("form [name='orastatus_id']").find('option').remove().end().append('<option selected hidden disabled></option>');
-            for (let i = 0; i < deptObj.group[$("form [name='dept']").val()].length; i++)
-                $("form [name='organize_id']").append("<option value='" + deptObj.group[$("form [name='dept']").val()][i].group_id + "'>" + deptObj.group[$("form [name='dept']").val()][i].name + "</option>");
-
-            //upload_type 審查資料繳交方式:  1:郵寄  2:上傳  3:郵寄+上傳
-            for (let i = 0; i < deptObj.dept.length; i++) {
-                if (deptObj.dept[i].dept_id === $("form [name='dept']").val()) {
-                    if (deptObj.dept[i].upload_type > 1) {
-                        $("#upload_row").css('display', '');
-                        $("form [name='file']").removeAttr('disabled');
-                    } else {
-                        $("#upload_row").css('display', 'none');
-                        $("form [name='file']").attr('disabled', true);
-                    }
-                    break;
-                }
-            }
-        });
-        $("form [name='organize_id']").on('change', function() {
-            $("form [name='orastatus_id']").find('option').remove().end().append('<option selected hidden disabled></option>');
-            for (let i = 0; i < deptObj.status[$("form [name='dept']").val()][$("form [name='organize_id']").val()].length; i++)
-                $("form [name='orastatus_id']").append("<option value='" + deptObj.status[$("form [name='dept']").val()][$("form [name='organize_id']").val()][i].status_id + "'>" + deptObj.status[$("form [name='dept']").val()][$("form [name='organize_id']").val()][i].name + "</option>");
-
-        });
-
-
-        //身心障礙
-        $("form [name='disabled']").on('change', function() {
-            if (this.value === '1') {
-                $("#disabled_extra").css('display', '');
-                $("form [name='disabled_type']").attr('required', true);
-                $("form [name='disabled_type']").removeAttr('disabled');
-            } else {
-                $("#disabled_extra").css('display', 'none');
-                $("form [name='disabled_type']").removeAttr('required');
-                $("form [name='disabled_type']").attr('disabled', true);
-            }
-        });
-
-        $("form [name='disabled_type']").on('change', function() {
-            if (this.value === '6') {
-                $("form [name='comments']").css('display', '');
-                $("form [name='comments']").attr('required', true);
-                $("form [name='comments']").removeAttr('disabled');
-            } else {
-                $("form [name='comments']").css('display', 'none');
-                $("form [name='comments']").removeAttr('required');
-                $("form [name='comments']").attr('disabled', true);
-            }
+        $(function() {
+            $("form [name='dept']").empty().append(sessionStorage.getItem('dept'));
+            $("form [name='organize_id']").empty().append(sessionStorage.getItem('organize_id'));
+            $("form [name='orastatus_id']").empty().append(sessionStorage.getItem('orastatus_id'));
+            $("#subject").replaceWith(sessionStorage.getItem('subject'));
+            $("#union").replaceWith(sessionStorage.getItem('union'));
+            fillForm(getSessionItems('signup'));
+            $("form select option").not(":selected").remove().end();
+            if ($("form [name='place']:checked").val() === "2")
+                $("form [name='place'][value='2']").parent().css('display', '');
+            $("form .form-control").addClass('form-control-plaintext').removeClass('form-control');
         });
 
         //應考學歷
@@ -475,7 +436,7 @@
 
 
         //備審資料上傳狀態
-        $(function() {
+        function checkUploadStatus() {
             $('form #fileLink').text('');
             $.ajax({
                 type: 'GET',
@@ -509,7 +470,7 @@
 
 
             });
-        });
+        }
 
         //備審資料上傳
         $("form [name='file']").on('change', function() {

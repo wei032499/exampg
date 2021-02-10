@@ -87,10 +87,29 @@
                     <div class="form-group col-md-6">
                     </div>
                 </div>
+                <hr>
+                <div class="form-group row" id="subject" style="display: none;">
+                    <label class="col-sm-3" style="min-width: 9rem;">選考科目<br>
+                        <span id="subject_msg" style="color:red;"></span>
+                    </label>
+                    <div class="col-sm-6">
+                    </div>
+                </div>
+                <div class="form-group row" id="union" style="display: none;">
+                    <label class="col-sm-3" style="min-width: 10rem;">聯招志願序<br>(志願序由上到下)</label>
+                    <div class="col-sm-6" style="min-width: 20rem">
+                        <select class="form-control form-group" name="union_priority" required>
+                            <option selected hidden disabled></option>
+                        </select>
+                        <select class="form-control form-group" name="union_priority" required>
+                            <option selected hidden disabled></option>
+                        </select>
+                    </div>
+                </div>
                 <fieldset class="form-group row">
                     <legend class="col-form-label col-sm-3 float-sm-left" style="min-width: 9rem;"><span style="color:red">身心障礙考生</span></legend>
                     <div class="col-xl row mx-0">
-                        <div class="col " style="max-width: 10rem;">
+                        <div style="max-width: 10rem;">
                             <div class="form-check form-check-inline form-group">
                                 <input class="form-check-input" type="radio" id="disabled1" name="disabled" value="1" required>
                                 <label class="form-check-label" for="disabled1"><span style="color:red">是</span></label>
@@ -113,14 +132,17 @@
                             <input class="form-control form-group" type="text" name="comments" placeholder="請填入說明" style="display: none;">
                         </div>
                     </div>
-
                 </fieldset>
                 <fieldset class="form-group row">
                     <legend class="col-form-label col-sm-3 float-sm-left" style="min-width: 9rem;"><span style="color:red">報名考區</span></legend>
                     <div class="col-sm-5 row mx-0">
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" id="place" name="place" value="1" checked required>
-                            <label class="form-check-label color-info" for="place">彰化考區</label>
+                            <input class="form-check-input" type="radio" id="place1" name="place" value="1" checked required>
+                            <label class="form-check-label color-info" for="place1">彰化考區</label>
+                        </div>
+                        <div class="form-check form-check-inline" style="display: none;">
+                            <input class="form-check-input" type="radio" id="place2" name="place" value="2" required>
+                            <label class="form-check-label color-info" for="place2">台北考區</label>
                         </div>
                     </div>
                 </fieldset>
@@ -377,30 +399,148 @@
     <script>
         //報考系所
         $("form [name='dept']").on('change', function() {
+            $("#subject").css('display', 'none');
+            $("#union").css('display', 'none');
+            $("#union>div").empty();
             $("form [name='organize_id']").find('option').remove().end().append('<option selected hidden disabled></option>');
             $("form [name='orastatus_id']").find('option').remove().end().append('<option selected hidden disabled></option>');
             for (let i = 0; i < deptObj.group[$("form [name='dept']").val()].length; i++)
                 $("form [name='organize_id']").append("<option value='" + deptObj.group[$("form [name='dept']").val()][i].group_id + "'>" + deptObj.group[$("form [name='dept']").val()][i].name + "</option>");
 
-            //upload_type 審查資料繳交方式:  1:郵寄  2:上傳  3:郵寄+上傳
-            for (let i = 0; i < deptObj.dept.length; i++) {
-                if (deptObj.dept[i].dept_id === $("form [name='dept']").val()) {
-                    if (deptObj.dept[i].upload_type > 1) {
-                        $("#upload_row").css('display', '');
-                        $("form [name='file']").removeAttr('disabled');
-                    } else {
-                        $("#upload_row").css('display', 'none');
-                        $("form [name='file']").attr('disabled', true);
-                    }
-                    break;
-                }
+            let index = deptObj.dept.map(function(e) {
+                return e.dept_id;
+            }).indexOf($("form [name='dept']").val());
+
+            if (deptObj.dept[index].upload_type > 1) //upload_type 審查資料繳交方式:  1:郵寄  2:上傳  3:郵寄+上傳
+            {
+                checkUploadStatus();
+                $("#upload_row").css('display', '');
+                $("form [name='file']").removeAttr('disabled');
+            } else {
+                $("#upload_row").css('display', 'none');
+                $("form [name='file']").attr('disabled', true);
             }
+
+            if (deptObj.dept[index].e_place === 1) //限彰化考區
+            {
+                $("form [name='place'][value='1']")[0].checked = true;
+                $("form [name='place'][value='2']").parent().css('display', 'none');
+                $("form [name='place'][value='2']").attr('disabled', true);
+            } else {
+                $("form [name='place'][value='2']").parent().css('display', '');
+                $("form [name='place'][value='2']").removeAttr('disabled');
+            }
+
+
+            if (deptObj.dept[index].union_type === "5") //不須選考科組別之聯合
+            {
+                options = "<option value='" + $("form [name='dept']>option:selected").val() + "' selected>" + $("form [name='dept']>option:selected").text() + "</option>";
+                $("#union>div").append('<select class="form-control form-group" name="union_priority" readonly required>' + options + '</select>');
+
+                $.when(getData("./API/dept/union.php?dept_id=" + this.value)).done(function(_deptObj) {
+                    let unionDepts = _deptObj.data;
+                    let options = "<option value='-1' selected>放棄志願</option>";
+                    for (let i = 0; i < unionDepts.length; i++)
+                        if (unionDepts[i].dept_id !== $("form [name='dept']>option:selected").val())
+                            options += "<option value='" + unionDepts[i].dept_id + "'>" + unionDepts[i].name + "</option>";
+
+                    for (let i = 0; i < unionDepts.length - 1; i++) //生成剩下可選聯合招生系所
+                        $("#union>div").append('<select class="form-control form-group" name="union_priority" >' + options + '</select>');
+
+                });
+                $("#union").css('display', '');
+
+            }
+
+            if (deptObj.dept[index].test_type === "3") //3選2
+                $("#subject_msg").text("*請選擇 " + deptObj.dept[index].choose + " 項考科");
+            else
+                $("#subject_msg").text("");
+
         });
         $("form [name='organize_id']").on('change', function() {
             $("form [name='orastatus_id']").find('option').remove().end().append('<option selected hidden disabled></option>');
             for (let i = 0; i < deptObj.status[$("form [name='dept']").val()][$("form [name='organize_id']").val()].length; i++)
                 $("form [name='orastatus_id']").append("<option value='" + deptObj.status[$("form [name='dept']").val()][$("form [name='organize_id']").val()][i].status_id + "'>" + deptObj.status[$("form [name='dept']").val()][$("form [name='organize_id']").val()][i].name + "</option>");
 
+        });
+        $("form [name='orastatus_id']").on('change', function() {
+            $("#subject").css('display', 'none');
+            $("#subject>div").empty();
+            let isOptional = false;
+            let index = deptObj.dept.map(function(e) {
+                return e.dept_id;
+            }).indexOf($("form [name='dept']").val());
+            if (deptObj.dept[index].test_type === "3") //3選2
+            {
+                isOptional = true;
+
+                let keys = Object.keys(deptObj.subject[$("form [name='dept']").val()][$("form [name='organize_id']").val()][$("form [name='orastatus_id']").val()]);
+                for (let i = 0; i < keys.length; i++) {
+                    let options = "";
+                    let subject_count = deptObj.subject[$("form [name='dept']").val()][$("form [name='organize_id']").val()][$("form [name='orastatus_id']").val()][keys[i]].length;
+                    for (let j = 0; j < subject_count; j++) {
+                        let subject_id = deptObj.subject[$("form [name='dept']").val()][$("form [name='organize_id']").val()][$("form [name='orastatus_id']").val()][keys[i]][j].subject_id;
+                        let subject_name = deptObj.subject[$("form [name='dept']").val()][$("form [name='organize_id']").val()][$("form [name='orastatus_id']").val()][keys[i]][j].name;
+                        options += "<option value='" + subject_id + "'>" + subject_name + "</option>";
+
+                    }
+                    $("#subject>div").append('<div class="row form-group align-items-center"><input type="checkbox" class="form-check-input" name="section" ><select class="form-control" name="subject" disabled>' + options + '</select></div>');
+                }
+                $("form [name='section']").on('change', function() {
+                    if ($(this).prop("checked")) {
+                        $(this).siblings("select").attr('required', true);
+                        $(this).siblings("select").removeAttr('disabled');
+                    } else {
+                        $(this).siblings("select").attr('disabled', true);
+                        $(this).siblings("select").removeAttr('required');
+                    }
+
+
+                });
+            } else {
+                //同一section或有多個subjects，即表示可選考科
+
+                let keys = Object.keys(deptObj.subject[$("form [name='dept']").val()][$("form [name='organize_id']").val()][$("form [name='orastatus_id']").val()]);
+                for (let i = 0; i < keys.length; i++) {
+                    let options = "<option selected hidden disabled></option>";
+                    let subject_count = deptObj.subject[$("form [name='dept']").val()][$("form [name='organize_id']").val()][$("form [name='orastatus_id']").val()][keys[i]].length;
+
+                    if (subject_count > 1) //有1個以上考科才顯示選擇
+                    {
+                        isOptional = true;
+                        for (let j = 0; j < subject_count; j++) {
+                            let subject_id = deptObj.subject[$("form [name='dept']").val()][$("form [name='organize_id']").val()][$("form [name='orastatus_id']").val()][keys[i]][j].subject_id;
+                            let subject_name = deptObj.subject[$("form [name='dept']").val()][$("form [name='organize_id']").val()][$("form [name='orastatus_id']").val()][keys[i]][j].name;
+                            options += "<option value='" + subject_id + "'>" + subject_name + "</option>";
+
+                        }
+                        $("#subject>div").append('<select class="form-control form-group" name="subject" required>' + options + '</select>');
+                    }
+                }
+
+            }
+            if (isOptional)
+                $("#subject").css('display', '');
+
+
+            $("form [name='subject']").on('change', function() {
+                $("#union>div").empty();
+                options = "<option value='" + $("form [name='dept']>option:selected").val() + "' selected>" + $("form [name='dept']>option:selected").text() + "</option>";
+                $("#union>div").append('<select class="form-control form-group" name="union_priority" readonly required>' + options + '</select>');
+                $.when(getData("./API/dept/union.php?subject_id=" + this.value)).done(function(_deptObj) {
+                    let unionDepts = _deptObj.data;
+                    let options = "<option value='-1' selected>放棄志願</option>";
+                    for (let i = 0; i < unionDepts.length; i++)
+                        if (unionDepts[i].dept_id !== $("form [name='dept']>option:selected").val())
+                            options += "<option value='" + unionDepts[i].dept_id + "'>" + unionDepts[i].name + "</option>";
+
+                    for (let i = 0; i < unionDepts.length - 1; i++) //生成剩下可選聯合招生系所
+                        $("#union>div").append('<select class="form-control form-group" name="union_priority" >' + options + '</select>');
+
+                    $("#union").css('display', '');
+                });
+            });
         });
 
 
@@ -477,10 +617,8 @@
             }
         });
 
-
-
         //備審資料上傳狀態
-        $(function() {
+        function checkUploadStatus() {
             $('form #fileLink').text('');
             $.ajax({
                 type: 'GET',
@@ -514,7 +652,9 @@
 
 
             });
-        });
+        }
+
+
 
         //備審資料上傳
         $("form [name='file']").on('change', function() {
@@ -584,9 +724,19 @@
 
 
             sessionStorage.setItem("alter", $("form").serialize());
-            sessionStorage.setItem("dept", $("form [name='dept']>option[value=" + $("form [name='dept']").val() + "]").text());
-            sessionStorage.setItem("organize_id", $("form [name='organize_id']>option[value=" + $("form [name='organize_id']").val() + "]").text());
-            sessionStorage.setItem("orastatus_id", $("form [name='orastatus_id']>option[value=" + $("form [name='orastatus_id']").val() + "]").text());
+            sessionStorage.setItem("dept", $("form [name='dept']>option:checked").prop("outerHTML"));
+            sessionStorage.setItem("organize_id", $("form [name='organize_id']>option:checked").prop("outerHTML"));
+            sessionStorage.setItem("orastatus_id", $("form [name='orastatus_id']>option:checked").prop("outerHTML"));
+            sessionStorage.setItem("subject", $("#subject").prop("outerHTML"));
+            sessionStorage.setItem("union", $("#union").prop("outerHTML"));
+
+            for (let i = 0; i < $("form [name='union_priority'] option:selected").length; i++)
+                if ($("form [name='union_priority'] option:selected")[i].value === "-1")
+                    if (confirm("有放棄的志願序，確定繼續嗎？"))
+                        break;
+                    else
+                        return false;
+
             window.location.replace('./alter.php?step=3');
 
 
