@@ -74,7 +74,7 @@ try {
     setcookie('token', $Token->refresh(), $cookie_options_httponly);
     setcookie('username', $_COOKIE['username'], $cookie_options);
 } catch (Exception $e) {
-    @oci_rollback($conn);
+    oci_rollback($conn);
     setHeader($e->getCode());
     $result = array();
     $result['code'] = $e->getCode(); //$e->getCode();
@@ -82,6 +82,6 @@ try {
 
     //$e->getMessage() . " on line " . $e->getLine()
 }
-@oci_close($conn);
+oci_close($conn);
 
 echo json_encode($result);

@@ -83,12 +83,6 @@
                 <div class="form-group row" id="union" style="display: none;">
                     <label class="col-sm-3" style="min-width: 10rem;">聯招志願序<br>(志願序由上到下)</label>
                     <div class="col-sm-6" style="min-width: 20rem">
-                        <select class="form-control form-group" name="union_priority" required>
-                            <option selected hidden disabled></option>
-                        </select>
-                        <select class="form-control form-group" name="union_priority" required>
-                            <option selected hidden disabled></option>
-                        </select>
                     </div>
                 </div>
                 <fieldset class="form-group row">
@@ -380,6 +374,10 @@
             $("#union").replaceWith(sessionStorage.getItem('union'));
             fillForm(getSessionItems('signup'));
             $("form select option").not(":selected").remove().end();
+            $("form [name='section[]'").not(":checked").parent().remove().end();
+            $("form [name='section[]'").on('click', function() {
+                return false
+            });
             if ($("form [name='place']:checked").val() === "2")
                 $("form [name='place'][value='2']").parent().css('display', '');
             $("form .form-control").addClass('form-control-plaintext').removeClass('form-control');
@@ -533,6 +531,9 @@
                     data: $("form").serialize(),
                     dataType: 'json'
                 }).done(function(response) {
+                    sessionStorage.setItem('email', response.data['email']);
+                    sessionStorage.setItem('card_start_date', response.data['card_start_date']);
+                    sessionStorage.setItem('card_end_date', response.data['card_end_date']);
                     $(window).off('beforeunload');
                     window.location.replace('./signup.php?step=5');
 

@@ -16,20 +16,63 @@
     <script src="./js/custom.js"></script>
     <script>
         $.holdReady(true);
-        var deptObj;
         if (sessionStorage === undefined) {
             alert("未支援Web Storage！\n請更換瀏覽器再試。");
             window.location.replace('./');
         } else {
             $.when(getData("./API/signup/form.php", false), getData("./API/dept/list.php")).done(function(_formData, _deptObj) {
                 $.holdReady(false);
-                deptObj = _deptObj[0].data;
-                var formData = _formData[0].data;
+                let deptObj = _deptObj[0].data;
+                let formData = _formData[0].data;
                 $(function() {
                     // fill department list
-                    $("form [name='dept']").find('option').remove().end().append('<option selected hidden disabled></option>');
-                    for (let i = 0; i < deptObj.dept.length; i++)
-                        $("form [name='dept']").append("<option value='" + deptObj.dept[i].dept_id + "'>" + deptObj.dept[i].name + "</option>");
+                    let index = deptObj.dept.map(function(e) {
+                        return e.dept_id;
+                    }).indexOf(formData.dept);
+                    $("form [name='dept']").empty().append("<option value='" + formData.dept + "' selected>" + deptObj.dept[index].name + "</option>");
+
+                    if (formData.place === "2") //限彰化考區
+                    {
+                        $("form [name='place'][value='2']").parent().css('display', '');
+                        $("form [name='place'][value='2']").removeAttr('disabled');
+                    }
+
+                    index = deptObj.group[formData.dept].map(function(e) {
+                        return e.group_id;
+                    }).indexOf(formData.organize_id);
+                    $("form [name='organize_id']").empty().append("<option value='" + formData.organize_id + "' selected>" + deptObj.group[formData.dept][index].name + "</option>");
+
+                    index = deptObj.status[formData.dept][formData.organize_id].map(function(e) {
+                        return e.status_id;
+                    }).indexOf(formData.orastatus_id);
+                    $("form [name='orastatus_id']").empty().append("<option value='" + formData.orastatus_id + "' selected>" + deptObj.status[formData.dept][formData.organize_id][index].name + "</option>");
+
+
+                    if (formData.subject !== null) {
+                        for (let i = 0; i < formData.subject.length; i++) {
+                            let section = formData.subject[i].substr(5, 1);
+                            let index = deptObj.subject[formData.dept][formData.organize_id][formData.orastatus_id][section].map(function(e) {
+                                return e.subject_id;
+                            }).indexOf(formData.subject[i]);
+                            let subject_name = deptObj.subject[formData.dept][formData.organize_id][formData.orastatus_id][section][index].name;
+                            $("#subject>div").append('<select class="form-control-plaintext form-group" name="subject[]" required><option value="' + formData.subject[i] + '" selected>' + subject_name + '</option></select>');
+
+                        }
+                        $("#subject").css('display', '');
+                    }
+
+                    if (formData.union_priority !== null && formData.union_priority.length > 0) {
+                        for (let i = 0; i < formData.union_priority.length; i++) {
+                            let index = deptObj.dept.map(function(e) {
+                                return e.dept_id;
+                            }).indexOf(formData.union_priority[i]);
+                            let dept_name = deptObj.dept[index].name;
+                            $("#union>div").append('<select class="form-control-plaintext form-group" name="union_priority[]"  required><option value="' + formData.union_priority[i] + '" selected>' + dept_name + '</option></select>');
+
+                        }
+                        $("#union").css('display', '');
+                    }
+
 
                     fillForm(formData);
                     $("form select option").not(":selected").remove().end();
@@ -87,10 +130,23 @@
                     <div class="form-group col-md-6">
                     </div>
                 </div>
+                <hr>
+                <div class="form-group row" id="subject" style="display: none;">
+                    <label class="col-sm-3" style="min-width: 9rem;">選考科目<br>
+                        <span id="subject_msg" style="color:red;"></span>
+                    </label>
+                    <div class="col-sm-6">
+                    </div>
+                </div>
+                <div class="form-group row" id="union" style="display: none;">
+                    <label class="col-sm-3" style="min-width: 10rem;">聯招志願序<br>(志願序由上到下)</label>
+                    <div class="col-sm-6" style="min-width: 20rem">
+                    </div>
+                </div>
                 <fieldset class="form-group row">
                     <legend class="col-form-label col-sm-3 float-sm-left" style="min-width: 9rem;"><span style="color:red">身心障礙考生</span></legend>
                     <div class="col-xl row mx-0">
-                        <div class="col " style="max-width: 10rem;">
+                        <div style="max-width: 10rem;">
                             <div class="form-check form-check-inline form-group">
                                 <input class="form-check-input" type="radio" id="disabled1" name="disabled" value="1" disabled readonly required>
                                 <label class="form-check-label" for="disabled1"><span style="color:red">是</span></label>
@@ -118,8 +174,12 @@
                     <legend class="col-form-label col-sm-3 float-sm-left" style="min-width: 9rem;"><span style="color:red">報名考區</span></legend>
                     <div class="col-sm-5 row mx-0">
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" id="place" name="place" value="1" disabled checked readonly required>
-                            <label class="form-check-label color-info" for="place">彰化考區</label>
+                            <input class="form-check-input" type="radio" id="place1" name="place" value="1" disabled checked readonly required>
+                            <label class="form-check-label color-info" for="place1">彰化考區</label>
+                        </div>
+                        <div class="form-check form-check-inline" style="display: none;">
+                            <input class="form-check-input" type="radio" id="place2" name="place" value="2" required>
+                            <label class="form-check-label color-info" for="place2">台北考區</label>
                         </div>
                     </div>
                 </fieldset>
@@ -363,35 +423,6 @@
     <?php require_once("./module/footer.php") ?>
 
     <script>
-        //報考系所
-        $("form [name='dept']").on('change', function() {
-            $("form [name='organize_id']").find('option').remove().end().append('<option selected hidden disabled></option>');
-            $("form [name='orastatus_id']").find('option').remove().end().append('<option selected hidden disabled></option>');
-            for (let i = 0; i < deptObj.group[$("form [name='dept']").val()].length; i++)
-                $("form [name='organize_id']").append("<option value='" + deptObj.group[$("form [name='dept']").val()][i].group_id + "'>" + deptObj.group[$("form [name='dept']").val()][i].name + "</option>");
-
-            //upload_type 審查資料繳交方式:  1:郵寄  2:上傳  3:郵寄+上傳
-            for (let i = 0; i < deptObj.dept.length; i++) {
-                if (deptObj.dept[i].dept_id === $("form [name='dept']").val()) {
-                    if (deptObj.dept[i].upload_type > 1) {
-                        $("#upload_row").css('display', '');
-                        $("form [name='file']").removeAttr('disabled');
-                    } else {
-                        $("#upload_row").css('display', 'none');
-                        $("form [name='file']").attr('disabled', true);
-                    }
-                    break;
-                }
-            }
-        });
-        $("form [name='organize_id']").on('change', function() {
-            $("form [name='orastatus_id']").find('option').remove().end().append('<option selected hidden disabled></option>');
-            for (let i = 0; i < deptObj.status[$("form [name='dept']").val()][$("form [name='organize_id']").val()].length; i++)
-                $("form [name='orastatus_id']").append("<option value='" + deptObj.status[$("form [name='dept']").val()][$("form [name='organize_id']").val()][i].status_id + "'>" + deptObj.status[$("form [name='dept']").val()][$("form [name='organize_id']").val()][i].name + "</option>");
-
-        });
-
-
         //身心障礙
         $("form [name='disabled']").on('change', function() {
             if (this.value === '1') {
@@ -465,10 +496,8 @@
             }
         });
 
-
-
         //備審資料上傳狀態
-        $(function() {
+        function checkUploadStatus() {
             $('form #fileLink').text('');
             $.ajax({
                 type: 'GET',
@@ -502,7 +531,9 @@
 
 
             });
-        });
+        }
+
+
 
         //備審資料上傳
         $("form [name='file']").on('change', function() {
@@ -517,6 +548,12 @@
 
             // Check file selected or not
             if (files.length > 0) {
+                $("form [name='file']").attr('disabled', true);
+                $("form [type='submit']").attr('disabled', true);
+                $(window).on('beforeunload', function() {
+                    return confirm('資料上傳中，您確定要離開此網頁嗎？');
+                });
+
                 toastr.clear();
                 toastr.info("檔案上傳中");
                 fd.append('file', files[0]);
@@ -534,6 +571,10 @@
                         $('form #fileLink').addClass('color-info');
                         $('form #fileLink').text('檔案已上傳');
                         $('form #fileLink').attr('href', './API/signup/file.php');
+                        $(window).off('beforeunload');
+                        $("form [name='file']").removeAttr('disabled');
+                        $("form [type='submit']").removeAttr('disabled');
+
                     })
                     .fail(function(jqXHR, exception) {
                         // toastr.remove();
@@ -548,6 +589,10 @@
                             msg = 'Uncaught Error.\n' + jqXHR.responseText;
                         }
                         toastr.error(msg);
+                        $(window).off('beforeunload');
+                        $("form [name='file']").removeAttr('disabled');
+                        $("form [type='submit']").removeAttr('disabled');
+
                     });
             }
         });

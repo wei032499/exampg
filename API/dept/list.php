@@ -94,13 +94,13 @@ try {
     } else
         throw new Exception("Method Not Allowed", 405);
 } catch (Exception $e) {
-    @oci_rollback($conn);
+    oci_rollback($conn);
     setHeader($e->getCode());
     $result = array();
     $result['code'] = $e->getCode(); //$e->getCode();
     $result['message'] = $e->getMessage();
     $result['line'] = $e->getLine();
 }
-@oci_close($conn);
+oci_close($conn);
 
 echo json_encode($result);

@@ -80,12 +80,6 @@
                 <div class="form-group row" id="union" style="display: none;">
                     <label class="col-sm-3" style="min-width: 10rem;">聯招志願序<br>(志願序由上到下)</label>
                     <div class="col-sm-6" style="min-width: 20rem">
-                        <select class="form-control form-group" name="union_priority" required>
-                            <option selected hidden disabled></option>
-                        </select>
-                        <select class="form-control form-group" name="union_priority" required>
-                            <option selected hidden disabled></option>
-                        </select>
                     </div>
                 </div>
                 <fieldset class="form-group row">
@@ -374,7 +368,7 @@
             $("form [name='orastatus_id']").empty().append(sessionStorage.getItem('orastatus_id'));
             $("#subject").replaceWith(sessionStorage.getItem('subject'));
             $("#union").replaceWith(sessionStorage.getItem('union'));
-            fillForm(getSessionItems('signup'));
+            fillForm(getSessionItems('alter'));
             $("form select option").not(":selected").remove().end();
             if ($("form [name='place']:checked").val() === "2")
                 $("form [name='place'][value='2']").parent().css('display', '');

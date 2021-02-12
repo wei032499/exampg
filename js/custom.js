@@ -49,16 +49,19 @@ function fillForm(items) {
     for (let i = 0; i < keys.length; i++) {
         if (Array.isArray(items[keys[i]])) {
             for (let j = 0; j < items[keys[i]].length; j++) {
-                if ($("form [name='" + keys[i] + "']:eq(" + j + ")").prop("tagName") === "SELECT") {
-                    $("form [name='" + keys[i] + "']:eq(" + j + ") >option[value='" + items[keys[i]][j] + "']").removeAttr("disabled");
-                    $("form [name='" + keys[i] + "']:eq(" + j + ") ").val(items[keys[i]][j]).change();
+                let end = "";
+                if (keys[i].substr(-2) !== "[]")
+                    end = "[]";
+                if ($("form [name='" + keys[i] + end + "']:eq(" + j + ")").prop("tagName") === "SELECT") {
+                    $("form [name='" + keys[i] + end + "']:eq(" + j + ") >option[value='" + items[keys[i]][j] + "']").removeAttr("disabled");
+                    $("form [name='" + keys[i] + end + "']:eq(" + j + ") ").val(items[keys[i]][j]).change();
                 }
-                else if ($("form [name='" + keys[i] + "']").attr('type') === "radio") {
-                    $("form [name='" + keys[i] + "'][value='" + items[keys[i]][j] + "']").removeAttr("disabled");
-                    $("form [name='" + keys[i] + "'][value='" + items[keys[i]][j] + "']")[0].checked = true;
-                    $("form [name='" + keys[i] + "']:checked").change();
-                } else if ($("form [name='" + keys[i] + "']:eq(" + j + ")").length > 0)
-                    $("form [name='" + keys[i] + "']:eq(" + j + ") ").val(items[keys[i]][j]).change();
+                else if ($("form [name='" + keys[i] + end + "']").attr('type') === "radio" || $("form [name='" + keys[i] + "']").attr('type') === "checkbox") {
+                    $("form [name='" + keys[i] + end + "'][value='" + items[keys[i]][j] + "']").removeAttr("disabled");
+                    $("form [name='" + keys[i] + end + "'][value='" + items[keys[i]][j] + "']")[0].checked = true;
+                    $("form [name='" + keys[i] + end + "']:checked").change();
+                } else if ($("form [name='" + keys[i] + end + "']:eq(" + j + ")").length > 0)
+                    $("form [name='" + keys[i] + end + "']:eq(" + j + ") ").val(items[keys[i]][j]).change();
             }
         }
         else {

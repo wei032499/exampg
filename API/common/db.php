@@ -21,6 +21,7 @@ function bind_by_array($stmt, $sql, $array)
 
     if (count($matches[0]) !== count($array))
         return false;
+
     foreach ($matches[0] as $key => $value)
         oci_bind_by_name($stmt, $value,  $array[$key]);
     return true;

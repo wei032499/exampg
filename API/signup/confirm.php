@@ -89,15 +89,14 @@ try {
         /**
          * 寄發通知信
          */
-        $msg_type = 5;
-        $email = sendMail($msg_type, $conn, $payload);
+        $email = sendMail(5, $conn, $payload);
 
 
         /**
          * 寫入log
          */
         $fp = fopen("../logs/dbg_msg.log", "a+");
-        fwrite($fp, "資料確認通知 - API/signup/confirm.php - $msg_type - $email - \n");
+        fwrite($fp, "資料確認通知 - API/signup/confirm.php - $email - \n");
         fclose($fp);
     } else
         throw new Exception("Method Not Allowed", 405);
@@ -108,7 +107,7 @@ try {
     oci_commit($conn); //無發生任何錯誤，將資料寫進資料庫
 
 } catch (Exception $e) {
-    @oci_rollback($conn);
+    oci_rollback($conn);
     setHeader($e->getCode());
     $result = array();
     $result['code'] = $e->getCode(); //$e->getCode();
@@ -116,6 +115,6 @@ try {
     $result['line'] = $e->getLine();
     //$e->getMessage() . " on line " . $e->getLine()
 }
-@oci_close($conn);
+oci_close($conn);
 
 echo json_encode($result);

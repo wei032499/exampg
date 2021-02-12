@@ -16,13 +16,13 @@ try {
     $result['status'] = $payload['status'];
     $result['authority'] = $payload['authority'];
 } catch (Exception $e) {
-    @oci_rollback($conn);
+    oci_rollback($conn);
     setHeader($e->getCode());
     $result = array();
     $result['code'] = $e->getCode();
     $result['message'] = $e->getMessage();
     //$e->getMessage() . " on line " . $e->getLine()
 }
-@oci_close($conn);
+oci_close($conn);
 
 echo json_encode($result);

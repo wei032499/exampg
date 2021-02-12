@@ -17,8 +17,7 @@ try {
             /**
              * 寄發通知信
              */
-            $msg_type = 6;
-            sendMail($msg_type, $conn, array('email' => $_POST['email']));
+            sendMail(6, $conn, array('email' => $_POST['email']));
 
 
             /**
@@ -26,7 +25,7 @@ try {
              */
             $to = $_POST['email'];
             $fp = fopen("../logs/dbg_msg.log", "a+");
-            fwrite($fp, "查詢序號密碼回覆 - API/auth/forget.php - $msg_type - $to - \n");
+            fwrite($fp, "查詢序號密碼回覆 - API/auth/forget.php - $to - \n");
             fclose($fp);
         } else
             throw new Exception("查無資料！", 404);
@@ -35,7 +34,7 @@ try {
     } else throw new Exception("Method Not Allowed", 405);
 } catch (Exception $e) {
 
-    @oci_rollback($conn);
+    oci_rollback($conn);
     setHeader($e->getCode());
     $result = array();
     $result['code'] = $e->getCode();
@@ -46,6 +45,6 @@ try {
 
     //$e->getMessage() . " on line " . $e->getLine()
 }
-@oci_close($conn);
+oci_close($conn);
 
 echo json_encode($result);

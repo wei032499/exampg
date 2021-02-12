@@ -98,12 +98,6 @@
                 <div class="form-group row" id="union" style="display: none;">
                     <label class="col-sm-3" style="min-width: 10rem;">聯招志願序<br>(志願序由上到下)</label>
                     <div class="col-sm-6" style="min-width: 20rem">
-                        <select class="form-control form-group" name="union_priority" required>
-                            <option selected hidden disabled></option>
-                        </select>
-                        <select class="form-control form-group" name="union_priority" required>
-                            <option selected hidden disabled></option>
-                        </select>
                     </div>
                 </div>
                 <fieldset class="form-group row">
@@ -434,7 +428,7 @@
             if (deptObj.dept[index].union_type === "5") //不須選考科組別之聯合
             {
                 options = "<option value='" + $("form [name='dept']>option:selected").val() + "' selected>" + $("form [name='dept']>option:selected").text() + "</option>";
-                $("#union>div").append('<select class="form-control form-group" name="union_priority" readonly required>' + options + '</select>');
+                $("#union>div").append('<select class="form-control form-group" name="union_priority[]" readonly required>' + options + '</select>');
 
                 $.when(getData("./API/dept/union.php?dept_id=" + this.value)).done(function(_deptObj) {
                     let unionDepts = _deptObj.data;
@@ -444,7 +438,7 @@
                             options += "<option value='" + unionDepts[i].dept_id + "'>" + unionDepts[i].name + "</option>";
 
                     for (let i = 0; i < unionDepts.length - 1; i++) //生成剩下可選聯合招生系所
-                        $("#union>div").append('<select class="form-control form-group" name="union_priority" >' + options + '</select>');
+                        $("#union>div").append('<select class="form-control form-group" name="union_priority[]" >' + options + '</select>');
 
                 });
                 $("#union").css('display', '');
@@ -484,9 +478,9 @@
                         options += "<option value='" + subject_id + "'>" + subject_name + "</option>";
 
                     }
-                    $("#subject>div").append('<div class="row form-group align-items-center"><input type="checkbox" class="form-check-input" name="section" ><select class="form-control" name="subject" disabled>' + options + '</select></div>');
+                    $("#subject>div").append('<div class="row form-group align-items-center"><input type="checkbox" value="' + keys[i] + '" class="form-check-input" name="section[]" ><select class="form-control" name="subject[]" disabled>' + options + '</select></div>');
                 }
-                $("form [name='section']").on('change', function() {
+                $("form [name='section[]']").on('change', function() {
                     if ($(this).prop("checked")) {
                         $(this).siblings("select").attr('required', true);
                         $(this).siblings("select").removeAttr('disabled');
@@ -514,7 +508,7 @@
                             options += "<option value='" + subject_id + "'>" + subject_name + "</option>";
 
                         }
-                        $("#subject>div").append('<select class="form-control form-group" name="subject" required>' + options + '</select>');
+                        $("#subject>div").append('<select class="form-control form-group" name="subject[]" required>' + options + '</select>');
                     }
                 }
 
@@ -523,10 +517,10 @@
                 $("#subject").css('display', '');
 
 
-            $("form [name='subject']").on('change', function() {
+            $("form [name='subject[]']").on('change', function() {
                 $("#union>div").empty();
                 options = "<option value='" + $("form [name='dept']>option:selected").val() + "' selected>" + $("form [name='dept']>option:selected").text() + "</option>";
-                $("#union>div").append('<select class="form-control form-group" name="union_priority" readonly required>' + options + '</select>');
+                $("#union>div").append('<select class="form-control form-group" name="union_priority[]" readonly required>' + options + '</select>');
                 $.when(getData("./API/dept/union.php?subject_id=" + this.value)).done(function(_deptObj) {
                     let unionDepts = _deptObj.data;
                     let options = "<option value='-1' selected>放棄志願</option>";
@@ -535,7 +529,7 @@
                             options += "<option value='" + unionDepts[i].dept_id + "'>" + unionDepts[i].name + "</option>";
 
                     for (let i = 0; i < unionDepts.length - 1; i++) //生成剩下可選聯合招生系所
-                        $("#union>div").append('<select class="form-control form-group" name="union_priority" >' + options + '</select>');
+                        $("#union>div").append('<select class="form-control form-group" name="union_priority[]" >' + options + '</select>');
 
                     $("#union").css('display', '');
                 });
@@ -729,8 +723,8 @@
             sessionStorage.setItem("subject", $("#subject").prop("outerHTML"));
             sessionStorage.setItem("union", $("#union").prop("outerHTML"));
 
-            for (let i = 0; i < $("form [name='union_priority'] option:selected").length; i++)
-                if ($("form [name='union_priority'] option:selected")[i].value === "-1")
+            for (let i = 0; i < $("form [name='union_priority[]'] option:selected").length; i++)
+                if ($("form [name='union_priority[]'] option:selected")[i].value === "-1")
                     if (confirm("有放棄的志願序，確定繼續嗎？"))
                         break;
                     else
