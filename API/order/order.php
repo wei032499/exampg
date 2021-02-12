@@ -42,8 +42,8 @@ try {
 
         if ($graduated === 2) //曾報考當年度碩推者,直接銷帳
         {
-            $signup_enable = 1; //已入帳
-            $checked = 1; //資料已確認，無法再修改
+            $signup_enable = 1; //可進行報名
+            $checked = 1; //已入帳
         } else {
             $signup_enable = 0;
             $checked = 0;

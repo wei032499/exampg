@@ -101,7 +101,28 @@ class Token
     {
         global $SCHOOL_ID, $ACT_YEAR_NO;
 
-        $sql = "SELECT SIGNUP_ENABLE,LOCK_UP,CHECKED FROM SN_DB WHERE SCHOOL_ID='$SCHOOL_ID' AND YEAR='$ACT_YEAR_NO' AND SN=:sn";
+        $sql = "SELECT SN_DB.SIGNUP_ENABLE,SN_DB.LOCK_UP,SN_DB.CHECKED,SIGNUPDATA.LOCK_UP as FORM_LOCK FROM SN_DB LEFT JOIN SIGNUPDATA ON SN_DB.SCHOOL_ID=SIGNUPDATA.SCHOOL_ID AND SN_DB.YEAR=SIGNUPDATA.YEAR AND SN_DB.SN=SIGNUPDATA.SIGNUP_SN WHERE SN_DB.SCHOOL_ID='$SCHOOL_ID' AND SN_DB.YEAR='$ACT_YEAR_NO' AND SN_DB.SN=:sn";
+        $stmt = oci_parse($this->conn, $sql);
+        oci_bind_by_name($stmt, ':sn', $this->payload['sn']);
+        oci_execute($stmt, OCI_DEFAULT);
+        oci_fetch($stmt);
+        $signup_enable = oci_result($stmt, "SIGNUP_ENABLE"); // 是否可進行報名
+        $lockup = oci_result($stmt, "LOCK_UP"); // 是否已填寫報名表
+        $checked = oci_result($stmt, "CHECKED"); // 是否已入帳
+        $form_lock = oci_result($stmt, "FORM_LOCK"); // 資料是否已確認
+        oci_free_statement($stmt);
+        if ($checked !== "1")
+            return 0; //尚未銷帳
+        else if ($signup_enable === "1" && $form_lock === "1")
+            return 3; //資料已確認(已鎖定)
+        else if ($signup_enable === "1" && $lockup === "0")
+            return 1; //尚未填寫報名表
+        else if ($signup_enable === "1" && $lockup === "1")
+            return 2; //已填寫報名表，資料尚未確認
+        else
+            return -1; //error
+
+        /*$sql = "SELECT SIGNUP_ENABLE,LOCK_UP,CHECKED FROM SN_DB WHERE SCHOOL_ID='$SCHOOL_ID' AND YEAR='$ACT_YEAR_NO' AND SN=:sn";
         $stmt = oci_parse($this->conn, $sql);
         oci_bind_by_name($stmt, ':sn', $this->payload['sn']);
         oci_execute($stmt, OCI_DEFAULT);
@@ -119,7 +140,7 @@ class Token
         else if ($lockup === "1")
             return 2; //已填寫報名表，資料尚未確認
         else
-            return -1; //error
+            return -1; //error*/
     }
 
     /**

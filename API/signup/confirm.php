@@ -75,14 +75,14 @@ try {
         }
         oci_free_statement($stmt);
 
-        $sql = "UPDATE SN_DB SET CHECK_DATE=to_date('$time','yyyy-mm-dd HH24:MI:SS'),CHECKED='1' WHERE SCHOOL_ID='$SCHOOL_ID' AND YEAR='$ACT_YEAR_NO' AND SN=:sn";
+        /*$sql = "UPDATE SN_DB SET CHECK_DATE=to_date('$time','yyyy-mm-dd HH24:MI:SS'),CHECKED='1' WHERE SCHOOL_ID='$SCHOOL_ID' AND YEAR='$ACT_YEAR_NO' AND SN=:sn";
         $stmt = oci_parse($conn, $sql);
         oci_bind_by_name($stmt, ':sn',  $payload['sn']);
         if (!oci_execute($stmt, OCI_DEFAULT)) {
             $error = analyzeError(oci_error()['message']);
             throw new Exception($error['message'], $error['code']);
         }
-        oci_free_statement($stmt);
+        oci_free_statement($stmt);*/
 
 
 
