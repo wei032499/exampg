@@ -52,7 +52,6 @@
                 </div>
                 <p style="text-align: center;">
                     <span style="color:red">※序號及密碼皆為10碼，所有的英文字母皆為大寫※</span><br>
-                    ※往意：必須利用<span style="color:red">報名費繳款帳號(99216-31xxxxxx-x)</span>繳完報名費後才可填寫報名表※<br>
                 </p>
                 <div class="row justify-content-center mt-2">
                     <button type="button" style="min-width:8.5rem" class="btn btn-warning btn-sm col-1 mx-1" onclick="window.location.assign('./query_pwd.php');">忘記序號、密碼</button>
