@@ -25,21 +25,17 @@
                     <div style='width: 8px;height: 8px;display: block;background: #c84c37;'></div>
                     <div style='width: 8px;height: 8px;display: block;background: #3a7eb8;'></div>
                 </div>
-                <h3 style="letter-spacing: 0.2rem;">
-                    :::准考證列印 <span style="color:red">(使用者登入)</span>
+                <h3 style="letter-spacing: 0.2rem;min-width:14rem">
+                    :::申明就讀(遞補)意願 <span style="color:red">(使用者登入)</span>
                 </h3>
             </div>
             <form class="border p-4 bg-white shadow rounded ">
                 <div class="form-group row justify-content-center">
-                    <label for="inputIDNumber" class="col-sm-1" style="min-width:7rem">身分證字號</label>
-                    <input type="text" class="form-control col-sm-4" id="inputIDNumber" pattern="[A-Z]\d{9}" name="IDNumber" required>
-                </div>
-                <div class="form-group row justify-content-center">
-                    <label for="inputSerialNo" class="col-sm-1" style="min-width:7rem">序號</label>
+                    <label for="inputSerialNo" class="col-sm-1" style="min-width:4rem">序號</label>
                     <input type="text" class="form-control col-sm-4" pattern="[A-Z0-9]{10}" id="inputSerialNo" name="serial_no" required>
                 </div>
                 <div class="form-group row justify-content-center">
-                    <label for="inputPwd" class="col-sm-1" style="min-width:7rem">密碼</label>
+                    <label for="inputPwd" class="col-sm-1" style="min-width:4rem">密碼</label>
                     <input type="password" class="form-control col-sm-4" pattern="[A-Z0-9]{10}" id="inputPwd" name="pwd" required>
                 </div>
                 <p style="text-align: center;">
@@ -58,36 +54,7 @@
 
     <?php require_once("./module/footer.php") ?>
 
-    <script>
-        $("form").on('submit', function(e) {
-            e.preventDefault();
 
-            $.ajax({
-                    type: 'POST',
-                    url: './API/auth/login.php',
-                    data: $("form").serialize(),
-                    dataType: 'json'
-                }).done(function(response) {
-                    toastr.clear();
-                    toastr.success("登入成功！");
-                    window.location.replace('./alter.php?step=2')
-                })
-                .fail(function(jqXHR, exception) {
-                    // toastr.remove();
-                    toastr.clear();
-                    let response = jqXHR.responseJSON;
-                    let msg = '';
-                    if (response === undefined)
-                        msg = exception;
-                    else if (response.hasOwnProperty('message')) {
-                        msg = response.message;
-                    } else {
-                        msg = 'Uncaught Error.\n' + jqXHR.responseText;
-                    }
-                    toastr.error(msg);
-                });
-        });
-    </script>
 
 </body>
 

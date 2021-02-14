@@ -62,8 +62,8 @@
                         報到相關
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="./list.php">*正備取生報到狀況</a></li>
-                        <li><a class="dropdown-item" href="./queue.php">*正(備)取生申明就讀(遞補)意願</a></li>
+                        <li><a class="dropdown-item" href="./enroll_list.php">*正備取生報到狀況</a></li>
+                        <li><a class="dropdown-item" href="./enroll_queue.php">*正(備)取生申明就讀(遞補)意願</a></li>
                     </ul>
                 </li>
                 <li class="nav-item dropdown">
@@ -92,6 +92,8 @@
             $("#navbarSupportedContent>ul>li").eq(3).addClass("active");
         } else if (filename.indexOf("query_") !== -1) {
             $("#navbarSupportedContent>ul>li").eq(4).addClass("active");
+        } else if (filename.indexOf("enroll_") !== -1) {
+            $("#navbarSupportedContent>ul>li").eq(5).addClass("active");
         } else if (filename === "intro_sw.php") {
             $("#navbarSupportedContent>ul>li").eq(6).addClass("active");
         }
