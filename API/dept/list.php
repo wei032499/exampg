@@ -83,7 +83,10 @@ try {
             throw new Exception($error['message'], $error['code']);
         }
         while (oci_fetch($stmt))
-            $result['data']['subject'][oci_result($stmt, 'DEPT_ID')][oci_result($stmt, 'GROUP_ID')][oci_result($stmt, 'ORASTATUS_ID')][oci_result($stmt, 'SECTION')][] = array('subject_id' => oci_result($stmt, 'ID'), 'name' => oci_result($stmt, 'NAME'));
+            if (oci_result($stmt, 'DEPT_ID') === "334" && oci_result($stmt, 'ID') !== "3349118") //車輛所 考科選擇"資料審查(3349118)"時才顯示上傳區塊
+                $result['data']['subject'][oci_result($stmt, 'DEPT_ID')][oci_result($stmt, 'GROUP_ID')][oci_result($stmt, 'ORASTATUS_ID')][oci_result($stmt, 'SECTION')][] = array('subject_id' => oci_result($stmt, 'ID'), 'name' => oci_result($stmt, 'NAME'), 'upload' => false);
+            else
+                $result['data']['subject'][oci_result($stmt, 'DEPT_ID')][oci_result($stmt, 'GROUP_ID')][oci_result($stmt, 'ORASTATUS_ID')][oci_result($stmt, 'SECTION')][] = array('subject_id' => oci_result($stmt, 'ID'), 'name' => oci_result($stmt, 'NAME'));
         oci_free_statement($stmt);
 
         /*

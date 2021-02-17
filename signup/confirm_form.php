@@ -570,7 +570,7 @@
                         $('form #fileLink').css('color', '');
                         $('form #fileLink').addClass('color-info');
                         $('form #fileLink').text('檔案已上傳');
-                        $('form #fileLink').attr('href', './API/signup/file.php');
+                        $('form #fileLink').attr('href', './API/signup/file.php?export=download');
                         $(window).off('beforeunload');
                         $("form [name='file']").removeAttr('disabled');
                         $("form [type='submit']").removeAttr('disabled');

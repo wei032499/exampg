@@ -14,6 +14,12 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
     <script src="./js/toastr.min.js"></script>
     <script src="./js/custom.js"></script>
+
+    <!--jQuery Validation Plugin-->
+    <script src="./js/jquery.validate.min.js"></script>
+    <script src="./js/additional-methods.min.js"></script>
+    <script src="./js/messages_zh_TW.min.js"></script>
+
     <script>
         if (sessionStorage === undefined) {
             alert("未支援Web Storage！\n請更換瀏覽器再試。");
@@ -46,13 +52,14 @@
                     <legend class="col-form-label col-sm-3 float-sm-left">性別</legend>
                     <div class="col-sm-4">
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="gender" id="inlineRadio1" value="1" required>
+                            <input class="form-check-input" type="radio" name="gender" id="inlineRadio1" value="1" aria-describedby="genderErrMsg" required>
                             <label class="form-check-label" for="inlineRadio1">男</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="gender" id="inlineRadio2" value="0" required>
+                            <input class="form-check-input" type="radio" name="gender" id="inlineRadio2" value="0" aria-describedby="genderErrMsg" required>
                             <label class="form-check-label" for="inlineRadio2">女</label>
                         </div>
+                        <span class="error" id="genderErrMsg"></span>
                     </div>
                 </fieldset>
                 <div class="form-group row">
@@ -113,13 +120,21 @@
             fillForm(formData);
         });
 
-        $("form").on('submit', function(e) {
+        $("form").validate({
+            errorElement: "span",
+            submitHandler: function(form) {
+                sessionStorage.setItem("order", $("form").serialize());
+                window.location.replace('./order.php?step=3');
+            }
+
+        });
+        /*$("form").on('submit', function(e) {
             e.preventDefault();
 
             sessionStorage.setItem("order", $("form").serialize());
             window.location.replace('./order.php?step=3');
 
-        });
+        });*/
     </script>
 
 </body>

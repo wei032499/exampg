@@ -89,3 +89,8 @@ a.deco-none {
     font-size: 0.95rem !important;
     color:black !important;
 }
+
+form span.error {
+    color: #ff0000;
+    padding: 0.5rem;
+  }

@@ -69,15 +69,11 @@
                             <option selected disabled hidden></option>
                         </select>
                     </div>
-                    <div class="form-group col-md-6">
-                    </div>
-                </div>
-                <hr>
-                <div class="form-group row" id="subject" style="display: none;">
-                    <label class="col-sm-3" style="min-width: 9rem;">選考科目<br>
-                        <span id="subject_msg" style="color:red;"></span>
-                    </label>
-                    <div class="col-sm-6">
+                    <div class="form-group col-md-6" id="subject" style="visibility: hidden;">
+                        <label>選考科目<br>
+                            <span id="subject_msg" style="color:red;"></span>
+                        </label>
+                        <div></div>
                     </div>
                 </div>
                 <div class="form-group row" id="union" style="display: none;">
@@ -85,6 +81,7 @@
                     <div class="col-sm-6" style="min-width: 20rem">
                     </div>
                 </div>
+                <hr>
                 <fieldset class="form-group row">
                     <legend class="col-form-label col-sm-3 float-sm-left" style="min-width: 9rem;"><span style="color:red">身心障礙考生</span></legend>
                     <div class="col-xl row mx-0">
@@ -333,7 +330,6 @@
                             </div>
                         </div>
                     </div>
-
                 </fieldset>
                 <div class="form-group row">
                     <label class="col-sm-3">繳驗證件</label>
@@ -499,7 +495,7 @@
                         $('form #fileLink').css('color', '');
                         $('form #fileLink').addClass('color-info');
                         $('form #fileLink').text('檔案已上傳');
-                        $('form #fileLink').attr('href', './API/signup/file.php');
+                        $('form #fileLink').attr('href', './API/signup/file.php?export=download');
                     })
                     .fail(function(jqXHR, exception) {
                         // toastr.remove();

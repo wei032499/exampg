@@ -15,6 +15,11 @@
     <script src="./js/toastr.min.js"></script>
     <script src="./js/custom.js"></script>
 
+    <!--jQuery Validation Plugin-->
+    <script src="./js/jquery.validate.min.js"></script>
+    <script src="./js/additional-methods.min.js"></script>
+    <script src="./js/messages_zh_TW.min.js"></script>
+
     <script>
         $.holdReady(true);
         var deptObj;
@@ -84,15 +89,11 @@
                             <option selected hidden disabled></option>
                         </select>
                     </div>
-                    <div class="form-group col-md-6">
-                    </div>
-                </div>
-                <hr>
-                <div class="form-group row" id="subject" style="display: none;">
-                    <label class="col-sm-3" style="min-width: 9rem;">選考科目<br>
-                        <span id="subject_msg" style="color:red;"></span>
-                    </label>
-                    <div class="col-sm-6">
+                    <div class="form-group col-md-6" id="subject" style="visibility: hidden;">
+                        <label>選考科目<br>
+                            <span id="subject_msg" style="color:red;"></span>
+                        </label>
+                        <div></div>
                     </div>
                 </div>
                 <div class="form-group row" id="union" style="display: none;">
@@ -100,6 +101,7 @@
                     <div class="col-sm-6" style="min-width: 20rem">
                     </div>
                 </div>
+                <hr>
                 <fieldset class="form-group row">
                     <legend class="col-form-label col-sm-3 float-sm-left" style="min-width: 9rem;"><span style="color:red">身心障礙考生</span></legend>
                     <div class="col-xl row mx-0">
@@ -141,6 +143,7 @@
                     </div>
                 </fieldset>
                 <hr />
+
                 <div class="form-group row">
                     <label for="inputName" class="col-sm-3">姓名</label>
                     <input type="text" class="form-control col-sm-5" id="inputName" name="name" required>
@@ -154,19 +157,20 @@
                     <legend class="col-form-label col-sm-3 float-sm-left">性別</legend>
                     <div class="col-sm-5">
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="gender" id="gender1" value="1" required>
+                            <input class="form-check-input" type="radio" name="gender" id="gender1" value="1" aria-describedby="genderErrMsg" required>
                             <label class="form-check-label" for="gender1">男</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="gender" id="gender2" value="2" required>
+                            <input class="form-check-input" type="radio" name="gender" id="gender2" value="2" aria-describedby="genderErrMsg" required>
                             <label class="form-check-label" for="gender2">女</label>
                         </div>
+                        <span class="error" id="genderErrMsg"></span>
                     </div>
                 </fieldset>
                 <div class="form-group row">
                     <label for="inputBirthday" class="col-sm-3">出生日期</label>
-                    <input type="date" class="form-control col-sm-5" id="inputBirthday" aria-describedby="birthdayHelp" name="birthday" placeholder="yyyy-mm-dd" pattern="\d{4}-\d{2}-\d{2}" required>
-                    <small id="birthdayHelp" class="form-text text-muted col-sm-4">*西元年 = 民國年 + 1911</small>
+                    <input type="date" class="form-control col-sm-5" id="inputBirthday" aria-describedby="birthdayErrMsg" aria-describedby="birthdayHelp" name="birthday" placeholder="yyyy-mm-dd" pattern="\d{4}-\d{2}-\d{2}" required>
+                    <small id="birthdayHelp" class="form-text text-muted col-sm-4">*西元年 = 民國年 + 1911<br><span class="error" id="birthdayErrMsg"></span></small>
                 </div>
                 <div class="form-group row">
                     <label class="col-sm-3">通訊地址</label>
@@ -255,21 +259,23 @@
                     <div class="col-xl">
                         <div class="row col form-group">
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="prove_type" id="prove1" value="1" href="#tab_prove1" required>
+                                <input class="form-check-input" type="radio" name="prove_type" id="prove1" value="1" href="#tab_prove1" aria-describedby="proveErrMsg" required>
                                 <label class="form-check-label" for="prove1">學士學位</label>
                             </div>
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="prove_type" id="prove2" value="2" href="#tab_prove2" required>
+                                <input class="form-check-input" type="radio" name="prove_type" id="prove2" value="2" href="#tab_prove2" aria-describedby="proveErrMsg" required>
                                 <label class="form-check-label" for="prove2">同等學力</label>
                             </div>
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="prove_type" id="prove3" value="3" href="#tab_prove3" required>
+                                <input class="form-check-input" type="radio" name="prove_type" id="prove3" value="3" href="#tab_prove3" aria-describedby="proveErrMsg" required>
                                 <label class="form-check-label" for="prove3">國家考試及格</label>
                             </div>
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="prove_type" id="prove4" value="4" href="#tab_prove4" required>
+                                <input class="form-check-input" type="radio" name="prove_type" id="prove4" value="4" href="#tab_prove4" aria-describedby="proveErrMsg" required>
                                 <label class="form-check-label" for="prove4">技能檢定合格</label>
                             </div>
+                            <span class="error" id="proveErrMsg"></span>
+
                         </div>
                         <div class="row col form-group tab-content" id="proveTabContent">
                             <div class="tab-pane fade" id="tab_prove1" role="tabpanel" aria-labelledby="prove1" style="width: 100%;">
@@ -341,12 +347,16 @@
                                     </div>
                                     <div class="row  form-group align-items-center " style="padding-left: 15px;">
                                         <div class="col form-group row align-items-center" style="min-width: 12rem;max-width: 12rem;">
-                                            修業&nbsp;<input type="number" style="max-width: 5rem;" class="form-control col-sm-3" min="0" step="1" pattern="\d" name="ac_m_y" required>&nbsp;年，
+                                            修業&nbsp;<input type="number" style="max-width: 5rem;" class="form-control col-sm-3" min="0" step="1" pattern="\d" name="ac_m_y" aria-describedby="acErrMsg" required>&nbsp;年，
                                         </div>
                                         <div class="col form-group row align-items-center" style="min-width: 13rem;">
-                                            已離校&nbsp;<input type="number" style="max-width: 5rem;" class="form-control col-sm-3" min="0" step="1" pattern="\d" name="ac_leave_y" required>&nbsp;年。
+                                            已離校&nbsp;<input type="number" style="max-width: 5rem;" class="form-control col-sm-3" min="0" step="1" pattern="\d" name="ac_leave_y" aria-describedby="acErrMsg" required>&nbsp;年。
+                                            <span class="error" id="acErrMsg"></span>
+
                                         </div>
+
                                     </div>
+
                                 </div>
                             </div>
                         </div>
@@ -393,14 +403,19 @@
     <script>
         //報考系所
         $("form [name='dept']").on('change', function() {
-            $("#subject").css('display', 'none');
+            $("#subject").css('visibility', 'hidden');
+            $("#subject>div").empty();
             $("#union").css('display', 'none');
             $("#union>div").empty();
-            $("form [name='organize_id']").find('option').remove().end().append('<option selected hidden disabled></option>');
             $("form [name='orastatus_id']").find('option').remove().end().append('<option selected hidden disabled></option>');
+            $("form [name='organize_id']").find('option').remove();
+
             for (let i = 0; i < deptObj.group[$("form [name='dept']").val()].length; i++)
                 $("form [name='organize_id']").append("<option value='" + deptObj.group[$("form [name='dept']").val()][i].group_id + "'>" + deptObj.group[$("form [name='dept']").val()][i].name + "</option>");
-
+            if (deptObj.group[$("form [name='dept']").val()].length > 1)
+                $("form [name='organize_id']").append('<option selected hidden disabled></option>');
+            else
+                $("form [name='organize_id']>option:selected").change();
             let index = deptObj.dept.map(function(e) {
                 return e.dept_id;
             }).indexOf($("form [name='dept']").val());
@@ -453,14 +468,19 @@
 
         });
         $("form [name='organize_id']").on('change', function() {
-            $("form [name='orastatus_id']").find('option').remove().end().append('<option selected hidden disabled></option>');
+            $("form [name='orastatus_id']").find('option').remove();
             for (let i = 0; i < deptObj.status[$("form [name='dept']").val()][$("form [name='organize_id']").val()].length; i++)
                 $("form [name='orastatus_id']").append("<option value='" + deptObj.status[$("form [name='dept']").val()][$("form [name='organize_id']").val()][i].status_id + "'>" + deptObj.status[$("form [name='dept']").val()][$("form [name='organize_id']").val()][i].name + "</option>");
-
+            if (deptObj.status[$("form [name='dept']").val()][$("form [name='organize_id']").val()].length > 1)
+                $("form [name='orastatus_id']").append('<option selected hidden disabled></option>');
+            else
+                $("form [name='orastatus_id']>option:selected").change();
         });
         $("form [name='orastatus_id']").on('change', function() {
-            $("#subject").css('display', 'none');
+            $("#subject").css('visibility', 'hidden');
             $("#subject>div").empty();
+            $("#union").css('display', 'none');
+            $("#union>div").empty();
             let isOptional = false;
             let index = deptObj.dept.map(function(e) {
                 return e.dept_id;
@@ -479,7 +499,7 @@
                         options += "<option value='" + subject_id + "'>" + subject_name + "</option>";
 
                     }
-                    $("#subject>div").append('<div class="row form-group align-items-center"><input type="checkbox" class="form-check-input" name="section[]" ><select class="form-control" name="subject[]" disabled>' + options + '</select></div>');
+                    $("#subject>div").append('<div class="row form-group align-items-center"><input type="checkbox" value="' + keys[i] + '" class="form-check-input" name="section[]" ><select class="form-control" name="subject[]" disabled>' + options + '</select></div>');
                 }
                 $("form [name='section[]']").on('change', function() {
                     if ($(this).prop("checked")) {
@@ -515,7 +535,7 @@
 
             }
             if (isOptional)
-                $("#subject").css('display', '');
+                $("#subject").css('visibility', '');
 
 
             $("form [name='subject[]']").on('change', function() {
@@ -534,6 +554,25 @@
 
                     $("#union").css('display', '');
                 });
+                let section = this.value.substr(5, 1);
+                let index = deptObj.subject[$("form [name='dept']").val()][$("form [name='organize_id']").val()][$("form [name='orastatus_id']").val()][section].map(function(e) {
+                    return e.subject_id;
+                }).indexOf(this.value);
+                let subject = deptObj.subject[$("form [name='dept']").val()][$("form [name='organize_id']").val()][$("form [name='orastatus_id']").val()][section][index];
+                if (subject.upload !== undefined && subject.upload === false) {
+                    $("#upload_row").css('display', 'none');
+                    $("form [name='file']").attr('disabled', true);
+                } else {
+                    let index = deptObj.dept.map(function(e) {
+                        return e.dept_id;
+                    }).indexOf($("form [name='dept']").val());
+                    if (deptObj.dept[index].upload_type > 1) //upload_type 審查資料繳交方式:  1:郵寄  2:上傳  3:郵寄+上傳
+                    {
+                        checkUploadStatus();
+                        $("#upload_row").css('display', '');
+                        $("form [name='file']").removeAttr('disabled');
+                    }
+                }
             });
         });
 
@@ -685,7 +724,7 @@
                         $('form #fileLink').css('color', '');
                         $('form #fileLink').addClass('color-info');
                         $('form #fileLink').text('檔案已上傳');
-                        $('form #fileLink').attr('href', './API/signup/file.php');
+                        $('form #fileLink').attr('href', './API/signup/file.php?export=download');
                         $(window).off('beforeunload');
                         $("form [name='file']").removeAttr('disabled');
                         $("form [type='submit']").removeAttr('disabled');
@@ -712,8 +751,30 @@
             }
         });
 
+        $("form").validate({
+            errorElement: "span",
+            submitHandler: function(form) {
+                for (let i = 0; i < $("form [name='union_priority[]'] option:selected").length; i++)
+                    if ($("form [name='union_priority[]'] option:selected")[i].value === "-1")
+                        if (confirm("有放棄的志願序，確定繼續嗎？"))
+                            break;
+                        else
+                            return false;
 
-        $("form").on('submit', function(e) {
+                sessionStorage.setItem("alter", $("form").serialize());
+                sessionStorage.setItem("dept", $("form [name='dept']>option:checked").prop("outerHTML"));
+                sessionStorage.setItem("organize_id", $("form [name='organize_id']>option:checked").prop("outerHTML"));
+                sessionStorage.setItem("orastatus_id", $("form [name='orastatus_id']>option:checked").prop("outerHTML"));
+                sessionStorage.setItem("subject", $("#subject").prop("outerHTML"));
+                sessionStorage.setItem("union", $("#union").prop("outerHTML"));
+
+
+
+                window.location.replace('./alter.php?step=3');
+            }
+
+        });
+        /*$("form").on('submit', function(e) {
             e.preventDefault();
 
             for (let i = 0; i < $("form [name='union_priority[]'] option:selected").length; i++)
@@ -735,7 +796,7 @@
             window.location.replace('./alter.php?step=3');
 
 
-        });
+        });*/
         $("form").on('reset', function() {
             $("form [name='id']").attr('value', $("form [name='id']").val());
             $("form [name='email']").attr('value', $("form [name='email']").val());
