@@ -65,7 +65,7 @@
                         <button type="button" id="logout" style="min-width:4rem" class="btn btn-info btn-sm ml-3">登出</button>
                     </div>
                 </div>
-                <table class="table table-success table-hover table-bordered">
+                <table class="table table-success2 table-hover table-bordered">
                     <thead>
                         <tr class="table-primary">
                             <th scope="col" style="width: 90%;">公告事項</th>
