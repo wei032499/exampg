@@ -478,8 +478,8 @@
 
         //"同上"按鈕
         $("#address2_btn").on('click', function() {
-            $("form [name='zipcode2']").val($("form [name='zipcode']").val());
-            $("form [name='address2']").val($("form [name='address']").val());
+            $("form [name='zipcode2']").val($("form [name='zipcode']").val()).blur();
+            $("form [name='address2']").val($("form [name='address']").val()).blur();
         });
 
         //initail

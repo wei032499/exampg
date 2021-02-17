@@ -94,3 +94,7 @@ form span.error {
     color: #ff0000;
     padding: 0.5rem;
   }
+
+form input.error, form select.error{
+    box-shadow: 0 0 1.5px 1px red;
+}

@@ -126,7 +126,6 @@
                 sessionStorage.setItem("order", $("form").serialize());
                 window.location.replace('./order.php?step=3');
             }
-
         });
         /*$("form").on('submit', function(e) {
             e.preventDefault();
