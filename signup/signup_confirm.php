@@ -368,6 +368,8 @@
             $("form [name='orastatus_id']").empty().append(sessionStorage.getItem('orastatus_id'));
             $("#subject").replaceWith(sessionStorage.getItem('subject'));
             $("#union").replaceWith(sessionStorage.getItem('union'));
+            $("#upload_row").replaceWith(sessionStorage.getItem('upload_row'));
+            $("form [name='file']").remove();
             fillForm(getSessionItems('signup'));
             $("form select option").not(":selected").remove().end();
             $("form [name='section[]'").not(":checked").parent().remove().end();
@@ -427,92 +429,6 @@
             }
         });
 
-
-
-        //備審資料上傳狀態
-        function checkUploadStatus() {
-            $('form #fileLink').text('');
-            $.ajax({
-                type: 'GET',
-                url: './API/signup/file.php',
-                dataType: 'text'
-            }).done(function(response) {
-                $('form #fileLink').css('color', '');
-                $('form #fileLink').addClass('color-info');
-                $('form #fileLink').text('檔案已上傳');
-                $('form #fileLink').attr('href', './API/signup/file.php?export=download');
-
-            }).fail(function(jqXHR, exception) {
-                if (jqXHR.status === 404) {
-                    $('form #fileLink').removeClass('color-info');
-                    $('form #fileLink').css('color', 'red');
-                    $('form #fileLink').text('備審資料檔案尚未上傳');
-                    $('form #fileLink').removeAttr('href');
-                } else {
-                    toastr.clear();
-                    let response = jqXHR.responseJSON;
-                    let msg = '';
-                    if (response === undefined)
-                        msg = exception;
-                    else if (response.hasOwnProperty('message')) {
-                        msg = response.message;
-                    } else {
-                        msg = 'Uncaught Error.\n' + jqXHR.responseText;
-                    }
-                    toastr.error(msg);
-                }
-
-
-            });
-        }
-
-        //備審資料上傳
-        $("form [name='file']").on('change', function() {
-
-            $('form #fileLink').removeClass('color-info');
-            $('form #fileLink').css('color', 'red');
-            $('form #fileLink').text('備審資料檔案尚未上傳');
-            $('form #fileLink').removeAttr('href');
-
-            var fd = new FormData();
-            var files = $(this)[0].files;
-
-            // Check file selected or not
-            if (files.length > 0) {
-                toastr.clear();
-                toastr.info("檔案上傳中");
-                fd.append('file', files[0]);
-
-                $.ajax({
-                        url: './API/signup/file.php',
-                        type: 'POST',
-                        data: fd,
-                        contentType: false,
-                        processData: false
-                    }).done(function(response) {
-                        toastr.clear();
-                        toastr.success("檔案上傳成功成功！");
-                        $('form #fileLink').css('color', '');
-                        $('form #fileLink').addClass('color-info');
-                        $('form #fileLink').text('檔案已上傳');
-                        $('form #fileLink').attr('href', './API/signup/file.php?export=download');
-                    })
-                    .fail(function(jqXHR, exception) {
-                        // toastr.remove();
-                        toastr.clear();
-                        let response = jqXHR.responseJSON;
-                        let msg = '';
-                        if (response === undefined)
-                            msg = exception;
-                        else if (response.hasOwnProperty('message')) {
-                            msg = response.message;
-                        } else {
-                            msg = 'Uncaught Error.\n' + jqXHR.responseText;
-                        }
-                        toastr.error(msg);
-                    });
-            }
-        });
 
 
         $("form").on('submit', function(e) {

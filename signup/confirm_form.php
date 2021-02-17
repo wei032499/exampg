@@ -30,6 +30,11 @@
                         return e.dept_id;
                     }).indexOf(formData.dept);
                     $("form [name='dept']").empty().append("<option value='" + formData.dept + "' selected>" + deptObj.dept[index].name + "</option>");
+                    if (deptObj.dept[index].upload_type > 1) //upload_type 審查資料繳交方式:  1:郵寄  2:上傳  3:郵寄+上傳
+                    {
+                        checkUploadStatus();
+                        $("#upload_row").css('display', '');
+                    }
 
                     if (formData.place === "2") //限彰化考區
                     {
@@ -57,6 +62,10 @@
                             let subject_name = deptObj.subject[formData.dept][formData.organize_id][formData.orastatus_id][section][index].name;
                             $("#subject>div").append('<select class="form-control-plaintext form-group" name="subject[]" required><option value="' + formData.subject[i] + '" selected>' + subject_name + '</option></select>');
 
+                            let subject = deptObj.subject[formData.dept][formData.organize_id][formData.orastatus_id][section][index];
+                            if (subject.upload !== undefined && subject.upload === false) {
+                                $("#upload_row").css('display', 'none');
+                            }
                         }
                         $("#subject").css('display', '');
                     }

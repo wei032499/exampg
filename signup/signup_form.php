@@ -760,6 +760,7 @@
                 sessionStorage.setItem("orastatus_id", $("form [name='orastatus_id']>option:checked").prop("outerHTML"));
                 sessionStorage.setItem("subject", $("#subject").prop("outerHTML"));
                 sessionStorage.setItem("union", $("#union").prop("outerHTML"));
+                sessionStorage.setItem("upload_row", $("#upload_row").prop("outerHTML"));
 
                 for (let i = 0; i < $("form [name='union_priority[]'] option:selected").length; i++)
                     if ($("form [name='union_priority[]'] option:selected")[i].value === "-1")

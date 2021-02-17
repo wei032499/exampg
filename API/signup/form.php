@@ -279,6 +279,8 @@ try {
                     array_splice($_POST['union_priority'], $key, 1);
 
                 for ($i = 0; $i < count($_POST['union_priority']); $i++) {
+                    if ($_POST['union_priority'][$i] === "-1")
+                        continue;
                     $sql = "SELECT NAME FROM DEPARTMENT where school_id='$SCHOOL_ID' and year='$ACT_YEAR_NO' and ID=:dept_id";
                     $stmt = oci_parse($conn, $sql);
                     oci_bind_by_name($stmt, ':dept_id',  $_POST['union_priority'][$i]);
@@ -446,6 +448,8 @@ try {
                     array_splice($post_vars['union_priority'], $key, 1);
 
                 for ($i = 0; $i < count($post_vars['union_priority']); $i++) {
+                    if ($post_vars['union_priority'][$i] === "-1")
+                        continue;
                     $sql = "SELECT NAME FROM DEPARTMENT where  school_id='$SCHOOL_ID' and year='$ACT_YEAR_NO' and ID=:dept_id";
                     $stmt = oci_parse($conn, $sql);
                     oci_bind_by_name($stmt, ':dept_id',  $post_vars['union_priority'][$i]);
