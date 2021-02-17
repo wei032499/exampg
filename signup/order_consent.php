@@ -18,9 +18,6 @@
         if (sessionStorage === undefined) {
             alert("未支援Web Storage！\n請更換瀏覽器再試。");
             window.location.replace('./');
-        } else {
-            sessionStorage.removeItem('signup');
-            sessionStorage.removeItem('agree');
         }
     </script>
 </head>
@@ -39,7 +36,7 @@
                 </div>
                 <div class="row ">
                     <h3 class="col-xl" style="letter-spacing: 0.2rem;min-width:14rem">
-                        :::填寫報名表 <span style="color:red">(個人資料提供同意書)</span>
+                        :::取得繳費帳號 <span style="color:red">(個人資料提供同意書)</span>
                     </h3>
                     <div id="loginInfo" class="col row justify-content-end mx-0 align-items-center" style="display: none !important;">
                         <div>Hi~ <span id="username"></span> </div>
@@ -82,7 +79,7 @@
             e.preventDefault();
 
             sessionStorage.setItem("agree", "true");
-            window.location.replace('./signup.php?step=3');
+            window.location.replace('./order.php?step=2');
 
         });
     </script>

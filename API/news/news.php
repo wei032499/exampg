@@ -16,7 +16,7 @@ try {
         (若您遺失繳費帳號，請重新<a href='./order.php'>取得繳費帳號</a>，並確實記下您的繳費帳號進行繳費。)<br>
         曾報考本校110學年度碩士班推薦甄試生仍須上網取得報名費繳費帳號，取得完成後將由系統直接寄發序號及密碼至考生電子信箱。");
         $result[] = array('date' => "12月18日", "content" => "報名費繳費日期：【 <span class='font-weight-bold' style='color:red'>" . $ACC2_START_DATE . "</span> 】 至 【 <span class='font-weight-bold' style='color:red'>" . $ACC2_END_DATE . "</span> 】 止。<br>
-        (若您的報名費用已繳款且銷帳成功，卻一直未收到電子郵件通知，請檢查信件是否在垃圾信件匣中，或利用系統自動重寄功能(資料查詢--><a href='./forget.php'>查詢序號密碼</a>)重新寄送。)");
+        (若您的報名費用已繳款且銷帳成功，卻一直未收到電子郵件通知，請檢查信件是否在垃圾信件匣中，或利用系統自動重寄功能(資料查詢--><a href='./query_pwd.php'>查詢序號密碼</a>)重新寄送。)");
         $result[] = array('date' => "12月18日", "content" => "網路填寫報名表日期：【 <span class='font-weight-bold' style='color:red'>" . $SU_START_DATE . "</span> 】 至 【 <span class='font-weight-bold' style='color:red'>" . $SU_END_DATE . "</span> 】 止。");
         $result[] = array('date' => "12月18日", "content" => "審查資料繳交日期：<br>
         上傳：【109-12-20 09:00:00</span> 】 至 【110-07-09 17:00:00】 止。<br>
