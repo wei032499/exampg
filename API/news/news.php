@@ -19,8 +19,8 @@ try {
         (若您的報名費用已繳款且銷帳成功，卻一直未收到電子郵件通知，請檢查信件是否在垃圾信件匣中，或利用系統自動重寄功能(資料查詢--><a href='./query_pwd.php'>查詢序號密碼</a>)重新寄送。)");
         $result[] = array('date' => "12月18日", "content" => "網路填寫報名表日期：【 <span class='font-weight-bold' style='color:red'>" . $SU_START_DATE . "</span> 】 至 【 <span class='font-weight-bold' style='color:red'>" . $SU_END_DATE . "</span> 】 止。");
         $result[] = array('date' => "12月18日", "content" => "審查資料繳交日期：<br>
-        上傳：【109-12-20 09:00:00</span> 】 至 【110-07-09 17:00:00】 止。<br>
-        郵寄或親自繳交：【108-12-20</span> 】 至 【109-01-09】 止(郵戳為憑)。");
+        上傳：【 <span class='font-weight-bold' style='color:red'>$SU_START_DATE</span> 】 至 【 <span class='font-weight-bold' style='color:red'>$SU_END_DATE</span> 】 止。<br>
+        郵寄或親自繳交：【 <span class='font-weight-bold' style='color:red'>$ACC3_START_DATE</span> 】 至 【 <span class='font-weight-bold' style='color:red'>$ACC3_END_DATE</span> 】 止(郵戳為憑)。");
         $result[] = array('date' => "12月18日", "content" => "准考證自行下載日期：【 <span class='font-weight-bold' style='color:red'>" . $CARD_START_DATE . "</span> 】 至 【 <span class='font-weight-bold' style='color:red'>" . $CARD_END_DATE . "</span> 】 止。");
         $result[] = array('date' => "12月18日", "content" => "成績下載開放日期：【 <span class='font-weight-bold' style='color:red'>" . $SCORE_START_DATE . "</span> 】 至 【 <span class='font-weight-bold' style='color:red'>" . $SCORE_END_DATE . "</span> 】 止。<br>
         輔諮系、輔諮系婚家班面試成績查詢：【 <span class='font-weight-bold' style='color:red'>" . $SCORE2_START_DATE . "</span> 】 至 【 <span class='font-weight-bold' style='color:red'>" . $SCORE2_END_DATE . "</span> 】 止。");

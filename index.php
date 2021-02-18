@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="./css/custom.css" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
-    <script src="./js/custom.js"></script>
+    <script src="./js/common.js"></script>
 
     <script>
         if (sessionStorage === undefined) {
@@ -65,7 +65,7 @@
                         <button type="button" id="logout" style="min-width:4rem" class="btn btn-info btn-sm ml-3">登出</button>
                     </div>
                 </div>
-                <table class="table table-success2 table-hover table-bordered">
+                <table class="shadow table-md table-hover table-bordered">
                     <thead>
                         <tr class="table-primary">
                             <th scope="col" style="width: 90%;">公告事項</th>
@@ -73,7 +73,6 @@
                         </tr>
                     </thead>
                     <tbody>
-
                     </tbody>
                 </table>
             </div>

@@ -73,19 +73,12 @@ a.deco-none {
 {
     color:#0000ff;/*#0f40e3*/
 }
-.table-success2, .table-success2 > td, .table-success2 > th
-{
-    background-color:#eeffee
-}
 
-.table-success2 tbody + tbody, .table-success2 td, /*.table-success2 th,*/ .table-success2 thead th {
-    border-color: #8fd19e;/*#009900*/
-}
 
-.table-success2 td, .table-success2 th {
+.table-md td, .table-md th {
     padding: .45rem !important;
 }
-.table-success2{
+.table-md{
     font-size: 0.95rem !important;
     color:black !important;
 }

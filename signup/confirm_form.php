@@ -9,11 +9,9 @@
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
     <link rel="stylesheet" href="./css/custom.css" />
-    <link rel="stylesheet" href="./css/toastr.min.css" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
-    <script src="./js/toastr.min.js"></script>
-    <script src="./js/custom.js"></script>
+    <script src="./js/common.js"></script>
     <script>
         $.holdReady(true);
         if (sessionStorage === undefined) {
@@ -260,15 +258,15 @@
                         <div class="row form-group">
                             <label for="inputTel_h" class="col-sm-2" style="min-width: 7rem;">住家：</label>
                             <div class="row col-sm align-items-center">
-                                (&nbsp;<input type="text" class="form-control-plaintext col-sm-2" style="max-width: 3rem;" name="tel_h_a" readonly required>&nbsp;)&nbsp;
-                                <input type="text" class="form-control-plaintext col-sm-3" style="max-width: 10rem;" id="inputTel_h" name="tel_h" readonly required>
+                                (&nbsp;<input type="text" class="form-control-plaintext col-sm-2" style="max-width: 3rem;" name="tel_h_a" pattern="\d+" readonly required>&nbsp;)&nbsp;
+                                <input type="text" class="form-control-plaintext col-sm-3" style="max-width: 10rem;" id="inputTel_h" name="tel_h" pattern="\d+" readonly required>
                             </div>
                         </div>
                         <div class="row form-group">
                             <label for="inputTel_o" class="col-sm-2" style="min-width: 7rem;">公司：</label>
                             <div class="row col-sm align-items-center">
-                                (&nbsp;<input type="text" class="form-control-plaintext col-sm-2" style="max-width: 3rem;" name="tel_o_a" readonly>&nbsp;)&nbsp;
-                                <input type="text" class="form-control-plaintext col-sm-3" style="max-width: 10rem;" id="inputTel_o" name="tel_o" readonly>
+                                (&nbsp;<input type="text" class="form-control-plaintext col-sm-2" style="max-width: 3rem;" name="tel_o_a" pattern="\d+" readonly>&nbsp;)&nbsp;
+                                <input type="text" class="form-control-plaintext col-sm-3" style="max-width: 10rem;" id="inputTel_o" name="tel_o" pattern="\d+" readonly>
                             </div>
                         </div>
                         <div class="row form-group">
@@ -431,189 +429,20 @@
 
     <?php require_once("./module/footer.php") ?>
 
+    <!--toastr-->
+    <link rel="stylesheet" href="./css/toastr.min.css" />
+    <script src="./js/toastr.min.js"></script>
+
+    <!--custom-->
+    <script src="./js/signup.js"></script>
     <script>
-        //身心障礙
-        $("form [name='disabled']").on('change', function() {
-            if (this.value === '1') {
-                $("#disabled_extra").css('display', '');
-                $("form [name='disabled_type']").attr('required', true);
-                $("form [name='disabled_type']").removeAttr('disabled');
-            } else {
-                $("#disabled_extra").css('display', 'none');
-                $("form [name='disabled_type']").removeAttr('required');
-                $("form [name='disabled_type']").attr('disabled', true);
-            }
-        });
-
-        $("form [name='disabled_type']").on('change', function() {
-            if (this.value === '6') {
-                $("form [name='comments']").css('display', '');
-                $("form [name='comments']").attr('required', true);
-                $("form [name='comments']").removeAttr('disabled');
-            } else {
-                $("form [name='comments']").css('display', 'none');
-                $("form [name='comments']").removeAttr('required');
-                $("form [name='comments']").attr('disabled', true);
-            }
-        });
-
-        //應考學歷
-        $("form [name='prove_type']").on('change', function() {
-            $("#proveTabContent .tab-pane").removeClass("active");
-            $("#proveTabContent .tab-pane").removeClass("show");
-            $("form [name='prove_type']").removeClass("active");
-            $("form [name='prove_type']").removeClass("active");
-            $(this).tab('show');
-
-            $("form #proveTabContent input").removeAttr('required')
-            $("form #proveTabContent input").attr('disabled', true);
-            $("form #proveTabContent select").removeAttr('required')
-            $("form #proveTabContent select").attr('disabled', true);
-
-            $("form #proveTabContent .active input").removeAttr('disabled')
-            $("form #proveTabContent .active input").attr('required', true);
-            $("form #proveTabContent .active select").removeAttr('disabled')
-            $("form #proveTabContent .active select").attr('required', true);
-        });
-
-        //"同上"按鈕
-        $("#address2_btn").on('click', function() {
-            $("form [name='zipcode2']").val($("form [name='zipcode']").val()).blur();
-            $("form [name='address2']").val($("form [name='address']").val()).blur();
-        });
-
-        //initail
-        $(function() {
-            if ($("form [name='disabled']:checked").val() === "1") {
-                $("#disabled_extra").css('display', '');
-                $("form [name='disabled_type']").attr('required', true);
-                $("form [name='disabled_type']").removeAttr('disabled');
-            } else {
-                $("#disabled_extra").css('display', 'none');
-                $("form [name='disabled_type']").removeAttr('required');
-                $("form [name='disabled_type']").attr('disabled', true);
-            }
-
-            if ($("form [name='disabled_type']").val() === "6") {
-                $("form [name='comments']").css('display', '');
-                $("form [name='comments']").attr('required', true);
-                $("form [name='comments']").removeAttr('disabled');
-            } else {
-                $("form [name='comments']").css('display', 'none');
-                $("form [name='comments']").removeAttr('required');
-                $("form [name='comments']").attr('disabled', true);
-            }
-        });
-
-        //備審資料上傳狀態
-        function checkUploadStatus() {
-            $('form #fileLink').text('');
-            $.ajax({
-                type: 'GET',
-                url: './API/signup/file.php',
-                dataType: 'text'
-            }).done(function(response) {
-                $('form #fileLink').css('color', '');
-                $('form #fileLink').addClass('color-info');
-                $('form #fileLink').text('檔案已上傳');
-                $('form #fileLink').attr('href', './API/signup/file.php?export=download');
-
-            }).fail(function(jqXHR, exception) {
-                if (jqXHR.status === 404) {
-                    $('form #fileLink').removeClass('color-info');
-                    $('form #fileLink').css('color', 'red');
-                    $('form #fileLink').text('備審資料檔案尚未上傳');
-                    $('form #fileLink').removeAttr('href');
-                } else {
-                    toastr.clear();
-                    let response = jqXHR.responseJSON;
-                    let msg = '';
-                    if (response === undefined)
-                        msg = exception;
-                    else if (response.hasOwnProperty('message')) {
-                        msg = response.message;
-                    } else {
-                        msg = 'Uncaught Error.\n' + jqXHR.responseText;
-                    }
-                    toastr.error(msg);
-                }
-
-
-            });
-        }
-
-
-
-        //備審資料上傳
-        $("form [name='file']").on('change', function() {
-
-            $('form #fileLink').removeClass('color-info');
-            $('form #fileLink').css('color', 'red');
-            $('form #fileLink').text('備審資料檔案尚未上傳');
-            $('form #fileLink').removeAttr('href');
-
-            var fd = new FormData();
-            var files = $(this)[0].files;
-
-            // Check file selected or not
-            if (files.length > 0) {
-                $("form [name='file']").attr('disabled', true);
+        $("form").on('submit', function(e) {
+            e.preventDefault();
+            if (confirm("資料確認後將無法再進行修改。確認繳交嗎？")) {
                 $("form [type='submit']").attr('disabled', true);
                 $(window).on('beforeunload', function() {
                     return confirm('資料上傳中，您確定要離開此網頁嗎？');
                 });
-
-                toastr.clear();
-                toastr.info("檔案上傳中");
-                fd.append('file', files[0]);
-
-                $.ajax({
-                        url: './API/signup/file.php',
-                        type: 'POST',
-                        data: fd,
-                        contentType: false,
-                        processData: false
-                    }).done(function(response) {
-                        toastr.clear();
-                        toastr.success("檔案上傳成功成功！");
-                        $('form #fileLink').css('color', '');
-                        $('form #fileLink').addClass('color-info');
-                        $('form #fileLink').text('檔案已上傳');
-                        $('form #fileLink').attr('href', './API/signup/file.php?export=download');
-                        $(window).off('beforeunload');
-                        $("form [name='file']").removeAttr('disabled');
-                        $("form [type='submit']").removeAttr('disabled');
-
-                    })
-                    .fail(function(jqXHR, exception) {
-                        // toastr.remove();
-                        toastr.clear();
-                        let response = jqXHR.responseJSON;
-                        let msg = '';
-                        if (response === undefined)
-                            msg = exception;
-                        else if (response.hasOwnProperty('message')) {
-                            msg = response.message;
-                        } else {
-                            msg = 'Uncaught Error.\n' + jqXHR.responseText;
-                        }
-                        toastr.error(msg);
-                        $(window).off('beforeunload');
-                        $("form [name='file']").removeAttr('disabled');
-                        $("form [type='submit']").removeAttr('disabled');
-
-                    });
-            }
-        });
-
-
-        $("form").on('submit', function(e) {
-            e.preventDefault();
-            $("form [type='submit']").attr('disabled', true);
-            $(window).on('beforeunload', function() {
-                return confirm('資料上傳中，您確定要離開此網頁嗎？');
-            });
-            if (confirm("資料確認後將無法再進行修改。確認繳交嗎？")) {
                 $.ajax({
                         type: 'POST',
                         url: "./API/signup/confirm.php",
@@ -640,10 +469,6 @@
                         $(window).off('beforeunload');
 
                     });
-            } else {
-                $("form [type='submit']").removeAttr('disabled');
-                $(window).off('beforeunload');
-
             }
 
         });

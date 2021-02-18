@@ -1,5 +1,4 @@
 <?php
-
 header('Content-Type:application/json');
 $result = array();
 try {
@@ -16,10 +15,7 @@ try {
         $sql = "SELECT substr(OPTION_ID,1,3) as DEPT FROM union_priority_all WHERE SN=:sn AND YEAR='$ACT_YEAR_NO' AND SCHOOL_ID='$SCHOOL_ID' ORDER BY PRIORITY";
         $stmt = oci_parse($conn, $sql);
         oci_bind_by_name($stmt, ':sn',  $payload['sn']);
-        if (!oci_execute($stmt, OCI_DEFAULT)) {
-            $error = analyzeError(oci_error()['message']);
-            throw new Exception($error['message'], $error['code']);
-        }
+        oci_execute($stmt, OCI_DEFAULT);
         $union_priority = array();
         while (oci_fetch($stmt)) {
             $union_priority[] = oci_result($stmt, 'DEPT');
@@ -32,10 +28,7 @@ try {
         oci_bind_by_name($stmt, ':sn',  $payload['sn']);
 
 
-        if (!oci_execute($stmt, OCI_DEFAULT)) {
-            $error = analyzeError(oci_error()['message']);
-            throw new Exception($error['message'], $error['code']);
-        }
+        oci_execute($stmt, OCI_DEFAULT);
         if (!oci_fetch($stmt))
             throw new Exception("No Data");
 
@@ -68,10 +61,7 @@ try {
         if ($test_type === "3") {
             $stmt_subject = oci_parse($conn, "SELECT DISTINCT substr(ID,1,6) as SECTION FROM SUBJECT WHERE SCHOOL_ID='$SCHOOL_ID' AND YEAR='$ACT_YEAR_NO' AND substr(ID,1,5)=:orastatus_id ORDER BY SECTION");
             oci_bind_by_name($stmt_subject, ':orastatus_id',  $_POST['orastatus_id']);
-            if (!oci_execute($stmt_subject, OCI_DEFAULT)) {
-                $error = analyzeError(oci_error()['message']);
-                throw new Exception($error['message'], $error['code']);
-            }
+            oci_execute($stmt_subject, OCI_DEFAULT);
             $index = 0;
             foreach (str_split(oci_result($stmt, 'SUBJECT_ID'), 1) as $value) {
                 if (!oci_fetch($stmt_subject))
@@ -207,10 +197,7 @@ try {
 
             $stmt = oci_parse($conn, "SELECT DISTINCT substr(ID,6,1) as SECTION FROM SUBJECT WHERE SCHOOL_ID='$SCHOOL_ID' AND YEAR='$ACT_YEAR_NO' AND substr(ID,1,5)=:orastatus_id ORDER BY SECTION");
             oci_bind_by_name($stmt, ':orastatus_id',  $_POST['orastatus_id']);
-            if (!oci_execute($stmt, OCI_DEFAULT)) {
-                $error = analyzeError(oci_error()['message']);
-                throw new Exception($error['message'], $error['code']);
-            }
+            oci_execute($stmt, OCI_DEFAULT);
             $index = 0;
             while (oci_fetch($stmt)) {
                 $section = oci_result($stmt, 'SECTION');
@@ -231,10 +218,7 @@ try {
 
         $stmt = oci_parse($conn, "SELECT ID,EMAIL FROM SN_DB WHERE SCHOOL_ID='$SCHOOL_ID' AND YEAR='$ACT_YEAR_NO' AND SN=:sn");
         oci_bind_by_name($stmt, ':sn',  $payload['sn']);
-        if (!oci_execute($stmt, OCI_DEFAULT)) {
-            $error = analyzeError(oci_error()['message']);
-            throw new Exception($error['message'], $error['code']);
-        }
+        oci_execute($stmt, OCI_DEFAULT);
         oci_fetch($stmt);
         $email = oci_result($stmt, 'EMAIL');
         $id = oci_result($stmt, 'ID');
@@ -248,10 +232,7 @@ try {
         bind_by_array($stmt, $sql, $params);
 
 
-        if (!oci_execute($stmt, OCI_DEFAULT)) {
-            $error = analyzeError(oci_error()['message']);
-            throw new Exception($error['message'], $error['code']);
-        }
+        oci_execute($stmt, OCI_DEFAULT);
 
         $result['data'] = array('email' => $email, 'card_start_date' => $CARD_START_DATE, 'card_end_date' => $CARD_END_DATE);
 
@@ -274,13 +255,20 @@ try {
             oci_free_statement($stmt);
 
             if (isset($_POST['union_priority'])) {
+                //檢查重複的志願
+                for ($i = 0; $i < count($_POST['union_priority']); $i++)
+                    if ($_POST['union_priority'][$i] !== "-1")
+                        for ($j = $i + 1; $j < count($_POST['union_priority']); $j++)
+                            if ($_POST['union_priority'][$i] === $_POST['union_priority'][$j])
+                                throw new Exception("重複的志願");
+
                 $key = array_search($_POST['dept'], $_POST['union_priority']); //報名系所
                 if ($key !== false)
                     array_splice($_POST['union_priority'], $key, 1);
 
                 for ($i = 0; $i < count($_POST['union_priority']); $i++) {
-                    if ($_POST['union_priority'][$i] === "-1")
-                        continue;
+                    /*if ($_POST['union_priority'][$i] === "-1")
+                        continue;*/
                     $sql = "SELECT NAME FROM DEPARTMENT where school_id='$SCHOOL_ID' and year='$ACT_YEAR_NO' and ID=:dept_id";
                     $stmt = oci_parse($conn, $sql);
                     oci_bind_by_name($stmt, ':dept_id',  $_POST['union_priority'][$i]);
@@ -289,7 +277,7 @@ try {
                     $option_name = oci_result($stmt, 'NAME');
                     oci_free_statement($stmt);
 
-                    $sql = "INSERT INTO union_priority_all(id,organize_id,option_id,option_name,priority,sn,school_id,year) values(':id',':organize_id',':option_id',':option_name',:priority,:sn,'$SCHOOL_ID','$ACT_YEAR_NO')";
+                    $sql = "INSERT INTO union_priority_all(id,organize_id,option_id,option_name,priority,sn,school_id,year) values(:id,:organize_id,:option_id,:option_name,:priority,:sn,'$SCHOOL_ID','$ACT_YEAR_NO')";
                     $stmt = oci_parse($conn, $sql);
                     $params = array($id, $_POST['organize_id'], $_POST['union_priority'][$i], $option_name, $i + 2, $payload['sn']);
                     bind_by_array($stmt, $sql, $params);
@@ -370,10 +358,7 @@ try {
 
             $stmt = oci_parse($conn, "SELECT DISTINCT substr(ID,6,1) as SECTION FROM SUBJECT WHERE SCHOOL_ID='$SCHOOL_ID' AND YEAR='$ACT_YEAR_NO' AND substr(ID,1,5)=:orastatus_id ORDER BY SECTION");
             oci_bind_by_name($stmt, ':orastatus_id',  $post_vars['orastatus_id']);
-            if (!oci_execute($stmt, OCI_DEFAULT)) {
-                $error = analyzeError(oci_error()['message']);
-                throw new Exception($error['message'], $error['code']);
-            }
+            oci_execute($stmt, OCI_DEFAULT);
             $index = 0;
             while (oci_fetch($stmt)) {
                 $section = oci_result($stmt, 'SECTION');
@@ -394,10 +379,7 @@ try {
 
         $stmt = oci_parse($conn, "SELECT ID,EMAIL FROM SN_DB WHERE SCHOOL_ID='$SCHOOL_ID' AND YEAR='$ACT_YEAR_NO' AND SN=:sn");
         oci_bind_by_name($stmt, ':sn',  $payload['sn']);
-        if (!oci_execute($stmt, OCI_DEFAULT)) {
-            $error = analyzeError(oci_error()['message']);
-            throw new Exception($error['message'], $error['code']);
-        }
+        oci_execute($stmt, OCI_DEFAULT);
         oci_fetch($stmt);
         $email = oci_result($stmt, 'EMAIL');
         $id = oci_result($stmt, 'ID');
@@ -409,10 +391,7 @@ try {
         bind_by_array($stmt, $sql, $params);
 
 
-        if (!oci_execute($stmt, OCI_DEFAULT)) {
-            $error = analyzeError(oci_error()['message']);
-            throw new Exception($error['message'], $error['code']);
-        }
+        oci_execute($stmt, OCI_DEFAULT);
 
         $result['data'] = array('email' => $email, 'card_start_date' => $CARD_START_DATE, 'card_end_date' => $CARD_END_DATE);
 
@@ -443,6 +422,13 @@ try {
             oci_free_statement($stmt);
 
             if (isset($post_vars['union_priority'])) {
+                //檢查重複的志願
+                for ($i = 0; $i < count($post_vars['union_priority']); $i++)
+                    if ($post_vars['union_priority'][$i] !== "-1")
+                        for ($j = $i + 1; $j < count($post_vars['union_priority']); $j++)
+                            if ($post_vars['union_priority'][$i] === $post_vars['union_priority'][$j])
+                                throw new Exception("重複的志願");
+
                 $key = array_search($post_vars['dept'], $post_vars['union_priority']); //報名系所
                 if ($key !== false)
                     array_splice($post_vars['union_priority'], $key, 1);

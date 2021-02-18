@@ -13,7 +13,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
     <script src="./js/toastr.min.js"></script>
-    <script src="./js/custom.js"></script>
+    <script src="./js/common.js"></script>
 
     <!--jQuery Validation Plugin-->
     <script src="./js/jquery.validate.min.js"></script>
@@ -122,18 +122,16 @@
 
         $("form").validate({
             errorElement: "span",
+            messages: {
+                id: {
+                    pattern: "格式錯誤。共十碼，第一碼為大寫英文字母，其餘為半形數字。"
+                }
+            },
             submitHandler: function(form) {
                 sessionStorage.setItem("order", $("form").serialize());
                 window.location.replace('./order.php?step=3');
             }
         });
-        /*$("form").on('submit', function(e) {
-            e.preventDefault();
-
-            sessionStorage.setItem("order", $("form").serialize());
-            window.location.replace('./order.php?step=3');
-
-        });*/
     </script>
 
 </body>

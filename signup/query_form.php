@@ -13,7 +13,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
     <script src="./js/toastr.min.js"></script>
-    <script src="./js/custom.js"></script>
+    <script src="./js/common.js"></script>
     <script>
         $.holdReady(true);
         if (sessionStorage === undefined) {
@@ -251,15 +251,15 @@
                         <div class="row form-group">
                             <label for="inputTel_h" class="col-sm-2" style="min-width: 7rem;">住家：</label>
                             <div class="row col-sm align-items-center">
-                                (&nbsp;<input type="text" class="form-control-plaintext col-sm-2" style="max-width: 3rem;" name="tel_h_a" readonly required>&nbsp;)&nbsp;
-                                <input type="text" class="form-control-plaintext col-sm-3" style="max-width: 10rem;" id="inputTel_h" name="tel_h" readonly required>
+                                (&nbsp;<input type="text" class="form-control-plaintext col-sm-2" style="max-width: 3rem;" name="tel_h_a" pattern="\d+" readonly required>&nbsp;)&nbsp;
+                                <input type="text" class="form-control-plaintext col-sm-3" style="max-width: 10rem;" id="inputTel_h" name="tel_h" pattern="\d+" readonly required>
                             </div>
                         </div>
                         <div class="row form-group">
                             <label for="inputTel_o" class="col-sm-2" style="min-width: 7rem;">公司：</label>
                             <div class="row col-sm align-items-center">
-                                (&nbsp;<input type="text" class="form-control-plaintext col-sm-2" style="max-width: 3rem;" name="tel_o_a" readonly>&nbsp;)&nbsp;
-                                <input type="text" class="form-control-plaintext col-sm-3" style="max-width: 10rem;" id="inputTel_o" name="tel_o" readonly>
+                                (&nbsp;<input type="text" class="form-control-plaintext col-sm-2" style="max-width: 3rem;" name="tel_o_a" pattern="\d+" readonly>&nbsp;)&nbsp;
+                                <input type="text" class="form-control-plaintext col-sm-3" style="max-width: 10rem;" id="inputTel_o" name="tel_o" pattern="\d+" readonly>
                             </div>
                         </div>
                         <div class="row form-group">
