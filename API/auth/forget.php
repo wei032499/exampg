@@ -8,10 +8,7 @@ try {
         $stmt = oci_parse($conn, $sql);
         oci_bind_by_name($stmt, ':email',  $_POST['email']);
 
-        if (!oci_execute($stmt, OCI_DEFAULT)) {
-            $error = analyzeError(oci_error()['message']);
-            throw new Exception($error['message'], $error['code']);
-        }
+        oci_execute($stmt, OCI_DEFAULT);
 
         if (oci_fetch($stmt)) {
             /**

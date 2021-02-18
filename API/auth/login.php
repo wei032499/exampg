@@ -22,10 +22,7 @@ try {
         oci_bind_by_name($stmt, ':sn',  $_POST['serial_no']);
         oci_bind_by_name($stmt, ':pwd',  $_POST['pwd']);
 
-        if (!oci_execute($stmt, OCI_DEFAULT)) {
-            $error = analyzeError(oci_error()['message']);
-            throw new Exception($error['message'], $error['code']);
-        }
+        oci_execute($stmt, OCI_DEFAULT);
 
         if (oci_fetch($stmt)) {
             $payload['authority'] = 0;

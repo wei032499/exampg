@@ -17,30 +17,28 @@ $cookie_options = array(
     'secure' => true,     // or false*/
     'samesite' => 'Lax' // None || Lax  || Strict
 );
-function analyzeError($message)
-{
-    $error = array();
-    $error['code'] = 0;
-    $error['message'] = $message;
-    if (strpos($message, 'Undefined index') !== false) {
-        $error['code'] = 400;
-        $error['message'] = "Bad Request";
-    } else if (strpos($message, 'Duplicate') !== false) {
-        $error['code'] = 409;
-        $error['message'] = "Duplicate";
-    }
 
-    return $error;
-}
-set_error_handler(function ($errno, $errstr, $errfile, $errline, $errcontext) {
+set_error_handler(function ($err_severity, $err_msg, $err_file, $err_line, array $err_context) {
     // error was suppressed with the @-operator
     if (0 === error_reporting()) {
         return false;
     }
+    $from = "=?UTF-8?B?" . base64_encode("彰化師大網路報名系統") . "?="; //郵件來源(轉換編碼)
+    $headers = "MIME-Version: 1.0\r\n";
+    $headers .= "From: $from <edoc@cc2.ncue.edu.tw>\r\n";
+    $headers .= "Content-type: text/html; charset=utf-8\r\n";
+    $headers .= "X-Priority: 1\n";
+    $headers .= "X-MSMail-Priority: High\n";
+    $mail_msg = $err_file . "<br>" . $err_msg . " on line " . $err_line;
+    mail("s0654017@mail.ncue.edu.tw", "招生系統錯誤", $mail_msg, $headers);
 
-    $error = analyzeError($errstr);
-
-    throw new ErrorException($error['message'], $error['code'], $errno, $errfile, $errline);
+    if (strpos($err_msg, 'Undefined index') !== false)
+        throw new ErrorException("Bad Request", 400, $err_severity, $err_file, $err_line);
+    else if (strpos($err_msg, 'ORA-') !== false) {
+        preg_match('/(?<=ORA-)\w+(?=:)/', $err_msg, $matches);
+        throw new ErrorException("系統發生錯誤，請聯繫系統管理員。錯誤代碼：" . $matches[0], 0, $err_severity, $err_file, $err_line);
+    } else
+        throw new ErrorException("系統發生錯誤，請聯繫系統管理員。", 0, $err_severity, $err_file, $err_line);
 });
 
 function clearCookie()
@@ -52,7 +50,6 @@ function clearCookie()
 
 function setHeader($code)
 {
-
     if ($code === 400)
         header($_SERVER["SERVER_PROTOCOL"] . " 400 Bad Request");
     else if ($code === 401) {
@@ -292,8 +289,7 @@ function sendMail($msg_type, $conn, $payload)
             $sql = "SELECT EMAIL,NAME FROM SIGNUPDATA WHERE SCHOOL_ID='$SCHOOL_ID' AND YEAR='$ACT_YEAR_NO' AND SIGNUP_SN=:sn ";
             $stmt = oci_parse($conn, $sql);
             oci_bind_by_name($stmt, ':sn',  $payload['sn']);
-            if (!oci_execute($stmt, OCI_DEFAULT))
-                throw new Exception(oci_error()['message'], oci_error()['code']);
+            oci_execute($stmt, OCI_DEFAULT);
             oci_fetch($stmt);
             $to = oci_result($stmt, "EMAIL");
             $name = oci_result($stmt, "NAME");
@@ -315,8 +311,7 @@ function sendMail($msg_type, $conn, $payload)
             $sql = "SELECT EMAIL,NAME,to_char(L_ALT_DATE,'yyyy-mm-dd HH24:MI:SS') as L_ALT_DATE FROM SIGNUPDATA WHERE SCHOOL_ID='$SCHOOL_ID' AND YEAR='$ACT_YEAR_NO' AND SIGNUP_SN=:sn ";
             $stmt = oci_parse($conn, $sql);
             oci_bind_by_name($stmt, ':sn',  $payload['sn']);
-            if (!oci_execute($stmt, OCI_DEFAULT))
-                throw new Exception(oci_error()['message'], oci_error()['code']);
+            oci_execute($stmt, OCI_DEFAULT);
             oci_fetch($stmt);
             $to = oci_result($stmt, "EMAIL");
             $name = oci_result($stmt, "NAME");
@@ -339,8 +334,7 @@ function sendMail($msg_type, $conn, $payload)
             $sql = "SELECT EMAIL,NAME,to_char(LOCK_DATE,'yyyy-mm-dd HH24:MI:SS') as LOCK_DATE FROM SIGNUPDATA WHERE SCHOOL_ID='$SCHOOL_ID' AND YEAR='$ACT_YEAR_NO' AND SIGNUP_SN=:sn ";
             $stmt = oci_parse($conn, $sql);
             oci_bind_by_name($stmt, ':sn',  $payload['sn']);
-            if (!oci_execute($stmt, OCI_DEFAULT))
-                throw new Exception(oci_error()['message'], oci_error()['code']);
+            oci_execute($stmt, OCI_DEFAULT);
             oci_fetch($stmt);
             $to = oci_result($stmt, "EMAIL");
             $name = oci_result($stmt, "NAME");
@@ -365,8 +359,7 @@ function sendMail($msg_type, $conn, $payload)
             $sql = "SELECT SN,EMAIL,ACCOUNT_NO,PWD FROM SN_DB WHERE SCHOOL_ID='$SCHOOL_ID' AND YEAR='$ACT_YEAR_NO' AND EMAIL=:email AND checked='1' ORDER BY ORDER_NO DESC";
             $stmt = oci_parse($conn, $sql);
             oci_bind_by_name($stmt, ':email',  $payload['email']);
-            if (!oci_execute($stmt, OCI_DEFAULT))
-                throw new Exception(oci_error()['message'], oci_error()['code']);
+            oci_execute($stmt, OCI_DEFAULT);
             oci_fetch($stmt);
             $sn = oci_result($stmt, "SN");;
             $pwd = oci_result($stmt, "PWD");
@@ -425,8 +418,7 @@ function sendMail($msg_type, $conn, $payload)
             $sql = "SELECT EMAIL,NAME FROM SIGNUPDATA WHERE SCHOOL_ID='$SCHOOL_ID' AND YEAR='$ACT_YEAR_NO' AND SIGNUP_SN=:sn ";
             $stmt = oci_parse($conn, $sql);
             oci_bind_by_name($stmt, ':sn',  $payload['sn']);
-            if (!oci_execute($stmt, OCI_DEFAULT))
-                throw new Exception(oci_error()['message'], oci_error()['code']);
+            oci_execute($stmt, OCI_DEFAULT);
             oci_fetch($stmt);
             $name = oci_result($stmt, "NAME");
             $to = oci_result($stmt, "EMAIL");

@@ -19,10 +19,7 @@ try {
 
         $stmt = oci_parse($conn, "SELECT ACCOUNT_NO FROM SN_DB WHERE SCHOOL_ID='$SCHOOL_ID' AND YEAR='$ACT_YEAR_NO' AND SN=:sn");
         oci_bind_by_name($stmt, ':sn',  $payload['sn']);
-        if (!oci_execute($stmt, OCI_DEFAULT)) {
-            $error = analyzeError(oci_error()['message']);
-            throw new Exception($error['message'], $error['code']);
-        }
+        oci_execute($stmt, OCI_DEFAULT);
         oci_fetch($stmt);
         $account_no = oci_result($stmt, 'ACCOUNT_NO');
         oci_free_statement($stmt);
@@ -39,10 +36,7 @@ try {
         $sql = "SELECT UPLOAD_TYPE FROM DEPARTMENT WHERE school_id='$SCHOOL_ID' AND year='$ACT_YEAR_NO' AND $sql_add AND ID=:dept";
         $stmt = oci_parse($conn, $sql);
         oci_bind_by_name($stmt, ':dept',  $_POST['dept']);
-        if (!oci_execute($stmt, OCI_DEFAULT)) {
-            $error = analyzeError(oci_error()['message']);
-            throw new Exception($error['message'], $error['code']);
-        }
+        oci_execute($stmt, OCI_DEFAULT);
         oci_fetch($stmt);
         $upload_type = intval(oci_result($stmt, 'UPLOAD_TYPE'));
         oci_free_statement($stmt);
@@ -57,10 +51,7 @@ try {
 
             $stmt = oci_parse($conn, "UPDATE SIGNUPDATA SET DOC_UPLOAD='1' WHERE SCHOOL_ID='$SCHOOL_ID' AND YEAR='$ACT_YEAR_NO' AND SIGNUP_SN=:sn");
             oci_bind_by_name($stmt, ':sn',  $payload['sn']);
-            if (!oci_execute($stmt, OCI_DEFAULT)) {
-                $error = analyzeError(oci_error()['message']);
-                throw new Exception($error['message'], $error['code']);
-            }
+            oci_execute($stmt, OCI_DEFAULT);
             oci_free_statement($stmt);
         }
 
@@ -69,19 +60,13 @@ try {
         $sql = "UPDATE SIGNUPDATA SET LOCK_DATE=to_date('$time','yyyy-mm-dd HH24:MI:SS'),LOCK_UP='1' WHERE SCHOOL_ID='$SCHOOL_ID' AND YEAR='$ACT_YEAR_NO' AND SIGNUP_SN=:sn";
         $stmt = oci_parse($conn, $sql);
         oci_bind_by_name($stmt, ':sn',  $payload['sn']);
-        if (!oci_execute($stmt, OCI_DEFAULT)) {
-            $error = analyzeError(oci_error()['message']);
-            throw new Exception($error['message'], $error['code']);
-        }
+        oci_execute($stmt, OCI_DEFAULT);
         oci_free_statement($stmt);
 
         /*$sql = "UPDATE SN_DB SET CHECK_DATE=to_date('$time','yyyy-mm-dd HH24:MI:SS'),CHECKED='1' WHERE SCHOOL_ID='$SCHOOL_ID' AND YEAR='$ACT_YEAR_NO' AND SN=:sn";
         $stmt = oci_parse($conn, $sql);
         oci_bind_by_name($stmt, ':sn',  $payload['sn']);
-        if (!oci_execute($stmt, OCI_DEFAULT)) {
-            $error = analyzeError(oci_error()['message']);
-            throw new Exception($error['message'], $error['code']);
-        }
+        oci_execute($stmt, OCI_DEFAULT);
         oci_free_statement($stmt);*/
 
 

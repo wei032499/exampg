@@ -17,20 +17,14 @@ try {
         if (isset($_GET['dept_id']) && !isset($_GET['subject_id'])) {
             $stmt = oci_parse($conn, "SELECT ID,NAME FROM DEPARTMENT WHERE SCHOOL_ID='$SCHOOL_ID' AND YEAR='$ACT_YEAR_NO' AND substr(UNION_FLAG,1,1)='5' AND UNION_FLAG=(SELECT UNION_FLAG FROM DEPARTMENT WHERE SCHOOL_ID='$SCHOOL_ID' AND YEAR='$ACT_YEAR_NO' AND ID=:dept_id)");
             oci_bind_by_name($stmt, ':dept_id',  $_GET['dept_id']);
-            if (!oci_execute($stmt, OCI_DEFAULT)) {
-                $error = analyzeError(oci_error()['message']);
-                throw new Exception($error['message'], $error['code']);
-            }
+            oci_execute($stmt, OCI_DEFAULT);
             while (oci_fetch($stmt))
                 $result['data'][] = array('dept_id' => oci_result($stmt, 'ID'), 'name' => oci_result($stmt, 'NAME'));
             oci_free_statement($stmt);
         } else if (!isset($_GET['dept_id']) && isset($_GET['subject_id'])) {
             $stmt = oci_parse($conn, "SELECT ID,NAME FROM DEPARTMENT WHERE SCHOOL_ID='$SCHOOL_ID' AND YEAR='$ACT_YEAR_NO' AND substr(UNION_FLAG,1,1)!='5' AND UNION_FLAG=(SELECT UNION_FLAG FROM SUBJECT WHERE SCHOOL_ID='$SCHOOL_ID' AND YEAR='$ACT_YEAR_NO' AND ID=:subject_id)"); // ID=substr(:subject_id,1,3)
             oci_bind_by_name($stmt, ':subject_id',  $_GET['subject_id']);
-            if (!oci_execute($stmt, OCI_DEFAULT)) {
-                $error = analyzeError(oci_error()['message']);
-                throw new Exception($error['message'], $error['code']);
-            }
+            oci_execute($stmt, OCI_DEFAULT);
             while (oci_fetch($stmt))
                 $result['data'][] = array('dept_id' => oci_result($stmt, 'ID'), 'name' => oci_result($stmt, 'NAME'));
             oci_free_statement($stmt);

@@ -61,10 +61,7 @@ try {
             $sql = "UPDATE SIGNUPDATA SET DOC_UPLOAD='1' WHERE SCHOOL_ID='$SCHOOL_ID' AND YEAR='$ACT_YEAR_NO' AND SIGNUP_SN=:sn";
             $stmt = oci_parse($conn, $sql);
             oci_bind_by_name($stmt, ':sn',  $payload['sn']);
-            if (!oci_execute($stmt, OCI_DEFAULT)) {
-                $error = analyzeError(oci_error()['message']);
-                throw new Exception($error['message'], $error['code']);
-            }
+            oci_execute($stmt, OCI_DEFAULT);
 
             oci_commit($conn);
         } else

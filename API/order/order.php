@@ -16,7 +16,14 @@ try {
         oci_fetch($stmt);
         $ip_cnt = oci_result($stmt, 1);
         if ($ip_cnt > 30) {
-            mail('wei032499@gmail.com', '招生報名費帳號申請次數異常通知(碩士班推薦甄試)', $ip . '申請次數超過上限');
+            $from = "=?UTF-8?B?" . base64_encode("彰化師大網路報名系統") . "?="; //郵件來源(轉換編碼)
+            $headers = "MIME-Version: 1.0\r\n";
+            $headers .= "From: $from <edoc@cc2.ncue.edu.tw>\r\n";
+            $headers .= "Reply-To: wan@cc.ncue.edu.tw\r\n"; //970310 add!寄給招生承辦單位承辦人
+            $headers .= "Content-type: text/html; charset=utf-8\r\n";
+            $headers .= "X-Priority: 1\n";
+            $headers .= "X-MSMail-Priority: High\n";
+            mail('s0654017@mail.ncue.edu.tw', '招生報名費帳號申請次數異常通知(碩士班推薦甄試)', $ip . '申請次數超過上限', $headers);
             throw new Exception("申請次數超過上限！如有問題請與本校招生事務人員聯絡", 429);
         }
         $id = strtoupper($_POST['id']);
@@ -54,11 +61,7 @@ try {
         foreach ($params as $key => $val)
             oci_bind_by_name($stmt, $key, $params[$key]);
 
-        if (!oci_execute($stmt, OCI_DEFAULT)) {
-            $oci_err = oci_error();
-            mail('wei032499@gmail.com', "碩士班招生寫入資料庫(sn_db)錯誤-- " . $oci_err['message'], $sql);
-            throw new Exception("寫入資料庫錯誤！請檢查資料是否輸入正確", 500);
-        }
+        oci_execute($stmt, OCI_DEFAULT);
 
 
         $fp = fopen($order['acc_file'], "w+");

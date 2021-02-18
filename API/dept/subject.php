@@ -13,10 +13,7 @@ try {
 
         $stmt = oci_parse($conn, "SELECT ID, NAME FROM SUBJECT WHERE ID=:id AND SCHOOL_ID='$SCHOOL_ID' AND YEAR='$ACT_YEAR_NO'");
         oci_bind_by_name($stmt, ':id',  $_GET['id']);
-        if (!oci_execute($stmt, OCI_DEFAULT)) {
-            $error = analyzeError(oci_error()['message']);
-            throw new Exception($error['message'], $error['code']);
-        }
+        oci_execute($stmt, OCI_DEFAULT);
         if (oci_fetch($stmt))
             $result['data'] = array('id' => oci_result($stmt, 'ID'), 'name' => oci_result($stmt, 'NAME'));
         oci_free_statement($stmt);
