@@ -85,15 +85,17 @@ function genOrder($graduated)
         }
     } else {
         $dept_id = $_POST['dept_id'];
-
-        $from = "=?UTF-8?B?" . base64_encode("彰化師大網路報名系統") . "?="; //郵件來源(轉換編碼)
-        $headers = "MIME-Version: 1.0\r\n";
-        $headers .= "From: $from <edoc@cc2.ncue.edu.tw>\r\n";
-        $headers .= "Reply-To: wan@cc.ncue.edu.tw\r\n"; //970310 add!寄給招生承辦單位承辦人
-        $headers .= "Content-type: text/html; charset=utf-8\r\n";
-        $headers .= "X-Priority: 1\n";
-        $headers .= "X-MSMail-Priority: High\n";
-        mail('wei032499@gmail.com', 'dept_id(碩士班)', $dept_id, $headers);
+        global $post_processing;
+        $post_processing[] = function () use ($dept_id) {
+            $from = "=?UTF-8?B?" . base64_encode("彰化師大網路報名系統") . "?="; //郵件來源(轉換編碼)
+            $headers = "MIME-Version: 1.0\r\n";
+            $headers .= "From: $from <edoc@cc2.ncue.edu.tw>\r\n";
+            $headers .= "Reply-To: wan@cc.ncue.edu.tw\r\n"; //970310 add!寄給招生承辦單位承辦人
+            $headers .= "Content-type: text/html; charset=utf-8\r\n";
+            $headers .= "X-Priority: 1\n";
+            $headers .= "X-MSMail-Priority: High\n";
+            mail('s0654017@mail.ncue.edu.tw', 'dept_id(碩士班)', $dept_id, $headers);
+        };
         throw new Exception("報考系所資料錯誤，請重新填寫！", 400);
     }
 

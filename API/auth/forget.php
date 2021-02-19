@@ -1,6 +1,7 @@
 <?php
 header('Content-Type:application/json');
 $result = array();
+$post_processing = array();
 try {
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         require_once('../common/db.php');
@@ -14,14 +15,14 @@ try {
             /**
              * 寄發通知信
              */
-            sendMail(6, $conn, array('email' => $_POST['email']));
+            sendMail(6, array('email' => $_POST['email']));
 
 
             /**
              * 寫入log
              */
             $to = $_POST['email'];
-            $fp = fopen("../logs/dbg_msg.log", "a+");
+            $fp = fopen(dirname(__FILE__) . "/../logs/dbg_msg.log", "a+");
             fwrite($fp, "查詢序號密碼回覆 - API/auth/forget.php - $to - \n");
             fclose($fp);
         } else
@@ -42,6 +43,9 @@ try {
 
     //$e->getMessage() . " on line " . $e->getLine()
 }
-oci_close($conn);
 
+register_shutdown_function("shutdown_function", $post_processing);
+
+oci_close($conn);
 echo json_encode($result);
+exit(); // You need to call this to send the response immediately

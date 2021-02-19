@@ -5,16 +5,16 @@ $cookie_options_httponly = array(
     'expires' => time() + 1800,
     'path' => explode("/API", substr(str_replace('\\', '/',  __DIR__ . "/"), str_replace('\\', '/', strlen($_SERVER['DOCUMENT_ROOT']))))[0] . "/",
     'httponly' => true,    // or false
-    /*'domain' => '.example.com', // leading dot for compatibility or use subdomain
-    'secure' => true,     // or false*/
+    // 'domain' => '.example.com', // leading dot for compatibility or use subdomain
+    // 'secure' => true,     // or false
     'samesite' => 'Lax' // None || Lax  || Strict
 );
 $cookie_options = array(
     'expires' => time() + 1800,
     'path' => explode("/API", substr(str_replace('\\', '/',  __DIR__ . "/"), str_replace('\\', '/', strlen($_SERVER['DOCUMENT_ROOT']))))[0] . "/",
     'httponly' => false,    // or false
-    /*'domain' => '.example.com', // leading dot for compatibility or use subdomain
-    'secure' => true,     // or false*/
+    // 'domain' => '.example.com', // leading dot for compatibility or use subdomain
+    // 'secure' => true,     // or false
     'samesite' => 'Lax' // None || Lax  || Strict
 );
 
@@ -23,14 +23,21 @@ set_error_handler(function ($err_severity, $err_msg, $err_file, $err_line, array
     if (0 === error_reporting()) {
         return false;
     }
-    $from = "=?UTF-8?B?" . base64_encode("彰化師大網路報名系統") . "?="; //郵件來源(轉換編碼)
-    $headers = "MIME-Version: 1.0\r\n";
-    $headers .= "From: $from <edoc@cc2.ncue.edu.tw>\r\n";
-    $headers .= "Content-type: text/html; charset=utf-8\r\n";
-    $headers .= "X-Priority: 1\n";
-    $headers .= "X-MSMail-Priority: High\n";
-    $mail_msg = $err_file . "<br>" . $err_msg . " on line " . $err_line;
-    mail("s0654017@mail.ncue.edu.tw", "招生系統錯誤", $mail_msg, $headers);
+
+    global $post_processing;
+    $post_processing[] = function () use ($err_file, $err_msg, $err_line) {
+        $from = "=?UTF-8?B?" . base64_encode("彰化師大網路報名系統") . "?="; //郵件來源(轉換編碼)
+        $headers = "MIME-Version: 1.0\r\n";
+        $headers .= "From: $from <edoc@cc2.ncue.edu.tw>\r\n";
+        $headers .= "Reply-To: wan@cc.ncue.edu.tw\r\n"; //970310 add!寄給招生承辦單位承辦人
+        $headers .= "Content-type: text/html; charset=utf-8\r\n";
+        $headers .= "X-Priority: 1\n";
+        $headers .= "X-MSMail-Priority: High\n";
+        $mail_msg = $err_file . "<br>" . $err_msg . " on line " . $err_line;
+        mail("s0654017@mail.ncue.edu.tw", "招生系統錯誤", $mail_msg, $headers);
+    };
+
+
 
     if (strpos($err_msg, 'Undefined index') !== false)
         throw new ErrorException("Bad Request", 400, $err_severity, $err_file, $err_line);
@@ -67,7 +74,32 @@ function setHeader($code)
         header($_SERVER["SERVER_PROTOCOL"] . " 500 Internal Server Error");
 }
 
+function shutdown_function($post_processing)
+{
+    try {
+        foreach ($post_processing as $function) {
+            $function();
+        }
+    } catch (Exception $e) {
+        // $result = array();
+        // $result['code'] = $e->getCode(); 
+        // $result['message'] = $e->getMessage();
+        // $result['line'] = $e->getLine();
+    }
+}
 
+function bind_by_array($stmt, $sql, $array)
+{
+    $sql .= " "; //fix變數在結尾
+    preg_match_all("/(?<=[( ,=]):\w+(?=[) ,])/", $sql, $matches);
+
+    if (count($matches[0]) !== count($array))
+        return false;
+
+    foreach ($matches[0] as $key => $value)
+        oci_bind_by_name($stmt, $value,  $array[$key]);
+    return true;
+}
 
 class Token
 {
@@ -191,13 +223,13 @@ class Token
     }
 }
 
-function sendMail($msg_type, $conn, $payload)
+function sendMail($msg_type, $payload)
 {
     global $SCHOOL_ID, $ACT_YEAR_NO;
     global  $SIGNUP_FEE_1, $SIGNUP_FEE_2, $SIGNUP_FEE_3, $SIGNUP_FEE_4, $SIGNUP_FEE_5, $SIGNUP_FEE_6, $SIGNUP_FEE_7, $SIGNUP_FEE_8, $SIGNUP_FEE_9;
     global $CARD_START_DATE, $CARD_END_DATE, $EXAM_DATE, $CARD_SEND_DATE, $SU_END_DATE, $EXAMDATA_SEND_DATE;
 
-
+    require(dirname(__FILE__) . '/db.php'); //$conn
 
     set_time_limit("3600");
 
@@ -211,7 +243,7 @@ function sendMail($msg_type, $conn, $payload)
 
 
     //通知
-    //mail('wei032499@gmail.com', '已成功發送招生mail通知', $msg_type, $headers);
+    //mail('s0654017@mail.ncue.edu.tw', '已成功發送招生mail通知', $msg_type, $headers);
 
     switch ($msg_type) {
         case '1':

@@ -8,14 +8,18 @@ function getSessionItems(itemName) {
             let strParts = elements[i].split("=");
             strParts[0] = decodeURIComponent(strParts[0]);
             strParts[1] = decodeURIComponent(strParts[1]);
-            if (sessionItems[strParts[0]] === undefined)
-                sessionItems[strParts[0]] = [];
-            sessionItems[strParts[0]].push(strParts[1]);
+            let key = strParts[0];
+            if (key.substr(-2) === "[]") //arrayObj
+            {
+                key = key.slice(0, -2);
+                if (sessionItems[key] === undefined)
+                    sessionItems[key] = [];
+                sessionItems[key].push(strParts[1]);
+            }
+            else
+                sessionItems[key] = strParts[1];
         }
-        let keys = Object.keys(sessionItems);
-        for (let i = 0; i < keys.length; i++)
-            if (sessionItems[keys[i]].length <= 1)
-                sessionItems[keys[i]] = sessionItems[keys[i]][0];
+
     }
     return sessionItems;
 }
@@ -56,7 +60,7 @@ function fillForm(items) {
                     $("form [name='" + keys[i] + end + "']:eq(" + j + ") >option[value='" + items[keys[i]][j] + "']").removeAttr("disabled");
                     $("form [name='" + keys[i] + end + "']:eq(" + j + ") ").val(items[keys[i]][j]).change();
                 }
-                else if ($("form [name='" + keys[i] + end + "']").attr('type') === "radio" || $("form [name='" + keys[i] + "']").attr('type') === "checkbox") {
+                else if ($("form [name='" + keys[i] + end + "']").attr('type') === "radio" || $("form [name='" + keys[i] + end + "']").attr('type') === "checkbox" || $("form [name='" + keys[i] + "']").attr('type') === "checkbox") {
                     $("form [name='" + keys[i] + end + "'][value='" + items[keys[i]][j] + "']").removeAttr("disabled");
                     $("form [name='" + keys[i] + end + "'][value='" + items[keys[i]][j] + "']")[0].checked = true;
                     $("form [name='" + keys[i] + end + "']:checked").change();

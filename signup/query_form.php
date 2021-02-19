@@ -132,7 +132,7 @@
                 </div>
                 <hr>
                 <div class="form-group row" id="subject" style="display: none;">
-                    <label class="col-sm-3" style="min-width: 9rem;">選考科目<br>
+                    <label class="col-sm-3" style="min-width: 9rem;">選考科目
                         <span id="subject_msg" style="color:red;"></span>
                     </label>
                     <div class="col-sm-6">

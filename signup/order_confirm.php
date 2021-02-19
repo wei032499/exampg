@@ -104,6 +104,12 @@
             let formData = getSessionItems('order');
             fillForm(formData);
             $("form select option").not(":selected").remove().end();
+
+            $("form [type='radio']:not(:checked)").parent().remove();
+            $("form [type='radio']").parent().css('color', '#00008b');
+            $("form [type='radio']").attr('type', 'hidden');
+            $("form input").css('color', '#00008b');
+            $("form select").css('color', '#00008b');
         });
 
         $("form").on('submit', function(e) {

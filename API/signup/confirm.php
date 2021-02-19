@@ -2,6 +2,7 @@
 
 header('Content-Type:application/json');
 $result = array();
+$post_processing = array();
 try {
     require_once('../common/db.php');
     if (!isset($_COOKIE['token']))
@@ -74,13 +75,13 @@ try {
         /**
          * 寄發通知信
          */
-        $email = sendMail(5, $conn, $payload);
+        $email = sendMail(5, $payload);
 
 
         /**
          * 寫入log
          */
-        $fp = fopen("../logs/dbg_msg.log", "a+");
+        $fp = fopen(dirname(__FILE__) . "/../logs/dbg_msg.log", "a+");
         fwrite($fp, "資料確認通知 - API/signup/confirm.php - $email - \n");
         fclose($fp);
     } else
@@ -100,6 +101,9 @@ try {
     $result['line'] = $e->getLine();
     //$e->getMessage() . " on line " . $e->getLine()
 }
-oci_close($conn);
 
+register_shutdown_function("shutdown_function", $post_processing);
+
+oci_close($conn);
 echo json_encode($result);
+exit(); // You need to call this to send the response immediately

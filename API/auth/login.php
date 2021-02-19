@@ -14,10 +14,11 @@
 header('Content-Type:application/json');
 $result = array();
 $payload = array('iss' => 'ncue', 'iat' => time(), 'exp' => time() + 1800);
+$post_processing = array();
 try {
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         require_once('../common/db.php');
-        $sql = "SELECT ID,NAME FROM SN_DB WHERE SCHOOL_ID='$SCHOOL_ID' AND YEAR='$ACT_YEAR_NO' AND SN=:sn AND PWD=:pwd ";
+        $sql = "SELECT NAME FROM SN_DB WHERE SCHOOL_ID='$SCHOOL_ID' AND YEAR='$ACT_YEAR_NO' AND SN=:sn AND PWD=:pwd ";
         $stmt = oci_parse($conn, $sql);
         oci_bind_by_name($stmt, ':sn',  $_POST['serial_no']);
         oci_bind_by_name($stmt, ':pwd',  $_POST['pwd']);
@@ -30,12 +31,18 @@ try {
             $payload['pwd'] = hash('sha256', $_POST['pwd']);
 
             $username = oci_result($stmt, "NAME");
-
+            oci_free_statement($stmt);
 
             if (isset($_POST['IDNumber'])) {
-                if (oci_result($stmt, "ID") === $_POST['IDNumber'])
+                $sql = "SELECT ID,NAME FROM SIGNUPDATA WHERE SCHOOL_ID='$SCHOOL_ID' AND YEAR='$ACT_YEAR_NO' AND SIGNUP_SN=:sn ";
+                $stmt = oci_parse($conn, $sql);
+                oci_bind_by_name($stmt, ':sn',  $_POST['serial_no']);
+                oci_execute($stmt, OCI_DEFAULT);
+
+                if (oci_fetch($stmt) && oci_result($stmt, "ID") === $_POST['IDNumber']) {
                     $payload['authority'] = 1;
-                else
+                    $username = oci_result($stmt, "NAME");
+                } else
                     throw new Exception("登入失敗！", 401);
             }
         } else
@@ -67,6 +74,9 @@ try {
 
     //$e->getMessage() . " on line " . $e->getLine()
 }
-oci_close($conn);
 
+register_shutdown_function("shutdown_function", $post_processing);
+
+oci_close($conn);
 echo json_encode($result);
+exit(); // You need to call this to send the response immediately

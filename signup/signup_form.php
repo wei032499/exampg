@@ -17,7 +17,7 @@
 
     <script>
         $.holdReady(true);
-        var deptObj;
+        var deptObj, formData;
         if (sessionStorage === undefined) {
             alert("未支援Web Storage！\n請更換瀏覽器再試。");
             window.location.replace('./');
@@ -26,6 +26,7 @@
         else {
             $.when(getData("./API/dept/list.php")).done(function(_deptObj) {
                 deptObj = _deptObj.data;
+                formData = getSessionItems('signup');
                 $.holdReady(false);
 
             });
@@ -78,7 +79,7 @@
                         </select>
                     </div>
                     <div class="form-group col-md-6" id="subject" style="visibility: hidden;">
-                        <label>選考科目<br>
+                        <label>選考科目
                             <span id="subject_msg" style="color:red;"></span>
                         </label>
                         <div></div>
@@ -136,11 +137,11 @@
                     <label for="inputName" class="col-sm-3">姓名</label>
                     <input type="text" class="form-control col-sm-5" id="inputName" name="name" required>
                 </div>
-                <!--<div class="form-group row">
+                <div class="form-group row">
                     <label for="inputIDNumber" class="col-sm-3">身分證字號</label>
                     <input type="text" class="form-control col-sm-5" id="inputIDNumber" aria-describedby="IDNumberHelp" pattern="[A-Z]\d{9}" name="id" readonly>
                     <small id="IDNumberHelp" class="form-text text-muted col-sm-4">*僑外生居留證號碼</small>
-                </div>-->
+                </div>
                 <fieldset class="form-group row">
                     <legend class="col-form-label col-sm-3 float-sm-left">性別</legend>
                     <div class="col-sm-5">
@@ -220,10 +221,10 @@
                         </div>
                     </div>
                 </div>
-                <!--<div class="form-group row">
+                <div class="form-group row">
                     <label for="inputEmail" class="col-sm-3">Email信箱</label>
                     <input type="email" class="form-control col-sm-5" id="inputEmail" name="email" placeholder="example@gmail.com" readonly>
-                </div>-->
+                </div>
                 <div class="form-group row">
                     <label class="col-sm-3">緊急連絡人</label>
                     <div class="row col-xl">
@@ -399,7 +400,6 @@
     <script src="./js/signup.js"></script>
     <script>
         $(function() {
-            let formData = getSessionItems('signup');
             fillForm(formData);
         });
         $("form").validate({
@@ -435,7 +435,7 @@
                     if ($("form [name='union_priority[]']").eq(i).val() !== "-1")
                         for (let j = i + 1; j < $("form [name='union_priority[]']").length; j++)
                             if ($("form [name='union_priority[]']").eq(i).val() === $("form [name='union_priority[]']").eq(j).val()) {
-                                alert("不可填寫重複的志願！");
+                                alert("不可選填重複的志願！");
                                 return false;
                             }
 

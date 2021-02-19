@@ -65,7 +65,7 @@
                         </select>
                     </div>
                     <div class="form-group col-md-6" id="subject" style="visibility: hidden;">
-                        <label>選考科目<br>
+                        <label>選考科目
                             <span id="subject_msg" style="color:red;"></span>
                         </label>
                         <div></div>
@@ -124,7 +124,7 @@
                 </div>
                 <div class="form-group row">
                     <label for="inputIDNumber" class="col-sm-3">身分證字號</label>
-                    <input type="text" class="form-control-plaintext col-sm-5" id="inputIDNumber" aria-describedby="IDNumberHelp" pattern="[A-Z]\d{9}" name="id" readonly disabled>
+                    <input type="text" class="form-control-plaintext col-sm-5" id="inputIDNumber" aria-describedby="IDNumberHelp" pattern="[A-Z]\d{9}" name="id" readonly required>
                     <small id="IDNumberHelp" class="form-text text-muted col-sm-4">*僑外生居留證號碼</small>
                 </div>
                 <fieldset class="form-group row">
@@ -204,7 +204,7 @@
                 </div>
                 <div class="form-group row">
                     <label for="inputEmail" class="col-sm-3">Email信箱</label>
-                    <input type="email" class="form-control-plaintext col-sm-5" id="inputEmail" name="email" placeholder="example@gmail.com" readonly disabled>
+                    <input type="email" class="form-control-plaintext col-sm-5" id="inputEmail" name="email" placeholder="example@gmail.com" readonly required>
                 </div>
                 <div class="form-group row">
                     <label class="col-sm-3">緊急連絡人</label>
@@ -372,10 +372,20 @@
             $("#upload_row").replaceWith(sessionStorage.getItem('upload_row'));
             $("form [name='file']").remove();
             fillForm(getSessionItems('alter'));
-            $("form select option").not(":selected").remove().end();
+            $("form select option").not(":selected").remove();
+            $("form [name='section[]'").not(":checked").parent().remove();
+            $("form [name='section[]'").on('click', function() {
+                return false
+            });
             if ($("form [name='place']:checked").val() === "2")
                 $("form [name='place'][value='2']").parent().css('display', '');
+
             $("form .form-control").addClass('form-control-plaintext').removeClass('form-control');
+            $("form [type='radio']:not(:checked)").parent().remove();
+            $("form [type='radio']").parent().css('color', '#00008b');
+            $("form [type='radio']").attr('type', 'hidden');
+            $("form input").css('color', '#00008b');
+            $("form select").css('color', '#00008b');
         });
 
         $("form").on('submit', function(e) {

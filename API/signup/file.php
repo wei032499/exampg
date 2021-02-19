@@ -2,6 +2,7 @@
 
 header('Content-Type:application/json');
 $result = array();
+$post_processing = array();
 try {
     require_once('../common/db.php');
     if (!isset($_COOKIE['token']))
@@ -79,6 +80,9 @@ try {
 
     //$e->getMessage() . " on line " . $e->getLine()
 }
-oci_close($conn);
 
+register_shutdown_function("shutdown_function", $post_processing);
+
+oci_close($conn);
 echo json_encode($result);
+exit(); // You need to call this to send the response immediately

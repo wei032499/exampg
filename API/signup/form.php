@@ -1,6 +1,7 @@
 <?php
 header('Content-Type:application/json');
 $result = array();
+$post_processing = array();
 try {
     require_once('../common/db.php');
     if (!isset($_COOKIE['token']))
@@ -58,28 +59,33 @@ try {
         oci_free_statement($stmt_dept);
 
         $subjects = array();
+        $section = array();
         if ($test_type === "3") {
-            $stmt_subject = oci_parse($conn, "SELECT DISTINCT substr(ID,1,6) as SECTION FROM SUBJECT WHERE SCHOOL_ID='$SCHOOL_ID' AND YEAR='$ACT_YEAR_NO' AND substr(ID,1,5)=:orastatus_id ORDER BY SECTION");
-            oci_bind_by_name($stmt_subject, ':orastatus_id',  $_POST['orastatus_id']);
+            $stmt_subject = oci_parse($conn, "SELECT DISTINCT substr(ID,6,1) as SECTION FROM SUBJECT WHERE SCHOOL_ID='$SCHOOL_ID' AND YEAR='$ACT_YEAR_NO' AND substr(ID,1,5)=:orastatus_id ORDER BY SECTION");
+            $orastatus_id = oci_result($stmt, 'ORASTATUS_ID');
+            oci_bind_by_name($stmt_subject, ':orastatus_id',  $orastatus_id);
             oci_execute($stmt_subject, OCI_DEFAULT);
             $index = 0;
+
             foreach (str_split(oci_result($stmt, 'SUBJECT_ID'), 1) as $value) {
                 if (!oci_fetch($stmt_subject))
                     throw new Exception("選科數量錯誤");
                 else if ($value === "-")
                     continue;
-                $subjects[] = oci_result($stmt_subject, 'SECTION') . $value;
+
+                $subjects[] = $orastatus_id . oci_result($stmt_subject, 'SECTION') . $value;
+                $section[] = oci_result($stmt_subject, 'SECTION');
             }
             oci_free_statement($stmt_subject);
         } else {
             if (oci_result($stmt, 'SUBJECT_ID') !== null) {
                 $orastatus_id = oci_result($stmt, 'ORASTATUS_ID');
-                $stmt_subject = oci_parse($conn, "SELECT substr(ID,1,6) as SECTION FROM SUBJECT WHERE SCHOOL_ID='$SCHOOL_ID' AND YEAR='$ACT_YEAR_NO' AND substr(ID,1,5)=:orastatus_id  GROUP BY substr(ID,1,6) HAVING count(*)>1 ");
+                $stmt_subject = oci_parse($conn, "SELECT substr(ID,6,1) as SECTION FROM SUBJECT WHERE SCHOOL_ID='$SCHOOL_ID' AND YEAR='$ACT_YEAR_NO' AND substr(ID,1,5)=:orastatus_id  GROUP BY substr(ID,1,6) HAVING count(*)>1 ");
                 oci_bind_by_name($stmt_subject, ':orastatus_id',  $orastatus_id);
                 oci_execute($stmt_subject, OCI_DEFAULT);
                 foreach (str_split(oci_result($stmt, 'SUBJECT_ID'), 1) as $value) {
                     oci_fetch($stmt_subject);
-                    $subjects[] = oci_result($stmt_subject, 'SECTION') . $value;
+                    $subjects[] = $orastatus_id . oci_result($stmt_subject, 'SECTION') . $value;
                 }
                 oci_free_statement($stmt_subject);
             }
@@ -98,7 +104,7 @@ try {
                 'conn_name' => oci_result($stmt, 'LIAISONER'), 'conn_tel' => oci_result($stmt, 'LIAISON_TEL'),
                 'conn_rel' => oci_result($stmt, 'LIAISON_REL'), 'disabled' => $disabled, 'disabled_type' => oci_result($stmt, 'CRIPPLE_TYPE'),
                 'comments' => oci_result($stmt, 'COMMENTS'), 'prove_type' => oci_result($stmt, 'PROVE_TYPE'),
-                'subject' => $subjects,
+                'subject' => $subjects, 'section' => $section,
                 'zipcode2' => oci_result($stmt, 'ZIP_O'), 'address2' => oci_result($stmt, 'ADDRESS_O'),
                 'place' => oci_result($stmt, 'E_PLACE'), 'grad_date' => oci_result($stmt, 'AC_DATE'),
                 'grad_schol' => oci_result($stmt, 'AC_SCHOOL_NAME'),
@@ -119,7 +125,7 @@ try {
                 'conn_name' => oci_result($stmt, 'LIAISONER'), 'conn_tel' => oci_result($stmt, 'LIAISON_TEL'),
                 'conn_rel' => oci_result($stmt, 'LIAISON_REL'), 'disabled' => $disabled, 'disabled_type' => oci_result($stmt, 'CRIPPLE_TYPE'),
                 'comments' => oci_result($stmt, 'COMMENTS'), 'prove_type' => oci_result($stmt, 'PROVE_TYPE'),
-                'subject' => $subjects,
+                'subject' => $subjects, 'section' => $section,
                 'zipcode2' => oci_result($stmt, 'ZIP_O'), 'address2' => oci_result($stmt, 'ADDRESS_O'),
                 'place' => oci_result($stmt, 'E_PLACE'),
                 'ac_school' => oci_result($stmt, 'AC_SCHOOL_NAME'), 'ac_school_type' => oci_result($stmt, 'AC_SCHOOL_TYPE'),
@@ -140,7 +146,7 @@ try {
                 'conn_name' => oci_result($stmt, 'LIAISONER'), 'conn_tel' => oci_result($stmt, 'LIAISON_TEL'),
                 'conn_rel' => oci_result($stmt, 'LIAISON_REL'), 'disabled' => $disabled, 'disabled_type' => oci_result($stmt, 'CRIPPLE_TYPE'),
                 'comments' => oci_result($stmt, 'COMMENTS'), 'prove_type' => oci_result($stmt, 'PROVE_TYPE'),
-                'subject' => $subjects,
+                'subject' => $subjects, 'section' => $section,
                 'zipcode2' => oci_result($stmt, 'ZIP_O'), 'address2' => oci_result($stmt, 'ADDRESS_O'),
                 'place' => oci_result($stmt, 'E_PLACE'),
                 'union_priority' => $union_priority
@@ -202,7 +208,7 @@ try {
             while (oci_fetch($stmt)) {
                 $section = oci_result($stmt, 'SECTION');
                 if ($_POST['section'][$index] === $section) {
-                    $subjects .= substr($value, 6, 1); //subject_id
+                    $subjects .= $section; //subject_id
                     $index++;
                 } else
                     $subjects .= "-";
@@ -216,13 +222,9 @@ try {
             }
         }
 
-        $stmt = oci_parse($conn, "SELECT ID,EMAIL FROM SN_DB WHERE SCHOOL_ID='$SCHOOL_ID' AND YEAR='$ACT_YEAR_NO' AND SN=:sn");
-        oci_bind_by_name($stmt, ':sn',  $payload['sn']);
-        oci_execute($stmt, OCI_DEFAULT);
-        oci_fetch($stmt);
-        $email = oci_result($stmt, 'EMAIL');
-        $id = oci_result($stmt, 'ID');
-        oci_free_statement($stmt);
+
+        $email = $_POST['email'];
+        $id = $_POST['id'];
 
 
 
@@ -300,13 +302,13 @@ try {
         /**
          * 寄發通知信
          */
-        $email = sendMail(3, $conn, $payload);
+        $email = sendMail(3, $payload);
 
 
         /**
          * 寫入log
          */
-        $fp = fopen("../logs/dbg_msg.log", "a+");
+        $fp = fopen(dirname(__FILE__) . "/../logs/dbg_msg.log", "a+");
         fwrite($fp, "報名資料初填通知 - API/signup/form.php  - $email - \n");
         fclose($fp);
     } else if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
@@ -363,7 +365,7 @@ try {
             while (oci_fetch($stmt)) {
                 $section = oci_result($stmt, 'SECTION');
                 if ($post_vars['section'][$index] === $section) {
-                    $subjects .= substr($value, 6, 1); //subject_id
+                    $subjects .= $section; //subject_id
                     $index++;
                 } else
                     $subjects .= "-";
@@ -377,13 +379,8 @@ try {
             }
         }
 
-        $stmt = oci_parse($conn, "SELECT ID,EMAIL FROM SN_DB WHERE SCHOOL_ID='$SCHOOL_ID' AND YEAR='$ACT_YEAR_NO' AND SN=:sn");
-        oci_bind_by_name($stmt, ':sn',  $payload['sn']);
-        oci_execute($stmt, OCI_DEFAULT);
-        oci_fetch($stmt);
-        $email = oci_result($stmt, 'EMAIL');
-        $id = oci_result($stmt, 'ID');
-        oci_free_statement($stmt);
+        $email = $post_vars['email'];
+        $id = $post_vars['id'];
 
         $sql = "UPDATE SIGNUPDATA SET ID=:id,NAME=:name,SEX=:gender,DEPT_ID=:dept_id,ORGANIZE_ID=:organize_id,ORASTATUS_ID=:orastatus_id,BIRTHDAY=to_date(:birthday,'yyyy-mm-dd'),EMAIL=:email,ZIP=:zip,ADDRESS=:address,TEL_H=:tel_h,TEL_O=:tel_o,TEL_M=:tel_m,LIAISONER=:conn_name,LIAISON_TEL=:conn_tel,LIAISON_REL=:conn_rel,CRIPPLE_TYPE=:disabled_type,COMMENTS=:comments,PROVE_TYPE=:prove_type,L_ALT_DATE=to_date('$time','yyyy-mm-dd HH24:MI:SS'),ZIP_O=:zip2,ADDRESS_O=:address2,E_PLACE=:e_place,AC_SCHOOL_NAME=:ac_school,AC_DEPT_NAME=:ac_dept,AC_SCHOOL_TYPE=:ac_type,AC_GRADUATED=:ac_graduated,AC_DATE=to_date(:ac_date,'yyyy-mm-dd'),AC_YEAR_OF_LEAVE=:ac_year_leave,AC_YEAR_OF_STUDY=:ac_year_study,SUBJECT_ID=:subject_id WHERE SCHOOL_ID='$SCHOOL_ID' AND YEAR='$ACT_YEAR_NO' AND SIGNUP_SN=:sn";
         $stmt = oci_parse($conn, $sql);
@@ -397,9 +394,9 @@ try {
 
 
         // union priority
-        $sql = "DELETE FROM union_priority_all WHERE SCHOOL_ID='$SCHOOL_ID' and YEAR='$ACT_YEAR_NO' and ID=:id and SN=:sn";
+        $sql = "DELETE FROM union_priority_all WHERE SCHOOL_ID='$SCHOOL_ID' and YEAR='$ACT_YEAR_NO' and SN=:sn";
         $stmt = oci_parse($conn, $sql);
-        oci_bind_by_name($stmt, ':id',  $id);
+        // oci_bind_by_name($stmt, ':id',  $id);
         oci_bind_by_name($stmt, ':sn',  $payload['sn']);
         oci_execute($stmt, OCI_DEFAULT);
         oci_free_statement($stmt);
@@ -458,18 +455,20 @@ try {
 
 
 
-        /**
-         * 寄發通知信
-         */
-        $email = sendMail(4, $conn, $payload);
 
+        $post_processing[] = function () use ($payload) {
+            /**
+             * 寄發通知信
+             */
+            $email = sendMail(4, $payload);
 
-        /**
-         * 寫入log
-         */
-        $fp = fopen("../logs/dbg_msg.log", "a+");
-        fwrite($fp, "資料修改通知 - API/signup/form.php - $email - \n");
-        fclose($fp);
+            /**
+             * 寫入log
+             */
+            $fp = fopen(dirname(__FILE__) . "/../logs/dbg_msg.log", "a+");
+            fwrite($fp, "資料修改通知 - API/signup/form.php - $email - \n");
+            fclose($fp);
+        };
     } else
         throw new Exception("Method Not Allowed", 405);
 
@@ -487,6 +486,9 @@ try {
     $result['line'] = $e->getLine();
     //$e->getMessage() . " on line " . $e->getLine()
 }
-oci_close($conn);
 
+register_shutdown_function("shutdown_function", $post_processing);
+
+oci_close($conn);
 echo json_encode($result);
+exit(); // You need to call this to send the response immediately

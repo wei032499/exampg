@@ -50,18 +50,35 @@ $(function () {
 
             if (deptObj.dept[index].union_type === "5") //不須選考科組別之聯合
             {
-                options = "<option value='" + $("form [name='dept']>option:selected").val() + "' selected>" + $("form [name='dept']>option:selected").text() + "</option>";
-                $("#union>div").append('<select class="form-control form-group" name="union_priority[]" readonly required>' + options + '</select>');
 
                 $.when(getData("./API/dept/union.php?dept_id=" + this.value)).done(function (_deptObj) {
+                    let options = "<option value='" + $("form [name='dept']>option:selected").val() + "' selected>" + $("form [name='dept']>option:selected").text() + "</option>";
+                    $("#union>div").append('<select class="form-control form-group" name="union_priority[]" readonly required>' + options + '</select>');
+
                     let unionDepts = _deptObj.data;
-                    let options = "<option value='-1' selected>放棄志願</option>";
+                    options = "<option value='-1' selected>放棄志願</option>";
                     for (let i = 0; i < unionDepts.length; i++)
                         if (unionDepts[i].dept_id !== $("form [name='dept']>option:selected").val())
                             options += "<option value='" + unionDepts[i].dept_id + "'>" + unionDepts[i].name + "</option>";
                     for (let i = 0; i < unionDepts.length - 1; i++) //生成剩下可選聯合招生系所
-                        $("#union>div").append('<select class="form-control form-group" name="union_priority[]" >' + options + '</select>');
+                        $("#union>div").append('<select class="form-control form-group" name="union_priority[]" required>' + options + '</select>');
 
+                    if (typeof formData !== 'undefined' && typeof formData['union_priority'] !== 'undefined') {
+                        for (let i = 0; i < formData['union_priority'].length; i++) {
+                            $("form [name='union_priority[]']:eq(" + i + ") >option[value='" + formData['union_priority'][i] + "']").removeAttr("disabled");
+                            $("form [name='union_priority[]']:eq(" + i + ") ").val(formData['union_priority'][i]).change();
+                        }
+                        delete formData['union_priority'];
+                    }
+                    if (typeof isConfirmForm !== "undefined" && isConfirmForm === true) {
+                        $("form .form-control").addClass('form-control-plaintext').removeClass('form-control');
+                        $("form select option").not(":selected").remove();
+                        $("form [type='radio']:not(:checked)").parent().remove();
+                        $("form [type='radio']").parent().css('color', '#00008b');
+                        $("form [type='radio']").attr('type', 'hidden');
+                        $("form input").css('color', '#00008b');
+                        $("form select").css('color', '#00008b');
+                    }
                     $("#union").css('display', '');
 
                 });
@@ -110,7 +127,7 @@ $(function () {
                         options += "<option value='" + subject_id + "'>" + subject_name + "</option>";
 
                     }
-                    $("#subject>div").append('<div class="row form-group align-items-center"><input type="checkbox" value="' + keys[i] + '" class="form-check-input" name="section[]" ><select class="form-control" name="subject[]" disabled>' + options + '</select></div>');
+                    $("#subject>div").append('<div class="row form-group align-items-center" style="margin-left:2rem"><input type="checkbox" value="' + keys[i] + '" class="form-check-input" name="section[]" ><select class="form-control" name="subject[]" disabled>' + options + '</select></div>');
                 }
                 $("form [name='section[]']").on('change', function () {
                     if ($(this).prop("checked")) {
@@ -120,6 +137,7 @@ $(function () {
                         $(this).siblings("select").attr('disabled', true);
                         $(this).siblings("select").removeAttr('required');
                     }
+                    $("form [name='subject[]']").change();
 
 
                 });
@@ -150,24 +168,43 @@ $(function () {
 
 
             $("form [name='subject[]']").on('change', function () {
+                if (this.value === "")
+                    return false;
                 let index = deptObj.dept.map(function (e) {
                     return e.dept_id;
                 }).indexOf($("form [name='dept']").val());
                 if (deptObj.dept[index].union_type !== "5") //不為不須選考科組別之聯合
                 {
-                    $("#union>div").empty();
-                    options = "<option value='" + $("form [name='dept']>option:selected").val() + "' selected>" + $("form [name='dept']>option:selected").text() + "</option>";
-                    $("#union>div").append('<select class="form-control form-group" name="union_priority[]" readonly required>' + options + '</select>');
                     $.when(getData("./API/dept/union.php?subject_id=" + this.value)).done(function (_deptObj) {
+                        $("#union>div").empty();
+                        let options = "<option value='" + $("form [name='dept']>option:selected").val() + "' selected>" + $("form [name='dept']>option:selected").text() + "</option>";
+                        $("#union>div").append('<select class="form-control form-group" name="union_priority[]" readonly required>' + options + '</select>');
+
                         let unionDepts = _deptObj.data;
-                        let options = "<option value='-1' selected>放棄志願</option>";
+                        options = "<option value='-1' selected>放棄志願</option>";
                         for (let i = 0; i < unionDepts.length; i++)
                             if (unionDepts[i].dept_id !== $("form [name='dept']>option:selected").val())
                                 options += "<option value='" + unionDepts[i].dept_id + "'>" + unionDepts[i].name + "</option>";
 
                         for (let i = 0; i < unionDepts.length - 1; i++) //生成剩下可選聯合招生系所
-                            $("#union>div").append('<select class="form-control form-group" name="union_priority[]" >' + options + '</select>');
+                            $("#union>div").append('<select class="form-control form-group" name="union_priority[]" required>' + options + '</select>');
 
+                        if (typeof formData !== 'undefined' && typeof formData['union_priority'] !== 'undefined') {
+                            for (let i = 0; i < formData['union_priority'].length; i++) {
+                                $("form [name='union_priority[]']:eq(" + i + ") >option[value='" + formData['union_priority'][i] + "']").removeAttr("disabled");
+                                $("form [name='union_priority[]']:eq(" + i + ") ").val(formData['union_priority'][i]).change();
+                            }
+                            delete formData['union_priority'];
+                        }
+                        if (typeof isConfirmForm !== "undefined" && isConfirmForm === true) {
+                            $("form .form-control").addClass('form-control-plaintext').removeClass('form-control');
+                            $("form select option").not(":selected").remove();
+                            $("form [type='radio']:not(:checked)").parent().remove();
+                            $("form [type='radio']").parent().css('color', '#00008b');
+                            $("form [type='radio']").attr('type', 'hidden');
+                            $("form input").css('color', '#00008b');
+                            $("form select").css('color', '#00008b');
+                        }
                         $("#union").css('display', '');
                     });
                 }

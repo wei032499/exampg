@@ -13,78 +13,16 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
     <script src="./js/common.js"></script>
     <script>
+        var deptObj, formData, isConfirmForm = true;
         $.holdReady(true);
         if (sessionStorage === undefined) {
             alert("未支援Web Storage！\n請更換瀏覽器再試。");
             window.location.replace('./');
         } else {
             $.when(getData("./API/signup/form.php", false), getData("./API/dept/list.php")).done(function(_formData, _deptObj) {
+                deptObj = _deptObj[0].data;
+                formData = _formData[0].data;
                 $.holdReady(false);
-                let deptObj = _deptObj[0].data;
-                let formData = _formData[0].data;
-                $(function() {
-                    // fill department list
-                    let index = deptObj.dept.map(function(e) {
-                        return e.dept_id;
-                    }).indexOf(formData.dept);
-                    $("form [name='dept']").empty().append("<option value='" + formData.dept + "' selected>" + deptObj.dept[index].name + "</option>");
-                    if (deptObj.dept[index].upload_type > 1) //upload_type 審查資料繳交方式:  1:郵寄  2:上傳  3:郵寄+上傳
-                    {
-                        checkUploadStatus();
-                        $("#upload_row").css('display', '');
-                    }
-
-                    if (formData.place === "2") //限彰化考區
-                    {
-                        $("form [name='place'][value='2']").parent().css('display', '');
-                        $("form [name='place'][value='2']").removeAttr('disabled');
-                    }
-
-                    index = deptObj.group[formData.dept].map(function(e) {
-                        return e.group_id;
-                    }).indexOf(formData.organize_id);
-                    $("form [name='organize_id']").empty().append("<option value='" + formData.organize_id + "' selected>" + deptObj.group[formData.dept][index].name + "</option>");
-
-                    index = deptObj.status[formData.dept][formData.organize_id].map(function(e) {
-                        return e.status_id;
-                    }).indexOf(formData.orastatus_id);
-                    $("form [name='orastatus_id']").empty().append("<option value='" + formData.orastatus_id + "' selected>" + deptObj.status[formData.dept][formData.organize_id][index].name + "</option>");
-
-
-                    if (formData.subject !== null) {
-                        for (let i = 0; i < formData.subject.length; i++) {
-                            let section = formData.subject[i].substr(5, 1);
-                            let index = deptObj.subject[formData.dept][formData.organize_id][formData.orastatus_id][section].map(function(e) {
-                                return e.subject_id;
-                            }).indexOf(formData.subject[i]);
-                            let subject_name = deptObj.subject[formData.dept][formData.organize_id][formData.orastatus_id][section][index].name;
-                            $("#subject>div").append('<select class="form-control-plaintext form-group" name="subject[]" required><option value="' + formData.subject[i] + '" selected>' + subject_name + '</option></select>');
-
-                            let subject = deptObj.subject[formData.dept][formData.organize_id][formData.orastatus_id][section][index];
-                            if (subject.upload !== undefined && subject.upload === false) {
-                                $("#upload_row").css('display', 'none');
-                            }
-                        }
-                        $("#subject").css('display', '');
-                    }
-
-                    if (formData.union_priority !== null && formData.union_priority.length > 0) {
-                        for (let i = 0; i < formData.union_priority.length; i++) {
-                            let index = deptObj.dept.map(function(e) {
-                                return e.dept_id;
-                            }).indexOf(formData.union_priority[i]);
-                            let dept_name = deptObj.dept[index].name;
-                            $("#union>div").append('<select class="form-control-plaintext form-group" name="union_priority[]"  required><option value="' + formData.union_priority[i] + '" selected>' + dept_name + '</option></select>');
-
-                        }
-                        $("#union").css('display', '');
-                    }
-
-
-                    fillForm(formData);
-                    $("form select option").not(":selected").remove().end();
-
-                });
             });
 
         }
@@ -139,7 +77,7 @@
                 </div>
                 <hr>
                 <div class="form-group row" id="subject" style="display: none;">
-                    <label class="col-sm-3" style="min-width: 9rem;">選考科目<br>
+                    <label class="col-sm-3" style="min-width: 9rem;">選考科目
                         <span id="subject_msg" style="color:red;"></span>
                     </label>
                     <div class="col-sm-6">
@@ -436,6 +374,23 @@
     <!--custom-->
     <script src="./js/signup.js"></script>
     <script>
+        $(function() {
+            fillForm(formData);
+
+
+            $("form [name='section[]'").not(":checked").parent().remove();
+            $("form [name='section[]'").on('click', function() {
+                return false
+            });
+
+            $("form .form-control").addClass('form-control-plaintext').removeClass('form-control');
+            $("form select option").not(":selected").remove();
+            $("form [type='radio']:not(:checked)").parent().remove();
+            $("form [type='radio']").parent().css('color', '#00008b');
+            $("form [type='radio']").attr('type', 'hidden');
+            $("form input").css('color', '#00008b');
+            $("form select").css('color', '#00008b');
+        });
         $("form").on('submit', function(e) {
             e.preventDefault();
             if (confirm("資料確認後將無法再進行修改。確認繳交嗎？")) {
