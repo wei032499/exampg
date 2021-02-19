@@ -44,11 +44,11 @@ try {
                     $username = oci_result($stmt, "NAME");
                 } else
                     throw new Exception("登入失敗！", 401);
+                oci_free_statement($stmt);
             }
         } else
             throw new Exception("登入失敗！", 401);
 
-        oci_free_statement($stmt);
 
         $Token = new Token($conn, JWT::getToken($payload));
         $token = $Token->refresh();

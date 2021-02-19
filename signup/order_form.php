@@ -46,7 +46,9 @@
             <form class="border p-4 bg-white shadow rounded">
                 <div class="form-group row">
                     <label for="inputName" class="col-sm-3">姓名</label>
-                    <input type="text" class="form-control col-sm-4" id="inputName" name="name" required>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control" id="inputName" name="name" required>
+                    </div>
                 </div>
                 <fieldset class="form-group row">
                     <legend class="col-form-label col-sm-3 float-sm-left">性別</legend>
@@ -64,33 +66,43 @@
                 </fieldset>
                 <div class="form-group row">
                     <label for="inputIdentity" class="col-sm-3">繳費身分別</label>
-                    <select id="inputIdentity" class="form-control col-sm-4" name="identity" required>
-                        <option selected hidden disabled></option>
-                        <option value="1">一般考生</option>
-                        <option value="2">中低收入戶考生</option>
-                        <option value="3">低收入戶考生</option>
-                    </select>
+                    <div class="col-sm-4">
+                        <select id="inputIdentity" class="form-control" name="identity" required>
+                            <option selected hidden disabled></option>
+                            <option value="1">一般考生</option>
+                            <option value="2">中低收入戶考生</option>
+                            <option value="3">低收入戶考生</option>
+                        </select>
+                    </div>
                 </div>
                 <div class="form-group row">
                     <label for="inputId" class="col-sm-3">身分證字號</label>
-                    <input type="text" class="form-control col-sm-4" id="inputId" aria-describedby="inputIdHelp" pattern="[A-Z]\d{9}" name="id" required>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control" id="inputId" aria-describedby="inputIdHelp" pattern="[A-Z]\d{9}" name="id" required>
+                    </div>
                     <small id="inputIdHelp" class="form-text text-muted col-sm-4">*僑外生請填寫居留證號碼</small>
                 </div>
                 <div class="form-group row">
                     <label for="inputTel" class="col-sm-3">電話</label>
-                    <input type="tel" class="form-control col-sm-4" id="inputTel" name="tel" required>
+                    <div class="col-sm-4">
+                        <input type="tel" class="form-control" id="inputTel" name="tel" required>
+                    </div>
                 </div>
                 <div class="form-group row">
                     <label for="inputEmail" class="col-sm-3">Email信箱</label>
-                    <input type="email" class="form-control col-sm-4" id="inputEmail" name="email" required>
+                    <div class="col-sm-4">
+                        <input type="email" class="form-control " id="inputEmail" name="email" required>
+                    </div>
                 </div>
                 <div class="form-group row">
                     <label for="inputDep" class="col-sm-3">報考系所</label>
-                    <select id="inputDep" class="form-control col-sm-4" name="dept_id" required>
-                        <option selected hidden disabled></option>
-                        <option value="1">英語系、美術系藝教班、兒英所、翻譯所報名費 1800元</option>
-                        <option value="2">其他系所 1300元</option>
-                    </select>
+                    <div class="col-sm-4">
+                        <select id="inputDep" class="form-control " name="dept_id" required>
+                            <option selected hidden disabled></option>
+                            <option value="1">英語系、美術系藝教班、兒英所、翻譯所報名費 1800元</option>
+                            <option value="2">其他系所 1300元</option>
+                        </select>
+                    </div>
                 </div>
                 <hr />
                 <div class="line-height-1">

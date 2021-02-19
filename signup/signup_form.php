@@ -94,7 +94,7 @@
                 <fieldset class="form-group row">
                     <legend class="col-form-label col-sm-3 float-sm-left" style="min-width: 9rem;"><span style="color:red">身心障礙考生</span></legend>
                     <div class="col-xl row mx-0">
-                        <div style="max-width: 10rem;">
+                        <div class="col-sm " style="max-width: 10rem;">
                             <div class="form-check form-check-inline form-group">
                                 <input class="form-check-input" type="radio" id="disabled1" name="disabled" value="1" required>
                                 <label class="form-check-label" for="disabled1"><span style="color:red">是</span></label>
@@ -135,11 +135,15 @@
 
                 <div class="form-group row">
                     <label for="inputName" class="col-sm-3">姓名</label>
-                    <input type="text" class="form-control col-sm-5" id="inputName" name="name" required>
+                    <div class="col-sm-5">
+                        <input type="text" class="form-control " id="inputName" name="name" required>
+                    </div>
                 </div>
                 <div class="form-group row">
                     <label for="inputIDNumber" class="col-sm-3">身分證字號</label>
-                    <input type="text" class="form-control col-sm-5" id="inputIDNumber" aria-describedby="IDNumberHelp" pattern="[A-Z]\d{9}" name="id" readonly>
+                    <div class="col-sm-5">
+                        <input type="text" class="form-control " id="inputIDNumber" aria-describedby="IDNumberHelp" pattern="[A-Z]\d{9}" name="id" required>
+                    </div>
                     <small id="IDNumberHelp" class="form-text text-muted col-sm-4">*僑外生居留證號碼</small>
                 </div>
                 <fieldset class="form-group row">
@@ -158,7 +162,9 @@
                 </fieldset>
                 <div class="form-group row">
                     <label for="inputBirthday" class="col-sm-3">出生日期</label>
-                    <input type="date" class="form-control col-sm-5" id="inputBirthday" aria-describedby="birthdayErrMsg" aria-describedby="birthdayHelp" name="birthday" placeholder="yyyy-mm-dd" pattern="\d{4}-\d{2}-\d{2}" required>
+                    <div class="col-sm-5">
+                        <input type="date" class="form-control" id="inputBirthday" aria-describedby="birthdayErrMsg" aria-describedby="birthdayHelp" name="birthday" placeholder="yyyy-mm-dd" pattern="\d{4}-\d{2}-\d{2}" required>
+                    </div>
                     <small id="birthdayHelp" class="form-text text-muted col-sm-4">*西元年 = 民國年 + 1911<br><span class="error" id="birthdayErrMsg"></span></small>
                 </div>
                 <div class="form-group row">
@@ -166,7 +172,9 @@
                     <div class="col-sm-9">
                         <div class="row form-group">
                             <label for="inputZipcode" class="col-sm-2" style="min-width: 7rem;">郵遞區號：</label>
-                            <input type="text" class="form-control col-sm-3" id="inputZipcode" aria-describedby="zipcodeHelp" pattern="\d{5}\d{0,1}" name="zipcode" required>
+                            <div class="col-sm-3">
+                                <input type="text" class="form-control " id="inputZipcode" aria-describedby="zipcodeHelp" pattern="\d{5}\d{0,1}" name="zipcode" required>
+                            </div>
                             <small id="zipcodeHelp" class="form-text text-muted col-sm-5">
                                 <span style="color:red">(請輸入半形數字)</span>
                                 <a href="https://www.post.gov.tw/post/internet/Postal/index.jsp?ID=208" target="_blank" style="word-break:keep-all">郵遞區號查詢</a>
@@ -174,7 +182,9 @@
                         </div>
                         <div class="row form-group">
                             <label for="inputAddress" class="col-sm-2" style="min-width: 7rem;">地址：</label>
-                            <input type="text" class="form-control col-xl" id="inputAddress" name="address" required>
+                            <div class="col-xl">
+                                <input type="text" class="form-control " id="inputAddress" name="address" required>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -186,7 +196,9 @@
                     <div class="col-sm-9">
                         <div class="row form-group">
                             <label for="inputZipcode2" class="col-sm-2" style="min-width: 7rem;">郵遞區號：</label>
-                            <input type="text" class="form-control col-sm-3" id="inputZipcode2" aria-describedby="zipcode2Help" pattern="\d{5}\d{0,1}" name="zipcode2" required>
+                            <div class="col-sm-3">
+                                <input type="text" class="form-control " id="inputZipcode2" aria-describedby="zipcode2Help" pattern="\d{5}\d{0,1}" name="zipcode2" required>
+                            </div>
                             <small id="zipcode2Help" class="form-text text-muted col-sm-5">
                                 <span style="color:red">(請輸入半形數字)</span>
                                 <a href="https://www.post.gov.tw/post/internet/Postal/index.jsp?ID=208" target="_blank" style="word-break:keep-all">郵遞區號查詢</a>
@@ -194,7 +206,9 @@
                         </div>
                         <div class="row form-group">
                             <label for="inputAddress2" class="col-sm-2" style="min-width: 7rem;">地址：</label>
-                            <input type="text" class="form-control col-xl" id="inputAddress2" name="address2" required>
+                            <div class="col-xl">
+                                <input type="text" class="form-control " id="inputAddress2" name="address2" required>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -217,13 +231,17 @@
                         </div>
                         <div class="row form-group">
                             <label for="inputTel_m" class="col-sm-2" style="min-width: 7rem;">手機：</label>
-                            <input type="tel" class="form-control col-sm-3" id="inputTel_m" pattern="09\d{8}" placeholder="09xxxxxxxx" name="tel_m" required>
+                            <div class="col-sm-3">
+                                <input type="tel" class="form-control " id="inputTel_m" pattern="09\d{8}" placeholder="09xxxxxxxx" name="tel_m" required>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="inputEmail" class="col-sm-3">Email信箱</label>
-                    <input type="email" class="form-control col-sm-5" id="inputEmail" name="email" placeholder="example@gmail.com" readonly>
+                    <div class="col-sm-5">
+                        <input type="email" class="form-control " id="inputEmail" name="email" placeholder="example@gmail.com" required>
+                    </div>
                 </div>
                 <div class="form-group row">
                     <label class="col-sm-3">緊急連絡人</label>
@@ -271,19 +289,21 @@
                                 <div class="card p-4">
                                     <div class="row form-group">
                                         <label for="inputGrad_schol" class="col-sm-2" style="min-width: 7rem;">學校名稱：</label>
-                                        <div class="row col-sm align-items-center">
-                                            <input type="text" class="form-control col-sm" id="inputGrad_schol" name="grad_schol" required>
+                                        <div class=" col-sm align-items-center">
+                                            <input type="text" class="form-control " id="inputGrad_schol" name="grad_schol" required>
                                         </div>
                                     </div>
                                     <div class="row form-group">
                                         <label for="inputGrad_dept" class="col-sm-2" style="min-width: 7rem;">科系：</label>
-                                        <div class="row col-sm align-items-center">
-                                            <input type="text" class="form-control col-sm" id="inputGrad_dept" name="grad_dept" required>
+                                        <div class=" col-sm align-items-center">
+                                            <input type="text" class="form-control " id="inputGrad_dept" name="grad_dept" required>
                                         </div>
                                     </div>
                                     <div class="row form-group">
                                         <label for="inputGrad_date" class="col-sm-2" style="min-width: 7rem;">畢業年月：</label>
-                                        <input style="min-width: 10rem;" type="month" class="form-control col-sm-3" aria-describedby="grad_dateHelp" id="inputGrad_date" placeholder="yyyy-mm" pattern="(1\d{3}|2\d{3})-(0[1-9]|1[0-2])" name="grad_date" required>
+                                        <div class="col-sm-3">
+                                            <input style="min-width: 10rem;" type="month" class="form-control " aria-describedby="grad_dateHelp" id="inputGrad_date" placeholder="yyyy-mm" pattern="(1\d{3}|2\d{3})-(0[1-9]|1[0-2])" name="grad_date" required>
+                                        </div>
                                         <small id="grad_dateHelp" class="form-text text-muted col-sm">(yyyy-mm)<br>*西元年 = 民國年 + 1911</small>
                                     </div>
                                     <div class="form-group">
@@ -302,18 +322,20 @@
                                     </div>
                                     <div class="row form-group">
                                         <label for="inputac_school_type" class="col-sm-2" style="min-width: 7rem;">類型：</label>
-                                        <select id="inputac_school_type" class="form-control col-sm" name="ac_school_type" required>
-                                            <option selected hidden disabled></option>
-                                            <option value="1">大學</option>
-                                            <option value="2">三專</option>
-                                            <option value="3">二專或五專</option>
-                                        </select>
+                                        <div class="col-sm">
+                                            <select id="inputac_school_type" class="form-control " name="ac_school_type" required>
+                                                <option selected hidden disabled></option>
+                                                <option value="1">大學</option>
+                                                <option value="2">三專</option>
+                                                <option value="3">二專或五專</option>
+                                            </select>
+                                        </div>
                                     </div>
 
                                     <div class="row form-group">
                                         <label for="inputAc_dept" class="col-sm-2" style="min-width: 7rem;">科系：</label>
-                                        <div class="row col-sm align-items-center">
-                                            <input type="text" class="form-control col-sm" id="inputAc_dept" name="ac_dept" required>
+                                        <div class=" col-sm align-items-center">
+                                            <input type="text" class="form-control " id="inputAc_dept" name="ac_dept" required>
                                         </div>
                                     </div>
                                     <div class="form-group">

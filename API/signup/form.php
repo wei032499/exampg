@@ -80,12 +80,12 @@ try {
         } else {
             if (oci_result($stmt, 'SUBJECT_ID') !== null) {
                 $orastatus_id = oci_result($stmt, 'ORASTATUS_ID');
-                $stmt_subject = oci_parse($conn, "SELECT substr(ID,6,1) as SECTION FROM SUBJECT WHERE SCHOOL_ID='$SCHOOL_ID' AND YEAR='$ACT_YEAR_NO' AND substr(ID,1,5)=:orastatus_id  GROUP BY substr(ID,1,6) HAVING count(*)>1 ");
+                $stmt_subject = oci_parse($conn, "SELECT substr(ID,1,6) as FSECTION FROM SUBJECT WHERE SCHOOL_ID='$SCHOOL_ID' AND YEAR='$ACT_YEAR_NO' AND substr(ID,1,5)=:orastatus_id  GROUP BY substr(ID,1,6) HAVING count(*)>1 ");
                 oci_bind_by_name($stmt_subject, ':orastatus_id',  $orastatus_id);
                 oci_execute($stmt_subject, OCI_DEFAULT);
                 foreach (str_split(oci_result($stmt, 'SUBJECT_ID'), 1) as $value) {
                     oci_fetch($stmt_subject);
-                    $subjects[] = $orastatus_id . oci_result($stmt_subject, 'SECTION') . $value;
+                    $subjects[] =  oci_result($stmt_subject, 'FSECTION') . $value;
                 }
                 oci_free_statement($stmt_subject);
             }
@@ -297,20 +297,20 @@ try {
         oci_bind_by_name($stmt, ':sn',  $payload['sn']);
         oci_execute($stmt, OCI_DEFAULT);
 
+        $post_processing[] = function () use ($payload) {
+            /**
+             * 寄發通知信
+             */
+            $email = sendMail(3, $payload);
 
 
-        /**
-         * 寄發通知信
-         */
-        $email = sendMail(3, $payload);
-
-
-        /**
-         * 寫入log
-         */
-        $fp = fopen(dirname(__FILE__) . "/../logs/dbg_msg.log", "a+");
-        fwrite($fp, "報名資料初填通知 - API/signup/form.php  - $email - \n");
-        fclose($fp);
+            /**
+             * 寫入log
+             */
+            $fp = fopen(dirname(__FILE__) . "/../logs/dbg_msg.log", "a+");
+            fwrite($fp, "報名資料初填通知 - API/signup/form.php  - $email - \n");
+            fclose($fp);
+        };
     } else if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
 
         if ($payload['status'] !== 2 || $payload['authority'] !== 1)

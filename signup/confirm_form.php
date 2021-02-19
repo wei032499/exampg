@@ -91,7 +91,7 @@
                 <fieldset class="form-group row">
                     <legend class="col-form-label col-sm-3 float-sm-left" style="min-width: 9rem;"><span style="color:red">身心障礙考生</span></legend>
                     <div class="col-xl row mx-0">
-                        <div style="max-width: 10rem;">
+                        <div class="col-sm " style="max-width: 10rem;">
                             <div class="form-check form-check-inline form-group">
                                 <input class="form-check-input" type="radio" id="disabled1" name="disabled" value="1" disabled readonly required>
                                 <label class="form-check-label" for="disabled1"><span style="color:red">是</span></label>
