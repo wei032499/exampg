@@ -1,5 +1,6 @@
 <?php
 require_once('./API/common/db.php');
+$post_processing = array();
 try {
 
     if (!isset($_COOKIE['token']))
@@ -40,3 +41,6 @@ try {
     echo json_encode($result);
     header("Location: ./alter.php");
 }
+
+register_shutdown_function("shutdown_function", $post_processing);
+exit(); // You need to call this to send the response immediately

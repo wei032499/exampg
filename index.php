@@ -25,11 +25,12 @@
         $.ajax({
                 type: 'GET',
                 url: "./API/news/news.php",
-                dataType: 'json'
+                dataType: 'json',
+                cache: false
             }).done(function(response) {
                 $(function() {
-                    for (let i = 0; i < response.length; i++)
-                        $("table tbody").append("<tr><td>" + response[i]['content'] + "</td><td>" + response[i]['date'] + "</td></tr>")
+                    for (let i = 0; i < response['data'].length; i++)
+                        $("table tbody").append("<tr><td>" + response['data'][i]['content'] + "</td><td>" + response['data'][i]['date'] + "</td></tr>")
                 });
             })
             .fail(function(jqXHR, exception) {
@@ -65,7 +66,7 @@
                         <button type="button" id="logout" style="min-width:4rem" class="btn btn-info btn-sm ml-3">登出</button>
                     </div>
                 </div>
-                <table class="shadow table-md table-hover table-bordered">
+                <table class="shadow table-md table-hover table-bordered" style="width:100%">
                     <thead>
                         <tr class="table-primary">
                             <th scope="col" style="width: 90%;">公告事項</th>
