@@ -76,11 +76,12 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="inputId" class="col-sm-3">身分證字號</label>
+                    <label for="inputId" class="col-sm-3">身分證字號<br>
+                        <small id="inputIdHelp" class="form-text text-muted">*僑外生請填寫居留證號碼</small>
+                    </label>
                     <div class="col-sm-4">
                         <input type="text" class="form-control" id="inputId" aria-describedby="inputIdHelp" pattern="[A-Z]\d{9}" name="id" required>
                     </div>
-                    <small id="inputIdHelp" class="form-text text-muted col-sm-4">*僑外生請填寫居留證號碼</small>
                 </div>
                 <div class="form-group row">
                     <label for="inputTel" class="col-sm-3">電話</label>

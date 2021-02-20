@@ -17,7 +17,7 @@
 
     <script>
         $.holdReady(true);
-        var deptObj, formData;
+        var deptObj, formData = getSessionItems('signup');
         if (sessionStorage === undefined) {
             alert("未支援Web Storage！\n請更換瀏覽器再試。");
             window.location.replace('./');
@@ -26,7 +26,6 @@
         else {
             $.when(getData("./API/dept/list.php")).done(function(_deptObj) {
                 deptObj = _deptObj.data;
-                formData = getSessionItems('signup');
                 $.holdReady(false);
 
             });
@@ -56,18 +55,19 @@
                 </div>
             </div>
 
+
             <form class="border p-4 bg-white shadow rounded" method="POST">
                 <div class="form-row">
                     <div class="form-group col-md-6">
                         <label for="inputDept">報考系所</label>
                         <select id="inputDept" class="form-control" name="dept" required>
-                            <option selected hidden disabled></option>
+                            <option selected disabled hidden></option>
                         </select>
                     </div>
                     <div class="form-group col-md-6">
                         <label for="inputOrganize">報考組(科)別</label>
                         <select id="inputOrganize" class="form-control" name="organize_id" required>
-                            <option selected hidden disabled></option>
+                            <option selected disabled hidden></option>
                         </select>
                     </div>
                 </div>
@@ -75,7 +75,7 @@
                     <div class="form-group col-md-6">
                         <label for="inputStatus">報考身分</label>
                         <select id="inputStatus" class="form-control" name="orastatus_id" required>
-                            <option selected hidden disabled></option>
+                            <option selected disabled hidden></option>
                         </select>
                     </div>
                     <div class="form-group col-md-6" id="subject" style="visibility: hidden;">
@@ -94,7 +94,7 @@
                 <fieldset class="form-group row">
                     <legend class="col-form-label col-sm-3 float-sm-left" style="min-width: 9rem;"><span style="color:red">身心障礙考生</span></legend>
                     <div class="col-xl row mx-0">
-                        <div class="col-sm " style="max-width: 10rem;">
+                        <div class="col-sm " style="max-width: 10rem;padding-left:0px">
                             <div class="form-check form-check-inline form-group">
                                 <input class="form-check-input" type="radio" id="disabled1" name="disabled" value="1" required>
                                 <label class="form-check-label" for="disabled1"><span style="color:red">是</span></label>
@@ -132,7 +132,6 @@
                     </div>
                 </fieldset>
                 <hr />
-
                 <div class="form-group row">
                     <label for="inputName" class="col-sm-3">姓名</label>
                     <div class="col-sm-5">
@@ -140,11 +139,14 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="inputIDNumber" class="col-sm-3">身分證字號</label>
+                    <label for="inputIDNumber" class="col-sm-3">
+                        身分證字號<br>
+                        <small id="IDNumberHelp" class="form-text text-muted ">*僑外生居留證號碼</small>
+                    </label>
                     <div class="col-sm-5">
                         <input type="text" class="form-control " id="inputIDNumber" aria-describedby="IDNumberHelp" pattern="[A-Z]\d{9}" name="id" required>
                     </div>
-                    <small id="IDNumberHelp" class="form-text text-muted col-sm-4">*僑外生居留證號碼</small>
+
                 </div>
                 <fieldset class="form-group row">
                     <legend class="col-form-label col-sm-3 float-sm-left">性別</legend>
@@ -161,11 +163,12 @@
                     </div>
                 </fieldset>
                 <div class="form-group row">
-                    <label for="inputBirthday" class="col-sm-3">出生日期</label>
+                    <label for="inputBirthday" class="col-sm-3">出生日期<br>
+                        <small id="birthdayHelp" class="form-text text-muted">*西元年 = 民國年 + 1911</small>
+                    </label>
                     <div class="col-sm-5">
-                        <input type="date" class="form-control" id="inputBirthday" aria-describedby="birthdayErrMsg" aria-describedby="birthdayHelp" name="birthday" placeholder="yyyy-mm-dd" pattern="\d{4}-\d{2}-\d{2}" required>
+                        <input type="date" class="form-control " id="inputBirthday" aria-describedby="birthdayHelp" name="birthday" placeholder="yyyy-mm-dd" pattern="\d{4}-\d{2}-\d{2}" required>
                     </div>
-                    <small id="birthdayHelp" class="form-text text-muted col-sm-4">*西元年 = 民國年 + 1911<br><span class="error" id="birthdayErrMsg"></span></small>
                 </div>
                 <div class="form-group row">
                     <label class="col-sm-3">通訊地址</label>
@@ -175,10 +178,6 @@
                             <div class="col-sm-3">
                                 <input type="text" class="form-control " id="inputZipcode" aria-describedby="zipcodeHelp" pattern="\d{5}\d{0,1}" name="zipcode" required>
                             </div>
-                            <small id="zipcodeHelp" class="form-text text-muted col-sm-5">
-                                <span style="color:red">(請輸入半形數字)</span>
-                                <a href="https://www.post.gov.tw/post/internet/Postal/index.jsp?ID=208" target="_blank" style="word-break:keep-all">郵遞區號查詢</a>
-                            </small>
                         </div>
                         <div class="row form-group">
                             <label for="inputAddress" class="col-sm-2" style="min-width: 7rem;">地址：</label>
@@ -199,10 +198,6 @@
                             <div class="col-sm-3">
                                 <input type="text" class="form-control " id="inputZipcode2" aria-describedby="zipcode2Help" pattern="\d{5}\d{0,1}" name="zipcode2" required>
                             </div>
-                            <small id="zipcode2Help" class="form-text text-muted col-sm-5">
-                                <span style="color:red">(請輸入半形數字)</span>
-                                <a href="https://www.post.gov.tw/post/internet/Postal/index.jsp?ID=208" target="_blank" style="word-break:keep-all">郵遞區號查詢</a>
-                            </small>
                         </div>
                         <div class="row form-group">
                             <label for="inputAddress2" class="col-sm-2" style="min-width: 7rem;">地址：</label>
@@ -217,14 +212,14 @@
                     <div class="col-xl">
                         <div class="row form-group">
                             <label for="inputTel_h" class="col-sm-2" style="min-width: 7rem;">住家：</label>
-                            <div class="row col-sm align-items-center">
+                            <div class="row col-sm align-items-center" style="margin-left: 0px;">
                                 (&nbsp;<input type="text" class="form-control col-sm-2" style="max-width: 3rem;" name="tel_h_a" pattern="\d+" required>&nbsp;)&nbsp;
                                 <input type="text" class="form-control col-sm-3" style="max-width: 10rem;" id="inputTel_h" name="tel_h" pattern="\d+" required>
                             </div>
                         </div>
                         <div class="row form-group">
                             <label for="inputTel_o" class="col-sm-2" style="min-width: 7rem;">公司：</label>
-                            <div class="row col-sm align-items-center">
+                            <div class="row col-sm align-items-center" style="margin-left: 0px;">
                                 (&nbsp;<input type="text" class="form-control col-sm-2" style="max-width: 3rem;" name="tel_o_a" pattern="\d+">&nbsp;)&nbsp;
                                 <input type="text" class="form-control col-sm-3" style="max-width: 10rem;" id="inputTel_o" name="tel_o" pattern="\d+">
                             </div>
@@ -282,7 +277,6 @@
                                 <label class="form-check-label" for="prove4">技能檢定合格</label>
                             </div>
                             <span class="error" id="proveErrMsg"></span>
-
                         </div>
                         <div class="row col form-group tab-content" id="proveTabContent">
                             <div class="tab-pane fade" id="tab_prove1" role="tabpanel" aria-labelledby="prove1" style="width: 100%;">
@@ -301,14 +295,10 @@
                                     </div>
                                     <div class="row form-group">
                                         <label for="inputGrad_date" class="col-sm-2" style="min-width: 7rem;">畢業年月：</label>
-                                        <div class="col-sm-3">
+                                        <div class=" col-sm-3 align-items-center">
                                             <input style="min-width: 10rem;" type="month" class="form-control " aria-describedby="grad_dateHelp" id="inputGrad_date" placeholder="yyyy-mm" pattern="(1\d{3}|2\d{3})-(0[1-9]|1[0-2])" name="grad_date" required>
                                         </div>
                                         <small id="grad_dateHelp" class="form-text text-muted col-sm">(yyyy-mm)<br>*西元年 = 民國年 + 1911</small>
-                                    </div>
-                                    <div class="form-group">
-                                        <span style="color:red">※學校名稱及科系請填寫全銜</span><br>
-                                        <span style="color:red">※應屆畢業生（109年6月畢業）請點選「學士學位」</span>
                                     </div>
                                 </div>
                             </div>
@@ -316,13 +306,13 @@
                                 <div class="card p-4">
                                     <div class="row form-group">
                                         <label for="inputac_school" class="col-sm-2" style="min-width: 7rem;">學校名稱：</label>
-                                        <div class="row col-sm align-items-center">
-                                            <input type="text" class="form-control col-sm" id="inputac_school" name="ac_school" required>
+                                        <div class=" col-sm align-items-center">
+                                            <input type="text" class="form-control " id="inputac_school" name="ac_school" required>
                                         </div>
                                     </div>
                                     <div class="row form-group">
                                         <label for="inputac_school_type" class="col-sm-2" style="min-width: 7rem;">類型：</label>
-                                        <div class="col-sm">
+                                        <div class=" col-sm align-items-center">
                                             <select id="inputac_school_type" class="form-control " name="ac_school_type" required>
                                                 <option selected hidden disabled></option>
                                                 <option value="1">大學</option>
@@ -338,40 +328,31 @@
                                             <input type="text" class="form-control " id="inputAc_dept" name="ac_dept" required>
                                         </div>
                                     </div>
-                                    <div class="form-group">
-                                        <span style="color:red">※學校名稱及科系請填寫全銜</span><br>
-                                    </div>
                                     <div class="  form-group align-items-center" style="padding-left: 15px;">
                                         <div class="row form-group align-items-center">
-                                            於&nbsp;<input type="month" style="max-width: 80%;min-width:10rem" class="form-control col-sm-4" aria-describedby="ac_dateHelp" placeholder="yyyy-mm" pattern="(1\d{3}|2\d{3})-(0[1-9]|1[0-2])" name="ac_date" required>&emsp;
-                                        </div>
-                                        <div class="row form-group align-items-center">
-                                            &emsp;&nbsp;
-                                            <select style="max-width: 80%;" class="form-control col-sm-4" name="ac_g" required>
+                                            於&nbsp;<input type="month" style="max-width:6rem;min-width:6rem" class="form-control col-sm-4" aria-describedby="ac_dateHelp" placeholder="yyyy-mm" pattern="(1\d{3}|2\d{3})-(0[1-9]|1[0-2])" name="ac_date" required>&emsp;
+                                            <select style="max-width:5rem;min-width:5rem" class="form-control col-sm-4" name="ac_g" required>
                                                 <option value="1">畢業</option>
                                                 <option value="2">肄業</option>
                                             </select>，
-                                        </div>
-                                        <div class=" form-group align-items-center">
-                                            <small id="ac_dateHelp" style="max-width: 11.5rem;" class="form-text text-muted col-sm">(畢/肄業年月：yyyy-mm)<br>*西元年 = 民國年 + 1911</small>
+                                            <small id="ac_dateHelp" style="max-width: 11.5rem;" class="form-text text-muted col-sm">(yyyy-mm)<br>*西元年 = 民國年 + 1911</small>
                                         </div>
                                     </div>
                                     <div class="row  form-group align-items-center " style="padding-left: 15px;">
                                         <div class="col form-group row align-items-center" style="min-width: 12rem;max-width: 12rem;">
-                                            修業&nbsp;<input type="number" style="max-width: 5rem;" class="form-control col-sm-3" min="0" step="1" pattern="\d" name="ac_m_y" aria-describedby="acErrMsg" required>&nbsp;年，
+                                            修業&nbsp;<input type="number" style="min-width: 5rem;max-width: 5rem;" class="form-control col-sm-3" min="0" step="1" pattern="\d" name="ac_m_y" aria-describedby="acErrMsg" required>&nbsp;年，
                                         </div>
-                                        <div class="col form-group row align-items-center" style="min-width: 13rem;">
-                                            已離校&nbsp;<input type="number" style="max-width: 5rem;" class="form-control col-sm-3" min="0" step="1" pattern="\d" name="ac_leave_y" aria-describedby="acErrMsg" required>&nbsp;年。
-                                            <span class="error" id="acErrMsg"></span>
-
+                                        <div class="col form-group row align-items-center" style="min-width: 13rem;max-width: 13rem;">
+                                            已離校&nbsp;<input type="number" style="min-width: 5rem;max-width: 5rem;" class="form-control col-sm-3" min="0" step="1" pattern="\d" name="ac_leave_y" aria-describedby="acErrMsg" required>&nbsp;年。
                                         </div>
+                                        <div class="col form-group row align-items-center" style="min-width: 6rem;"><span class="error" id="acErrMsg"></span></div>
 
                                     </div>
-
                                 </div>
                             </div>
                         </div>
                     </div>
+
                 </fieldset>
                 <div class="form-group row">
                     <label class="col-sm-3">繳驗證件</label>
@@ -403,6 +384,7 @@
                     <button type="submit" style="min-width:4rem" class="btn btn-primary btn-sm col-1 mx-1">下一步</button>
                 </div>
             </form>
+
         </div>
     </section>
 

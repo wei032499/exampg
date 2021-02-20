@@ -26,15 +26,8 @@ set_error_handler(function ($err_severity, $err_msg, $err_file, $err_line, array
 
     global $post_processing;
     $post_processing[] = function () use ($err_file, $err_msg, $err_line) {
-        $from = "=?UTF-8?B?" . base64_encode("彰化師大網路報名系統") . "?="; //郵件來源(轉換編碼)
-        $headers = "MIME-Version: 1.0\r\n";
-        $headers .= "From: $from <edoc@cc2.ncue.edu.tw>\r\n";
-        $headers .= "Reply-To: wan@cc.ncue.edu.tw\r\n"; //970310 add!寄給招生承辦單位承辦人
-        $headers .= "Content-type: text/html; charset=utf-8\r\n";
-        $headers .= "X-Priority: 1\n";
-        $headers .= "X-MSMail-Priority: High\n";
         $mail_msg = $err_file . "<br>" . $err_msg . " on line " . $err_line;
-        mail("s0654017@mail.ncue.edu.tw", "招生系統錯誤", $mail_msg, $headers);
+        sendMail(0, array('title' => "招生系統錯誤", 'content' => $mail_msg));
     };
 
 
@@ -243,9 +236,12 @@ function sendMail($msg_type, $payload)
 
 
     //通知
-    //mail('s0654017@mail.ncue.edu.tw', '已成功發送招生mail通知', $msg_type, $headers);
+    //mail('s0654017@gm.ncue.edu.tw', '已成功發送招生mail通知', $msg_type, $headers);
 
     switch ($msg_type) {
+        case '0':
+            mail("s0654017@gm.ncue.edu.tw", $payload['title'], $payload['content'], $headers);
+            break;
         case '1':
             // $num = count($stmt1_email) - 1;
             // $subject = "國立彰化師範大學 網路報名系統::簡章費繳費入帳及專用序號密碼通知";

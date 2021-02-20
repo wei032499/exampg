@@ -71,15 +71,16 @@ $(function () {
                         delete formData['union_priority'];
                     }
                     if (typeof isConfirmForm !== "undefined" && isConfirmForm === true) {
-                        $("form .form-control").addClass('form-control-plaintext').removeClass('form-control');
-                        $("form select option").not(":selected").remove();
-                        $("form [type='radio']:not(:checked)").parent().remove();
-                        $("form [type='radio']").parent().css('color', '#00008b');
-                        $("form [type='radio']").attr('type', 'hidden');
-                        $("form input").css('color', '#00008b');
-                        $("form select").css('color', '#00008b');
+                        $("form select[name='union_priority[]']").each(function () {
+                            $(this).addClass('form-control-plaintext').removeClass('form-control');
+                            let text = "<div class='" + $(this).attr('class') + "' style='color:#00008b;' >" + $(this).children("option:selected").text() + "</div>";
+                            $(this).css('display', 'none');
+                            $(this).before(text);
+                        });
                     }
-                    $("#union").css('display', '');
+
+                    if (unionDepts.length - 1 > 0)//有可選擇的志願才顯示
+                        $("#union").css('display', '');
 
                 });
 
@@ -99,6 +100,7 @@ $(function () {
                 $("form [name='orastatus_id']").append('<option selected hidden disabled></option>');
             else
                 $("form [name='orastatus_id']>option:selected").change().blur();
+
         });
         $("form [name='orastatus_id']").on('change', function () {
             $("#subject").css('visibility', 'hidden');
@@ -128,7 +130,9 @@ $(function () {
 
                     }
                     $("#subject>div").append('<div class="row form-group align-items-center" style="margin-left:2rem"><input type="checkbox" value="' + keys[i] + '" class="form-check-input" name="section[]" ><select class="form-control" name="subject[]" disabled>' + options + '</select></div>');
+
                 }
+
                 $("form [name='section[]']").on('change', function () {
                     if ($(this).prop("checked")) {
                         $(this).siblings("select").attr('required', true);
@@ -159,8 +163,10 @@ $(function () {
 
                         }
                         $("#subject>div").append('<select class="form-control form-group" name="subject[]" required>' + options + '</select>');
+
                     }
                 }
+
 
             }
             if (isOptional)
@@ -197,15 +203,15 @@ $(function () {
                             delete formData['union_priority'];
                         }
                         if (typeof isConfirmForm !== "undefined" && isConfirmForm === true) {
-                            $("form .form-control").addClass('form-control-plaintext').removeClass('form-control');
-                            $("form select option").not(":selected").remove();
-                            $("form [type='radio']:not(:checked)").parent().remove();
-                            $("form [type='radio']").parent().css('color', '#00008b');
-                            $("form [type='radio']").attr('type', 'hidden');
-                            $("form input").css('color', '#00008b');
-                            $("form select").css('color', '#00008b');
+                            $("form select[name='union_priority[]']").each(function () {
+                                $(this).addClass('form-control-plaintext').removeClass('form-control');
+                                let text = "<div class='" + $(this).attr('class') + "' style='color:#00008b;' >" + $(this).children("option:selected").text() + "</div>";
+                                $(this).css('display', 'none');
+                                $(this).before(text);
+                            });
                         }
-                        $("#union").css('display', '');
+                        if (unionDepts.length - 1 > 0)//有可選擇的志願才顯示
+                            $("#union").css('display', '');
                     });
                 }
                 let section = this.value.substr(5, 1);
@@ -227,6 +233,8 @@ $(function () {
                         $("form [name='file']").removeAttr('disabled');
                     }
                 }
+
+
             });
         });
     }
@@ -287,6 +295,12 @@ $("form [name='prove_type']").on('change', function () {
 $("#address2_btn").on('click', function () {
     $("form [name='zipcode2']").val($("form [name='zipcode']").val()).blur();
     $("form [name='address2']").val($("form [name='address']").val()).blur();
+});
+
+$("form").on('reset', function () {
+    $("form input").change().blur();
+    $("form select").change().blur();
+
 });
 
 //備審資料上傳狀態
@@ -389,3 +403,25 @@ $("form [name='file']").on('change', function () {
             });
     }
 });
+
+
+function formReadOnly() {
+    $("form [name='section[]'").not(":checked").parent().remove();
+    $("form [name='section[]'").on('click', function () {
+        return false
+    });
+    $("form .form-control").addClass('form-control-plaintext').removeClass('form-control');
+    $("form select option").not(":selected").remove();
+    $("form [type='radio']:not(:checked)").parent().remove();
+    $("form [type='radio']").parent().css('color', '#00008b');
+    $("form [type='radio']").attr('type', 'hidden');
+    $("form input").css('color', '#00008b');
+    $("form select").css('color', '#00008b');
+    $("form [type='number']").attr('type', 'text');
+    $("form select").each(function () {
+        let text = "<div class='" + $(this).attr('class') + "' style='" + $(this).attr('style') + "' >" + $(this).children("option:selected").text() + "</div>";
+        $(this).css('display', 'none');
+        $(this).before(text);
+    });
+
+}

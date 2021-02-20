@@ -9,10 +9,8 @@
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
     <link rel="stylesheet" href="./css/custom.css" />
-    <link rel="stylesheet" href="./css/toastr.min.css" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
-    <script src="./js/toastr.min.js"></script>
     <script src="./js/common.js"></script>
     <script>
         if (sessionStorage === undefined) {
@@ -69,11 +67,12 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="inputId" class="col-sm-3">身分證字號</label>
+                    <label for="inputId" class="col-sm-3">身分證字號<br>
+                        <small id="inputIdHelp" class="form-text text-muted ">*僑外生請填寫居留證號碼</small>
+                    </label>
                     <div class="col-sm-4">
                         <input type="text" class="form-control-plaintext" id="inputId" pattern="[A-Z]\d{9}" aria-describedby="inputIdHelp" name="id" readonly required>
                     </div>
-                    <small id="inputIdHelp" class="form-text text-muted col-sm-4">*僑外生請填寫居留證號碼</small>
                 </div>
                 <div class="form-group row">
                     <label for="inputTel" class="col-sm-3">電話</label>
@@ -109,19 +108,20 @@
             </form>
         </div>
     </section>
+
     <?php require_once("./module/footer.php") ?>
 
+    <!--toastr-->
+    <link rel="stylesheet" href="./css/toastr.min.css" />
+    <script src="./js/toastr.min.js"></script>
+
+    <!--custom-->
+    <script src="./js/order.js"></script>
     <script>
         $(function() {
             let formData = getSessionItems('order');
             fillForm(formData);
-            $("form select option").not(":selected").remove().end();
-
-            $("form [type='radio']:not(:checked)").parent().remove();
-            $("form [type='radio']").parent().css('color', '#00008b');
-            $("form [type='radio']").attr('type', 'hidden');
-            $("form input").css('color', '#00008b');
-            $("form select").css('color', '#00008b');
+            formReadOnly();
         });
 
         $("form").on('submit', function(e) {
