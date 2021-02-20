@@ -328,16 +328,6 @@
                                             </select>，
                                             <small id="ac_dateHelp" style="max-width: 11.5rem;" class="form-text text-muted col-sm">(yyyy-mm)<br>*西元年 = 民國年 + 1911</small>
                                         </div>
-                                        <!--<div class="row form-group align-items-center">
-                                            &emsp;&nbsp;
-                                            <select style="max-width: 80%;" class="form-control-plaintext col-sm-4" name="ac_g" readonly required>
-                                                <option value="1">畢業</option>
-                                                <option value="2">肄業</option>
-                                            </select>，
-                                        </div>
-                                        <div class=" form-group align-items-center">
-                                            <small id="ac_dateHelp" style="max-width: 11.5rem;" class="form-text text-muted col-sm">(yyyy-mm)<br>*西元年 = 民國年 + 1911</small>
-                                        </div>-->
                                     </div>
                                     <div class="row  form-group align-items-center " style="padding-left: 15px;">
                                         <div class="col form-group row align-items-center" style="min-width: 12rem;max-width: 12rem;">
@@ -361,6 +351,17 @@
                             <li>以同等學力報考者，須將同等學力證件影本於報名截止前寄送達本校招生委員會審查。未繳驗證件者，如獲錄取，於報到時學力證件審查不合格，須撤銷錄取資格，不得異議。</li>
                             <li>招生系所如須郵寄或上傳備審資料，請依招生簡章【重點項目一覽表】之「資料審查繳交方式」辦理。</li>
                         </ol>
+                    </div>
+                </div>
+                <hr>
+                <div class="form-group row">
+                    <label class="col-sm-3"></label>
+                    <div class="col-sm-9 line-height-1">
+                        <a target="_blank" href="./download_review.php">下載審查資料一覽表(pdf檔)</a><br>
+                        <a href="./download_evelope.php" target="_blank">下載信封封面(pdf檔)</a><br>
+                        身心障礙考生如欲申請各項應考需求，請另寄交申請表及證明文件至本校招生委員會。<br>
+                        報名資料如有罕用字，致電腦無法正常顯示者，請另填罕用字回覆表傳真本校處理。<br>
+                        准考證由考生自行下載列印，請於開放列印日期內，至<span class="font-weight-bold">網路報名系統 / 網路報名 / 准考證列印</span> 下載(不限次數)後，以A4白紙單面紙張自行列印，並妥為保存，本校不再另行寄發。<br>
                     </div>
                 </div>
                 <div class="form-group row" id="upload_row" style="display: none;">

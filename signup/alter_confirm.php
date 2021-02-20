@@ -24,8 +24,6 @@
         else {
             $.when(getData("./API/dept/list.php")).done(function(_deptObj) {
                 deptObj = _deptObj.data;
-                console.log(formData);
-
                 $.holdReady(false);
             });
         }

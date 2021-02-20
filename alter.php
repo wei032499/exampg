@@ -2,7 +2,6 @@
 require_once('./API/common/db.php');
 $post_processing = array();
 try {
-
     if (!isset($_COOKIE['token']))
         require_once('./signup/alter_login.php');
     else {

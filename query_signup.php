@@ -1,6 +1,6 @@
 <?php
-require_once('./API/common/db.php');
 try {
+    require_once('./API/common/db.php');
 
     if (!isset($_COOKIE['token']))
         require_once('./signup/query_login.php');

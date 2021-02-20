@@ -30,8 +30,6 @@ set_error_handler(function ($err_severity, $err_msg, $err_file, $err_line, array
         sendMail(0, array('title' => "招生系統錯誤", 'content' => $mail_msg));
     };
 
-
-
     if (strpos($err_msg, 'Undefined index') !== false)
         throw new ErrorException("Bad Request", 400, $err_severity, $err_file, $err_line);
     else if (strpos($err_msg, 'ORA-') !== false) {
