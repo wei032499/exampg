@@ -60,7 +60,7 @@ function fillForm(items) {
                     $("form [name='" + keys[i] + end + "']:eq(" + j + ") >option[value='" + items[keys[i]][j] + "']").removeAttr("disabled");
                     $("form [name='" + keys[i] + end + "']:eq(" + j + ") ").val(items[keys[i]][j]).change();
                 }
-                else if ($("form [name='" + keys[i] + end + "']").attr('type') === "radio" || $("form [name='" + keys[i] + end + "']").attr('type') === "checkbox" || $("form [name='" + keys[i] + "']").attr('type') === "checkbox") {
+                else if ($("form [name='" + keys[i] + end + "']").attr('type') === "radio" || $("form [name='" + keys[i] + end + "']").attr('type') === "checkbox") {
                     $("form [name='" + keys[i] + end + "'][value='" + items[keys[i]][j] + "']").removeAttr("disabled");
                     $("form [name='" + keys[i] + end + "'][value='" + items[keys[i]][j] + "']")[0].checked = true;
                     $("form [name='" + keys[i] + end + "']:checked").change();
@@ -73,7 +73,7 @@ function fillForm(items) {
                 $("form [name='" + keys[i] + "']>option[value='" + items[keys[i]] + "']").removeAttr("disabled");
                 $("form [name='" + keys[i] + "']").val(items[keys[i]]).change();
             }
-            else if ($("form [name='" + keys[i] + "']").attr('type') === "radio") {
+            else if ($("form [name='" + keys[i] + "']").attr('type') === "radio" || $("form [name='" + keys[i] + "']").attr('type') === "checkbox") {
                 $("form [name='" + keys[i] + "'][value='" + items[keys[i]] + "']").removeAttr("disabled");
                 $("form [name='" + keys[i] + "'][value='" + items[keys[i]] + "']")[0].checked = true;
                 $("form [name='" + keys[i] + "']:checked").change();

@@ -18,14 +18,8 @@ try {
         $ip_cnt = oci_result($stmt, 1);
         if ($ip_cnt > 30) {
             $post_processing[] = function () use ($ip) {
-                $from = "=?UTF-8?B?" . base64_encode("彰化師大網路報名系統") . "?="; //郵件來源(轉換編碼)
-                $headers = "MIME-Version: 1.0\r\n";
-                $headers .= "From: $from <edoc@cc2.ncue.edu.tw>\r\n";
-                $headers .= "Reply-To: wan@cc.ncue.edu.tw\r\n"; //970310 add!寄給招生承辦單位承辦人
-                $headers .= "Content-type: text/html; charset=utf-8\r\n";
-                $headers .= "X-Priority: 1\n";
-                $headers .= "X-MSMail-Priority: High\n";
-                mail('s0654017@mail.ncue.edu.tw', '招生報名費帳號申請次數異常通知(碩士班推薦甄試)', $ip . '申請次數超過上限', $headers);
+                $mail_msg = $ip . '申請次數超過上限';
+                sendMail(0, array('title' => "招生報名費帳號申請次數異常通知(碩士班推薦甄試)", 'content' => $mail_msg));
             };
             throw new Exception("申請次數超過上限！如有問題請與本校招生事務人員聯絡", 429);
         }

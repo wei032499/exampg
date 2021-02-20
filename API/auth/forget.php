@@ -12,19 +12,21 @@ try {
         oci_execute($stmt, OCI_DEFAULT);
 
         if (oci_fetch($stmt)) {
-            /**
-             * 寄發通知信
-             */
-            sendMail(6, array('email' => $_POST['email']));
+            $email = $_POST['email'];
+            $post_processing[] = function () use ($email) {
+                /**
+                 * 寄發通知信
+                 */
+                $to = sendMail(6, array('email' => $email));
 
 
-            /**
-             * 寫入log
-             */
-            $to = $_POST['email'];
-            $fp = fopen(dirname(__FILE__) . "/../logs/dbg_msg.log", "a+");
-            fwrite($fp, "查詢序號密碼回覆 - API/auth/forget.php - $to - \n");
-            fclose($fp);
+                /**
+                 * 寫入log
+                 */
+                $fp = fopen(dirname(__FILE__) . "/../logs/dbg_msg.log", "a+");
+                fwrite($fp, "查詢序號密碼回覆 - API/auth/forget.php - $to - \n");
+                fclose($fp);
+            };
         } else
             throw new Exception("查無資料！", 404);
 

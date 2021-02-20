@@ -9,75 +9,20 @@
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
     <link rel="stylesheet" href="./css/custom.css" />
-    <link rel="stylesheet" href="./css/toastr.min.css" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
-    <script src="./js/toastr.min.js"></script>
     <script src="./js/common.js"></script>
     <script>
+        var deptObj, formData, isConfirmForm = true;
         $.holdReady(true);
         if (sessionStorage === undefined) {
             alert("未支援Web Storage！\n請更換瀏覽器再試。");
             window.location.replace('./');
         } else {
             $.when(getData("./API/signup/form.php", false), getData("./API/dept/list.php")).done(function(_formData, _deptObj) {
+                deptObj = _deptObj[0].data;
+                formData = _formData[0].data;
                 $.holdReady(false);
-                let deptObj = _deptObj[0].data;
-                let formData = _formData[0].data;
-                $(function() {
-                    // fill department list
-                    let index = deptObj.dept.map(function(e) {
-                        return e.dept_id;
-                    }).indexOf(formData.dept);
-                    $("form [name='dept']").empty().append("<option value='" + formData.dept + "' selected>" + deptObj.dept[index].name + "</option>");
-
-                    if (formData.place === "2") //限彰化考區
-                    {
-                        $("form [name='place'][value='2']").parent().css('display', '');
-                        $("form [name='place'][value='2']").removeAttr('disabled');
-                    }
-
-                    index = deptObj.group[formData.dept].map(function(e) {
-                        return e.group_id;
-                    }).indexOf(formData.organize_id);
-                    $("form [name='organize_id']").empty().append("<option value='" + formData.organize_id + "' selected>" + deptObj.group[formData.dept][index].name + "</option>");
-
-                    index = deptObj.status[formData.dept][formData.organize_id].map(function(e) {
-                        return e.status_id;
-                    }).indexOf(formData.orastatus_id);
-                    $("form [name='orastatus_id']").empty().append("<option value='" + formData.orastatus_id + "' selected>" + deptObj.status[formData.dept][formData.organize_id][index].name + "</option>");
-
-
-                    if (formData.subject !== null) {
-                        for (let i = 0; i < formData.subject.length; i++) {
-                            let section = formData.subject[i].substr(5, 1);
-                            let index = deptObj.subject[formData.dept][formData.organize_id][formData.orastatus_id][section].map(function(e) {
-                                return e.subject_id;
-                            }).indexOf(formData.subject[i]);
-                            let subject_name = deptObj.subject[formData.dept][formData.organize_id][formData.orastatus_id][section][index].name;
-                            $("#subject>div").append('<select class="form-control-plaintext form-group" name="subject[]" required><option value="' + formData.subject[i] + '" selected>' + subject_name + '</option></select>');
-
-                        }
-                        $("#subject").css('display', '');
-                    }
-
-                    if (formData.union_priority !== null && formData.union_priority.length > 0) {
-                        for (let i = 0; i < formData.union_priority.length; i++) {
-                            let index = deptObj.dept.map(function(e) {
-                                return e.dept_id;
-                            }).indexOf(formData.union_priority[i]);
-                            let dept_name = deptObj.dept[index].name;
-                            $("#union>div").append('<select class="form-control-plaintext form-group" name="union_priority[]"  required><option value="' + formData.union_priority[i] + '" selected>' + dept_name + '</option></select>');
-
-                        }
-                        $("#union").css('display', '');
-                    }
-
-
-                    fillForm(formData);
-                    $("form select option").not(":selected").remove().end();
-
-                });
             });
 
         }
@@ -127,15 +72,11 @@
                             <option selected disabled hidden></option>
                         </select>
                     </div>
-                    <div class="form-group col-md-6">
-                    </div>
-                </div>
-                <hr>
-                <div class="form-group row" id="subject" style="display: none;">
-                    <label class="col-sm-3" style="min-width: 9rem;">選考科目
-                        <span id="subject_msg" style="color:red;"></span>
-                    </label>
-                    <div class="col-sm-6">
+                    <div class="form-group col-md-6" id="subject" style="visibility: hidden;">
+                        <label>選考科目
+                            <span id="subject_msg" style="color:red;"></span>
+                        </label>
+                        <div></div>
                     </div>
                 </div>
                 <div class="form-group row" id="union" style="display: none;">
@@ -143,10 +84,11 @@
                     <div class="col-sm-6" style="min-width: 20rem">
                     </div>
                 </div>
+                <hr>
                 <fieldset class="form-group row">
                     <legend class="col-form-label col-sm-3 float-sm-left" style="min-width: 9rem;"><span style="color:red">身心障礙考生</span></legend>
                     <div class="col-xl row mx-0">
-                        <div class="col-sm " style="max-width: 10rem;">
+                        <div class="col-sm " style="max-width: 10rem;padding-left:0px">
                             <div class="form-check form-check-inline form-group">
                                 <input class="form-check-input" type="radio" id="disabled1" name="disabled" value="1" disabled readonly required>
                                 <label class="form-check-label" for="disabled1"><span style="color:red">是</span></label>
@@ -186,45 +128,56 @@
                 <hr />
                 <div class="form-group row">
                     <label for="inputName" class="col-sm-3">姓名</label>
-                    <input type="text" class="form-control-plaintext col-sm-5" id="inputName" name="name" readonly required>
+                    <div class="col-sm-5">
+                        <input type="text" class="form-control-plaintext " id="inputName" name="name" readonly required>
+                    </div>
                 </div>
                 <div class="form-group row">
-                    <label for="inputIDNumber" class="col-sm-3">身分證字號</label>
-                    <input type="text" class="form-control-plaintext col-sm-5" id="inputIDNumber" aria-describedby="IDNumberHelp" pattern="[A-Z]\d{9}" name="id" readonly disabled>
-                    <small id="IDNumberHelp" class="form-text text-muted col-sm-4">*僑外生居留證號碼</small>
+                    <label for="inputIDNumber" class="col-sm-3">
+                        身分證字號<br>
+                        <small id="IDNumberHelp" class="form-text text-muted ">*僑外生居留證號碼</small>
+                    </label>
+                    <div class="col-sm-5">
+                        <input type="text" class="form-control-plaintext " id="inputIDNumber" aria-describedby="IDNumberHelp" pattern="[A-Z]\d{9}" name="id" readonly required>
+                    </div>
+
                 </div>
                 <fieldset class="form-group row">
                     <legend class="col-form-label col-sm-3 float-sm-left">性別</legend>
                     <div class="col-sm-5">
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="gender" id="gender1" value="1" disabled readonly required>
+                            <input class="form-check-input" type="radio" name="gender" id="gender1" value="1" aria-describedby="genderErrMsg" disabled readonly required>
                             <label class="form-check-label" for="gender1">男</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="gender" id="gender2" value="2" disabled readonly required>
+                            <input class="form-check-input" type="radio" name="gender" id="gender2" value="2" aria-describedby="genderErrMsg" disabled readonly required>
                             <label class="form-check-label" for="gender2">女</label>
                         </div>
+                        <span class="error" id="genderErrMsg"></span>
                     </div>
                 </fieldset>
                 <div class="form-group row">
-                    <label for="inputBirthday" class="col-sm-3">出生日期</label>
-                    <input type="date" class="form-control-plaintext col-sm-5" id="inputBirthday" aria-describedby="birthdayHelp" name="birthday" placeholder="yyyy-mm-dd" pattern="\d{4}-\d{2}-\d{2}" readonly required>
-                    <small id="birthdayHelp" class="form-text text-muted col-sm-4">*西元年 = 民國年 + 1911</small>
+                    <label for="inputBirthday" class="col-sm-3">出生日期<br>
+                        <small id="birthdayHelp" class="form-text text-muted">*西元年 = 民國年 + 1911</small>
+                    </label>
+                    <div class="col-sm-5">
+                        <input type="date" class="form-control-plaintext " id="inputBirthday" aria-describedby="birthdayHelp" name="birthday" placeholder="yyyy-mm-dd" pattern="\d{4}-\d{2}-\d{2}" readonly required>
+                    </div>
                 </div>
                 <div class="form-group row">
                     <label class="col-sm-3">通訊地址</label>
                     <div class="col-sm-9">
                         <div class="row form-group">
                             <label for="inputZipcode" class="col-sm-2" style="min-width: 7rem;">郵遞區號：</label>
-                            <input type="text" class="form-control-plaintext col-sm-3" id="inputZipcode" aria-describedby="zipcodeHelp" pattern="\d{5}\d{0,1}" name="zipcode" readonly required>
-                            <small id="zipcodeHelp" class="form-text text-muted col-sm-5">
-                                <span style="color:red">(請輸入半形數字)</span>
-                                <a href="https://www.post.gov.tw/post/internet/Postal/index.jsp?ID=208" target="_blank" style="word-break:keep-all">郵遞區號查詢</a>
-                            </small>
+                            <div class="col-sm-3">
+                                <input type="text" class="form-control-plaintext " id="inputZipcode" aria-describedby="zipcodeHelp" pattern="\d{5}\d{0,1}" name="zipcode" readonly required>
+                            </div>
                         </div>
                         <div class="row form-group">
                             <label for="inputAddress" class="col-sm-2" style="min-width: 7rem;">地址：</label>
-                            <input type="text" class="form-control-plaintext col-xl" id="inputAddress" name="address" readonly required>
+                            <div class="col-xl">
+                                <input type="text" class="form-control-plaintext " id="inputAddress" name="address" readonly required>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -233,15 +186,15 @@
                     <div class="col-sm-9">
                         <div class="row form-group">
                             <label for="inputZipcode2" class="col-sm-2" style="min-width: 7rem;">郵遞區號：</label>
-                            <input type="text" class="form-control-plaintext col-sm-3" id="inputZipcode2" aria-describedby="zipcode2Help" pattern="\d{5}\d{0,1}" name="zipcode2" readonly required>
-                            <small id="zipcode2Help" class="form-text text-muted col-sm-5">
-                                <span style="color:red">(請輸入半形數字)</span>
-                                <a href="https://www.post.gov.tw/post/internet/Postal/index.jsp?ID=208" target="_blank" style="word-break:keep-all">郵遞區號查詢</a>
-                            </small>
+                            <div class="col-sm-3">
+                                <input type="text" class="form-control-plaintext " id="inputZipcode2" aria-describedby="zipcode2Help" pattern="\d{5}\d{0,1}" name="zipcode2" readonly required>
+                            </div>
                         </div>
                         <div class="row form-group">
                             <label for="inputAddress2" class="col-sm-2" style="min-width: 7rem;">地址：</label>
-                            <input type="text" class="form-control-plaintext col-xl" id="inputAddress2" name="address2" readonly required>
+                            <div class="col-xl">
+                                <input type="text" class="form-control-plaintext " id="inputAddress2" name="address2" readonly required>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -250,27 +203,31 @@
                     <div class="col-xl">
                         <div class="row form-group">
                             <label for="inputTel_h" class="col-sm-2" style="min-width: 7rem;">住家：</label>
-                            <div class="row col-sm align-items-center">
+                            <div class="row col-sm align-items-center" style="margin-left: 0px;">
                                 (&nbsp;<input type="text" class="form-control-plaintext col-sm-2" style="max-width: 3rem;" name="tel_h_a" pattern="\d+" readonly required>&nbsp;)&nbsp;
                                 <input type="text" class="form-control-plaintext col-sm-3" style="max-width: 10rem;" id="inputTel_h" name="tel_h" pattern="\d+" readonly required>
                             </div>
                         </div>
                         <div class="row form-group">
                             <label for="inputTel_o" class="col-sm-2" style="min-width: 7rem;">公司：</label>
-                            <div class="row col-sm align-items-center">
+                            <div class="row col-sm align-items-center" style="margin-left: 0px;">
                                 (&nbsp;<input type="text" class="form-control-plaintext col-sm-2" style="max-width: 3rem;" name="tel_o_a" pattern="\d+" readonly>&nbsp;)&nbsp;
                                 <input type="text" class="form-control-plaintext col-sm-3" style="max-width: 10rem;" id="inputTel_o" name="tel_o" pattern="\d+" readonly>
                             </div>
                         </div>
                         <div class="row form-group">
                             <label for="inputTel_m" class="col-sm-2" style="min-width: 7rem;">手機：</label>
-                            <input type="tel" class="form-control-plaintext col-sm-3" id="inputTel_m" pattern="09\d{8}" placeholder="09xxxxxxxx" name="tel_m" readonly required>
+                            <div class="col-sm-3">
+                                <input type="tel" class="form-control-plaintext " id="inputTel_m" pattern="09\d{8}" placeholder="09xxxxxxxx" name="tel_m" readonly required>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="inputEmail" class="col-sm-3">Email信箱</label>
-                    <input type="email" class="form-control-plaintext col-sm-5" id="inputEmail" name="email" placeholder="example@gmail.com" readonly disabled>
+                    <div class="col-sm-5">
+                        <input type="email" class="form-control-plaintext " id="inputEmail" name="email" placeholder="example@gmail.com" readonly required>
+                    </div>
                 </div>
                 <div class="form-group row">
                     <label class="col-sm-3">緊急連絡人</label>
@@ -295,45 +252,44 @@
                     <div class="col-xl">
                         <div class="row col form-group">
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="prove_type" id="prove1" value="1" href="#tab_prove1" disabled readonly required>
+                                <input class="form-check-input" type="radio" name="prove_type" id="prove1" value="1" href="#tab_prove1" aria-describedby="proveErrMsg" disabled readonly required>
                                 <label class="form-check-label" for="prove1">學士學位</label>
                             </div>
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="prove_type" id="prove2" value="2" href="#tab_prove2" disabled readonly required>
+                                <input class="form-check-input" type="radio" name="prove_type" id="prove2" value="2" href="#tab_prove2" aria-describedby="proveErrMsg" disabled readonly required>
                                 <label class="form-check-label" for="prove2">同等學力</label>
                             </div>
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="prove_type" id="prove3" value="3" href="#tab_prove3" disabled readonly required>
+                                <input class="form-check-input" type="radio" name="prove_type" id="prove3" value="3" href="#tab_prove3" aria-describedby="proveErrMsg" disabled readonly required>
                                 <label class="form-check-label" for="prove3">國家考試及格</label>
                             </div>
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="prove_type" id="prove4" value="4" href="#tab_prove4" disabled readonly required>
+                                <input class="form-check-input" type="radio" name="prove_type" id="prove4" value="4" href="#tab_prove4" aria-describedby="proveErrMsg" disabled readonly required>
                                 <label class="form-check-label" for="prove4">技能檢定合格</label>
                             </div>
+                            <span class="error" id="proveErrMsg"></span>
                         </div>
                         <div class="row col form-group tab-content" id="proveTabContent">
                             <div class="tab-pane fade" id="tab_prove1" role="tabpanel" aria-labelledby="prove1" style="width: 100%;">
                                 <div class="card p-4">
                                     <div class="row form-group">
                                         <label for="inputGrad_schol" class="col-sm-2" style="min-width: 7rem;">學校名稱：</label>
-                                        <div class="row col-sm align-items-center">
-                                            <input type="text" class="form-control-plaintext col-sm" id="inputGrad_schol" name="grad_schol" readonly required>
+                                        <div class=" col-sm align-items-center">
+                                            <input type="text" class="form-control-plaintext " id="inputGrad_schol" name="grad_schol" readonly required>
                                         </div>
                                     </div>
                                     <div class="row form-group">
                                         <label for="inputGrad_dept" class="col-sm-2" style="min-width: 7rem;">科系：</label>
-                                        <div class="row col-sm align-items-center">
-                                            <input type="text" class="form-control-plaintext col-sm" id="inputGrad_dept" name="grad_dept" readonly required>
+                                        <div class=" col-sm align-items-center">
+                                            <input type="text" class="form-control-plaintext " id="inputGrad_dept" name="grad_dept" readonly required>
                                         </div>
                                     </div>
                                     <div class="row form-group">
                                         <label for="inputGrad_date" class="col-sm-2" style="min-width: 7rem;">畢業年月：</label>
-                                        <input style="min-width: 10rem;" type="month" class="form-control-plaintext col-sm-3" aria-describedby="grad_dateHelp" id="inputGrad_date" placeholder="yyyy-mm" pattern="(1\d{3}|2\d{3})-(0[1-9]|1[0-2])" name="grad_date" readonly required>
+                                        <div class=" col-sm-3 align-items-center">
+                                            <input style="min-width: 10rem;" type="month" class="form-control-plaintext " aria-describedby="grad_dateHelp" id="inputGrad_date" placeholder="yyyy-mm" pattern="(1\d{3}|2\d{3})-(0[1-9]|1[0-2])" name="grad_date" readonly required>
+                                        </div>
                                         <small id="grad_dateHelp" class="form-text text-muted col-sm">(yyyy-mm)<br>*西元年 = 民國年 + 1911</small>
-                                    </div>
-                                    <div class="form-group">
-                                        <span style="color:red">※學校名稱及科系請填寫全銜</span><br>
-                                        <span style="color:red">※應屆畢業生（109年6月畢業）請點選「學士學位」</span>
                                     </div>
                                 </div>
                             </div>
@@ -341,34 +297,38 @@
                                 <div class="card p-4">
                                     <div class="row form-group">
                                         <label for="inputac_school" class="col-sm-2" style="min-width: 7rem;">學校名稱：</label>
-                                        <div class="row col-sm align-items-center">
-                                            <input type="text" class="form-control-plaintext col-sm" id="inputac_school" name="ac_school" readonly required>
+                                        <div class=" col-sm align-items-center">
+                                            <input type="text" class="form-control-plaintext " id="inputac_school" name="ac_school" readonly required>
                                         </div>
                                     </div>
                                     <div class="row form-group">
                                         <label for="inputac_school_type" class="col-sm-2" style="min-width: 7rem;">類型：</label>
-                                        <select id="inputac_school_type" class="form-control-plaintext col-sm" name="ac_school_type" readonly>
-                                            <option selected hidden disabled></option>
-                                            <option value="1">大學</option>
-                                            <option value="2">三專</option>
-                                            <option value="3">二專或五專</option>
-                                        </select>
+                                        <div class=" col-sm align-items-center">
+                                            <select id="inputac_school_type" class="form-control-plaintext " name="ac_school_type" readonly>
+                                                <option selected hidden disabled></option>
+                                                <option value="1">大學</option>
+                                                <option value="2">三專</option>
+                                                <option value="3">二專或五專</option>
+                                            </select>
+                                        </div>
                                     </div>
 
                                     <div class="row form-group">
                                         <label for="inputAc_dept" class="col-sm-2" style="min-width: 7rem;">科系：</label>
-                                        <div class="row col-sm align-items-center">
-                                            <input type="text" class="form-control-plaintext col-sm" id="inputAc_dept" name="ac_dept" readonly required>
+                                        <div class=" col-sm align-items-center">
+                                            <input type="text" class="form-control-plaintext " id="inputAc_dept" name="ac_dept" readonly required>
                                         </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <span style="color:red">※學校名稱及科系請填寫全銜</span><br>
                                     </div>
                                     <div class="  form-group align-items-center" style="padding-left: 15px;">
                                         <div class="row form-group align-items-center">
-                                            於&nbsp;<input type="month" style="max-width: 80%;min-width:10rem" class="form-control-plaintext col-sm-4" aria-describedby="ac_dateHelp" placeholder="yyyy-mm" pattern="(1\d{3}|2\d{3})-(0[1-9]|1[0-2])" name="ac_date" readonly required>&emsp;
+                                            於&nbsp;<input type="month" style="max-width:6rem;min-width:6rem" class="form-control-plaintext col-sm-4" aria-describedby="ac_dateHelp" placeholder="yyyy-mm" pattern="(1\d{3}|2\d{3})-(0[1-9]|1[0-2])" name="ac_date" readonly required>&emsp;
+                                            <select style="max-width:5rem;min-width:5rem" class="form-control-plaintext col-sm-4" name="ac_g" readonly required>
+                                                <option value="1">畢業</option>
+                                                <option value="2">肄業</option>
+                                            </select>，
+                                            <small id="ac_dateHelp" style="max-width: 11.5rem;" class="form-text text-muted col-sm">(yyyy-mm)<br>*西元年 = 民國年 + 1911</small>
                                         </div>
-                                        <div class="row form-group align-items-center">
+                                        <!--<div class="row form-group align-items-center">
                                             &emsp;&nbsp;
                                             <select style="max-width: 80%;" class="form-control-plaintext col-sm-4" name="ac_g" readonly required>
                                                 <option value="1">畢業</option>
@@ -377,15 +337,16 @@
                                         </div>
                                         <div class=" form-group align-items-center">
                                             <small id="ac_dateHelp" style="max-width: 11.5rem;" class="form-text text-muted col-sm">(yyyy-mm)<br>*西元年 = 民國年 + 1911</small>
-                                        </div>
+                                        </div>-->
                                     </div>
                                     <div class="row  form-group align-items-center " style="padding-left: 15px;">
                                         <div class="col form-group row align-items-center" style="min-width: 12rem;max-width: 12rem;">
-                                            修業&nbsp;<input type="number" style="max-width: 5rem;" class="form-control-plaintext col-sm-3" min="0" step="1" pattern="\d" name="ac_m_y" readonly required>&nbsp;年，
+                                            修業&nbsp;<input type="number" style="min-width: 5rem;max-width: 5rem;" class="form-control-plaintext col-sm-3" min="0" step="1" pattern="\d" name="ac_m_y" aria-describedby="acErrMsg" readonly required>&nbsp;年，
                                         </div>
-                                        <div class="col form-group row align-items-center" style="min-width: 13rem;">
-                                            已離校&nbsp;<input type="number" style="max-width: 5rem;" class="form-control-plaintext col-sm-3" min="0" step="1" pattern="\d" name="ac_leave_y" readonly required>&nbsp;年。
+                                        <div class="col form-group row align-items-center" style="min-width: 13rem;max-width: 13rem;">
+                                            已離校&nbsp;<input type="number" style="min-width: 5rem;max-width: 5rem;" class="form-control-plaintext col-sm-3" min="0" step="1" pattern="\d" name="ac_leave_y" aria-describedby="acErrMsg" readonly required>&nbsp;年。
                                         </div>
+                                        <div class="col form-group row align-items-center" style="min-width: 6rem;"><span class="error" id="acErrMsg"></span></div>
                                     </div>
                                 </div>
                             </div>
@@ -406,12 +367,6 @@
                     <label for="inputData" class="col-sm-3">備審資料上傳</label>
                     <div class="form-control-file col-sm-4"><a id="fileLink" target="_blank" style="color:red"></a></div>
                 </div>
-                <hr />
-                <div class="line-height-1">
-                    身心障礙考生如欲申請各項應考需求，請另寄交申請表及證明文件至本校招生委員會。<br>
-                    報名資料如有罕用字，致電腦無法正常顯示者，請另填<a href='http://aps.ncue.edu.tw/exampg_m/code_reply.doc' target=_blank>罕用字回覆表</a>傳真本校處理。<br>
-                    准考證由考生自行下載列印，請於開放列印日期間，至<span class='font-weight-bold'>網路報名系統 / 網路報名 / 准考證列印</span> 下載(不限次數)後，以A4白紙單面紙張自行列印，並妥為保存，本校不再另行寄發。
-                </div>
             </form>
         </div>
     </section>
@@ -419,113 +374,16 @@
 
     <?php require_once("./module/footer.php") ?>
 
+    <!--toastr-->
+    <link rel="stylesheet" href="./css/toastr.min.css" />
+    <script src="./js/toastr.min.js"></script>
+
+    <!--custom-->
+    <script src="./js/signup.js"></script>
     <script>
-        //身心障礙
-        $("form [name='disabled']").on('change', function() {
-            if (this.value === '1') {
-                $("#disabled_extra").css('display', '');
-                $("form [name='disabled_type']").attr('required', true);
-                $("form [name='disabled_type']").removeAttr('disabled');
-            } else {
-                $("#disabled_extra").css('display', 'none');
-                $("form [name='disabled_type']").removeAttr('required');
-                $("form [name='disabled_type']").attr('disabled', true);
-            }
-        });
-
-        $("form [name='disabled_type']").on('change', function() {
-            if (this.value === '6') {
-                $("form [name='comments']").css('display', '');
-                $("form [name='comments']").attr('required', true);
-                $("form [name='comments']").removeAttr('disabled');
-            } else {
-                $("form [name='comments']").css('display', 'none');
-                $("form [name='comments']").removeAttr('required');
-                $("form [name='comments']").attr('disabled', true);
-            }
-        });
-
-        //應考學歷
-        $("form [name='prove_type']").on('change', function() {
-            $("#proveTabContent .tab-pane").removeClass("active");
-            $("#proveTabContent .tab-pane").removeClass("show");
-            $("form [name='prove_type']").removeClass("active");
-            $("form [name='prove_type']").removeClass("active");
-            $(this).tab('show');
-
-            $("form #proveTabContent input").removeAttr('required')
-            $("form #proveTabContent input").attr('disabled', true);
-            $("form #proveTabContent select").removeAttr('required')
-            $("form #proveTabContent select").attr('disabled', true);
-
-            $("form #proveTabContent .active input").removeAttr('disabled')
-            $("form #proveTabContent .active input").attr('required', true);
-            $("form #proveTabContent .active select").removeAttr('disabled')
-            $("form #proveTabContent .active select").attr('required', true);
-        });
-
-        //initail
         $(function() {
-            if ($("form [name='disabled']:checked").val() === "1") {
-                $("#disabled_extra").css('display', '');
-                $("form [name='disabled_type']").attr('required', true);
-                $("form [name='disabled_type']").removeAttr('disabled');
-            } else {
-                $("#disabled_extra").css('display', 'none');
-                $("form [name='disabled_type']").removeAttr('required');
-                $("form [name='disabled_type']").attr('disabled', true);
-            }
-
-            if ($("form [name='disabled_type']").val() === "6") {
-                $("form [name='comments']").css('display', '');
-                $("form [name='comments']").attr('required', true);
-                $("form [name='comments']").removeAttr('disabled');
-            } else {
-                $("form [name='comments']").css('display', 'none');
-                $("form [name='comments']").removeAttr('required');
-                $("form [name='comments']").attr('disabled', true);
-            }
-        });
-
-        //備審資料上傳狀態
-        function checkUploadStatus() {
-            $('form #fileLink').text('');
-            $.ajax({
-                type: 'GET',
-                url: './API/signup/file.php',
-                dataType: 'text'
-            }).done(function(response) {
-                $('form #fileLink').css('color', '');
-                $('form #fileLink').addClass('color-info');
-                $('form #fileLink').text('檔案已上傳');
-                $('form #fileLink').attr('href', './API/signup/file.php?export=download');
-
-            }).fail(function(jqXHR, exception) {
-                if (jqXHR.status === 404) {
-                    $('form #fileLink').removeClass('color-info');
-                    $('form #fileLink').css('color', 'red');
-                    $('form #fileLink').text('備審資料檔案尚未上傳');
-                    $('form #fileLink').removeAttr('href');
-                } else {
-                    toastr.clear();
-                    let response = jqXHR.responseJSON;
-                    let msg = '';
-                    if (response === undefined)
-                        msg = exception;
-                    else if (response.hasOwnProperty('message')) {
-                        msg = response.message;
-                    } else {
-                        msg = 'Uncaught Error.\n' + jqXHR.responseText;
-                    }
-                    toastr.error(msg);
-                }
-
-
-            });
-        }
-
-        $("form").on('submit', function(e) {
-            e.preventDefault();
+            fillForm(formData);
+            formReadOnly();
         });
     </script>
 
