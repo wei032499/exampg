@@ -321,7 +321,7 @@
                                     </div>
                                     <div class="  form-group align-items-center" style="padding-left: 15px;">
                                         <div class="row form-group align-items-center">
-                                            於&nbsp;<input type="month" style="max-width:6rem;min-width:6rem" class="form-control-plaintext col-sm-4" aria-describedby="ac_dateHelp" placeholder="yyyy-mm" pattern="(1\d{3}|2\d{3})-(0[1-9]|1[0-2])" name="ac_date" readonly required>&emsp;
+                                            於&nbsp;<input type="month" style="max-width:7.5rem;min-width:7.5rem" class="form-control-plaintext col-sm-4" aria-describedby="ac_dateHelp" placeholder="yyyy-mm" pattern="(1\d{3}|2\d{3})-(0[1-9]|1[0-2])" name="ac_date" readonly required>&emsp;
                                             <select style="max-width:5rem;min-width:5rem" class="form-control-plaintext col-sm-4" name="ac_g" readonly required>
                                                 <option value="1">畢業</option>
                                                 <option value="2">肄業</option>

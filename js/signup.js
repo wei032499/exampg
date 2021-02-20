@@ -73,7 +73,7 @@ $(function () {
                     if (typeof isConfirmForm !== "undefined" && isConfirmForm === true) {
                         $("form select[name='union_priority[]']").each(function () {
                             $(this).addClass('form-control-plaintext').removeClass('form-control');
-                            let text = "<div class='" + $(this).attr('class') + "' style='color:#00008b;' >" + $(this).children("option:selected").text() + "</div>";
+                            let text = "<div style='color:#00008b;' >" + $(this).children("option:selected").text() + "</div>";// class='" + $(this).attr('class') + "'
                             $(this).css('display', 'none');
                             $(this).before(text);
                         });
@@ -205,7 +205,7 @@ $(function () {
                         if (typeof isConfirmForm !== "undefined" && isConfirmForm === true) {
                             $("form select[name='union_priority[]']").each(function () {
                                 $(this).addClass('form-control-plaintext').removeClass('form-control');
-                                let text = "<div class='" + $(this).attr('class') + "' style='color:#00008b;' >" + $(this).children("option:selected").text() + "</div>";
+                                let text = "<div  style='color:#00008b;' >" + $(this).children("option:selected").text() + "</div>";//class='" + $(this).attr('class') + "'
                                 $(this).css('display', 'none');
                                 $(this).before(text);
                             });
@@ -414,12 +414,17 @@ function formReadOnly() {
     $("form select option").not(":selected").remove();
     $("form [type='radio']:not(:checked)").parent().remove();
     $("form [type='radio']").parent().css('color', '#00008b');
-    $("form [type='radio']").attr('type', 'hidden');
+    $("form [type='radio']").css('display', 'none');
     $("form input").css('color', '#00008b');
     $("form select").css('color', '#00008b');
     $("form [type='number']").attr('type', 'text');
+    $("form input:not([type='radio'])").each(function () {
+        let text = "<div  style='color:#00008b' >" + $(this).val() + "</div>";//class='" + $(this).attr('class') + "'
+        $(this).css('display', 'none');
+        $(this).before(text);
+    });
     $("form select").each(function () {
-        let text = "<div class='" + $(this).attr('class') + "' style='" + $(this).attr('style') + "' >" + $(this).children("option:selected").text() + "</div>";
+        let text = "<div  style='color:#00008b' >" + $(this).children("option:selected").text() + "</div>";//class='" + $(this).attr('class') + "'
         $(this).css('display', 'none');
         $(this).before(text);
     });
