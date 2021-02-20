@@ -29,6 +29,8 @@ try {
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 			curl_setopt($ch, CURLOPT_URL, $actual_link . "/API/signup/form.php");
 			curl_setopt($ch, CURLOPT_HTTPHEADER, array("Cookie: token=" . $_COOKIE['token'] . ";username=" . $_COOKIE['username']));
+			// curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); //規避ssl的證書檢查
+			curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE); // 跳過host驗證
 			$data = json_decode(curl_exec($ch), true);
 			$data = $data['data'];
 			$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
