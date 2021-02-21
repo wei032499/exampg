@@ -13,53 +13,91 @@
  */
 header('Content-Type:application/json');
 $result = array();
-$payload = array('iss' => 'ncue', 'iat' => time(), 'exp' => time() + 1800);
+$payload = array('iss' => 'ncue', 'iat' => time(), 'exp' => time() + 3600);
 $post_processing = array();
 try {
+    require_once('../common/db.php');
+
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        require_once('../common/db.php');
-        $sql = "SELECT NAME FROM SN_DB WHERE SCHOOL_ID='$SCHOOL_ID' AND YEAR='$ACT_YEAR_NO' AND SN=:sn AND PWD=:pwd ";
-        $stmt = oci_parse($conn, $sql);
-        oci_bind_by_name($stmt, ':sn',  $_POST['serial_no']);
-        oci_bind_by_name($stmt, ':pwd',  $_POST['pwd']);
 
-        oci_execute($stmt, OCI_DEFAULT);
+        if (isset($_POST['sid'])) //就讀意願登入 
+        {
+            if (isset($_COOKIE['token'])) {
+                $Token = new Token($conn, $_COOKIE['token']);
+                $payload = $Token->verify();
+                if ($payload === false)
+                    $payload = array('iss' => 'ncue', 'iat' => time(), 'exp' => time() + 3600);
+            }
 
-        if (oci_fetch($stmt)) {
-            $payload['authority'] = 0;
-            $payload['sn'] = $_POST['serial_no'];
-            $payload['pwd'] = hash('sha256', $_POST['pwd']);
+            // I don't know why !!
+            //BACKNUMBER：備取名次(0表示為正取)
+            $sql = "SELECT ID,BACKNUMBER,MAINNUMBER,REPAIR,CHECK_DATE FROM PERSON  WHERE  school_id='$SCHOOL_ID' and year='$ACT_YEAR_NO' and 
+            STUDENT_ID = :sid  AND ( MAINNUMBER > 0 OR BACKNUMBER > 0 ) AND ID=:id
+            union all 
+            SELECT ID,BACKNUMBER,MAINNUMBER,REPAIR,CHECK_DATE FROM union_priority_all  WHERE  school_id='$SCHOOL_ID' and year='$ACT_YEAR_NO' and 
+            STUDENT_ID = :sid AND ( MAINNUMBER > 0 OR BACKNUMBER > 0 ) AND ID=:id
+            union all 
+            SELECT person_ID,BACKNUMBER,MAINNUMBER,REPAIR,CHECK_DATE FROM add_enroll  WHERE  school_id='$SCHOOL_ID' and year='$ACT_YEAR_NO' and 
+            STUDENT_ID = :sid AND ( MAINNUMBER > 0 OR BACKNUMBER > 0 ) AND PERSON_ID=:id";
 
-            $username = oci_result($stmt, "NAME");
+            $stmt = oci_parse($conn, $sql);
+            oci_bind_by_name($stmt, ':id',  $_POST['IDNumber']);
+            oci_bind_by_name($stmt, ':sid',  $_POST['sid']);
+            oci_execute($stmt, OCI_DEFAULT);
+            if (!oci_fetch($stmt))
+                throw new Exception("登入失敗！", 401);
             oci_free_statement($stmt);
 
-            if (isset($_POST['IDNumber'])) {
-                $sql = "SELECT ID,NAME FROM SIGNUPDATA WHERE SCHOOL_ID='$SCHOOL_ID' AND YEAR='$ACT_YEAR_NO' AND SIGNUP_SN=:sn ";
-                $stmt = oci_parse($conn, $sql);
-                oci_bind_by_name($stmt, ':sn',  $_POST['serial_no']);
-                oci_execute($stmt, OCI_DEFAULT);
+            $payload['id'] = $_POST['IDNumber'];
+            $payload['sid'] = $_POST['sid'];
+            $token = JWT::getToken($payload);
+        } else {
+            $sql = "SELECT NAME FROM SN_DB WHERE SCHOOL_ID='$SCHOOL_ID' AND YEAR='$ACT_YEAR_NO' AND SN=:sn AND PWD=:pwd ";
+            $stmt = oci_parse($conn, $sql);
+            oci_bind_by_name($stmt, ':sn',  $_POST['serial_no']);
+            oci_bind_by_name($stmt, ':pwd',  $_POST['pwd']);
 
-                if (oci_fetch($stmt) && oci_result($stmt, "ID") === $_POST['IDNumber']) {
-                    $payload['authority'] = 1;
-                    $username = oci_result($stmt, "NAME");
-                } else
-                    throw new Exception("登入失敗！", 401);
+            oci_execute($stmt, OCI_DEFAULT);
+
+            if (oci_fetch($stmt)) {
+                $payload['authority'] = 0;
+                $payload['sn'] = $_POST['serial_no'];
+                $payload['pwd'] = hash('sha256', $_POST['pwd']);
+
+                $username = oci_result($stmt, "NAME");
                 oci_free_statement($stmt);
-            }
-        } else
-            throw new Exception("登入失敗！", 401);
+
+                if (isset($_POST['IDNumber'])) //身分證登入
+                {
+                    $sql = "SELECT ID,NAME FROM SIGNUPDATA WHERE SCHOOL_ID='$SCHOOL_ID' AND YEAR='$ACT_YEAR_NO' AND SIGNUP_SN=:sn ";
+                    $stmt = oci_parse($conn, $sql);
+                    oci_bind_by_name($stmt, ':sn',  $_POST['serial_no']);
+                    oci_execute($stmt, OCI_DEFAULT);
+
+                    if (oci_fetch($stmt) && oci_result($stmt, "ID") === $_POST['IDNumber']) {
+                        $payload['authority'] = 1;
+                        $username = oci_result($stmt, "NAME");
+                    } else
+                        throw new Exception("登入失敗！", 401);
+                    oci_free_statement($stmt);
+                }
+            } else
+                throw new Exception("登入失敗！", 401);
+
+            $Token = new Token($conn, JWT::getToken($payload));
+            $token = $Token->refresh();
+            setcookie('username', $username, $cookie_options);
+        }
 
 
-        $Token = new Token($conn, JWT::getToken($payload));
-        $token = $Token->refresh();
+
         $result['access_token'] = $token;
         $result['token_type'] = "Bearer";
-        $result['expires_in'] = 1800;
+        $result['expires_in'] = 3600;
         header("Cache-Control: private");
 
 
         setcookie('token', $token, $cookie_options_httponly);
-        setcookie('username', $username, $cookie_options);
     } else throw new Exception("Method Not Allowed", 405);
 } catch (Exception $e) {
 

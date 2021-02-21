@@ -115,8 +115,8 @@ try {
 			// //-------------------printData start------------------------
 
 			$name = $data['name'];
-			$gender_array = array("1" => "男", "2" => "女");
-			$gender = $gender_array[$data['gender']];
+			$sex_array = array("1" => "男", "0" => "女");
+			$sex = $sex_array[$data['sex']];
 			$id = $data['id'];
 			$dept_id = $data['dept'];
 			$organize_id = $data['organize_id'];
@@ -215,7 +215,7 @@ try {
 			$pdf->printRow_S("\t報考系所：" . $term, "　　　　　　　　報考組(科)別：" . $organize, 'L', 8, 12);
 
 			$pdf->printRow("\t報考身分：" . $ident, 'L', 8, 12);
-			$pdf->printRow_S("\t姓    名：" . $name, "　　性     別：" . $gender, 'L', 8, 12);
+			$pdf->printRow_S("\t姓    名：" . $name, "　　性     別：" . $sex, 'L', 8, 12);
 			$pdf->printRow_S("\t出生日期：" . $birthday, "　　身分證字號：" . $id, 'L', 8, 12);
 			$pdf->printRow("\t通訊地址：" . $addr_h, 'L', 8, 12);
 			$pdf->printRow("\t戶籍地址：" . $addr_c, 'L', 8, 12);

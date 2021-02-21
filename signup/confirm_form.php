@@ -145,14 +145,14 @@
                     <legend class="col-form-label col-sm-3 float-sm-left">性別</legend>
                     <div class="col-sm-5">
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="gender" id="gender1" value="1" aria-describedby="genderErrMsg" disabled readonly required>
-                            <label class="form-check-label" for="gender1">男</label>
+                            <input class="form-check-input" type="radio" name="sex" id="sex1" value="1" aria-describedby="sexErrMsg" disabled readonly required>
+                            <label class="form-check-label" for="sex1">男</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="gender" id="gender2" value="2" aria-describedby="genderErrMsg" disabled readonly required>
-                            <label class="form-check-label" for="gender2">女</label>
+                            <input class="form-check-input" type="radio" name="sex" id="sex2" value="0" aria-describedby="sexErrMsg" disabled readonly required>
+                            <label class="form-check-label" for="sex2">女</label>
                         </div>
-                        <span class="error" id="genderErrMsg"></span>
+                        <span class="error" id="sexErrMsg"></span>
                     </div>
                 </fieldset>
                 <div class="form-group row">
@@ -327,16 +327,6 @@
                                             </select>，
                                             <small id="ac_dateHelp" style="max-width: 11.5rem;" class="form-text text-muted col-sm">(yyyy-mm)<br>*西元年 = 民國年 + 1911</small>
                                         </div>
-                                        <!--<div class="row form-group align-items-center">
-                                            &emsp;&nbsp;
-                                            <select style="max-width: 80%;" class="form-control-plaintext col-sm-4" name="ac_g" readonly required>
-                                                <option value="1">畢業</option>
-                                                <option value="2">肄業</option>
-                                            </select>，
-                                        </div>
-                                        <div class=" form-group align-items-center">
-                                            <small id="ac_dateHelp" style="max-width: 11.5rem;" class="form-text text-muted col-sm">(yyyy-mm)<br>*西元年 = 民國年 + 1911</small>
-                                        </div>-->
                                     </div>
                                     <div class="row  form-group align-items-center " style="padding-left: 15px;">
                                         <div class="col form-group row align-items-center" style="min-width: 12rem;max-width: 12rem;">
