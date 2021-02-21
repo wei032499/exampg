@@ -6,7 +6,7 @@ try {
     require_once('../common/db.php');
     if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         if (isset($_GET['id'])) {
-            $sql = "SELECT ID,POSITION,CONTENT,to_char(POST_DATE,'yyyy-mm-dd') AS POST_DATE FROM NEWS WHERE SCHOOL_ID='$SCHOOL_ID' AND ID=:id ORDER BY POSITION ASC, POST_DATE DESC";
+            $sql = "SELECT ID,POSITION,CONTENT,to_char(POST_DATE,'yyyy-mm-dd') AS POST_DATE FROM NEWS WHERE SCHOOL_ID='$SCHOOL_ID' AND ID=:id ORDER BY POSITION ASC, POST_DATE DESC, ID DESC";
             $stmt = oci_parse($conn, $sql);
             oci_bind_by_name($stmt, ':id',  $_GET['id']);
             oci_execute($stmt, OCI_DEFAULT);
@@ -16,7 +16,7 @@ try {
                 $result['data'][] = array('id' => $results['ID'][$i], 'date' => $results['POST_DATE'][$i], "content" => $results['CONTENT'][$i], "position" => $results['POSITION'][$i]);
             }
         } else {
-            $sql = "SELECT ID,POSITION,CONTENT,to_char(POST_DATE,'yyyy-mm-dd') AS POST_DATE FROM NEWS WHERE SCHOOL_ID='$SCHOOL_ID' ORDER BY POSITION ASC, POST_DATE DESC";
+            $sql = "SELECT ID,POSITION,CONTENT,to_char(POST_DATE,'yyyy-mm-dd') AS POST_DATE FROM NEWS WHERE SCHOOL_ID='$SCHOOL_ID' ORDER BY POSITION ASC, POST_DATE DESC, ID DESC";
             $stmt = oci_parse($conn, $sql);
             oci_execute($stmt, OCI_DEFAULT);
             $nrows = oci_fetch_all($stmt, $results); //$nrows -->總筆數

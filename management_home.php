@@ -58,7 +58,7 @@ if (!isset($_SESSION['username']))
                     <div class="tab-pane fade " id="news" role="tabpanel" aria-labelledby="news-tab">
                         <div class="card p-4">
                             <div class="mb-3">
-                                <button type="button" class="btn btn-info btn-sm" onclick="window.location.assign('./management_news.php')">新增公告</button>
+                                <button type="button" class="btn btn-primary btn-sm" onclick="window.location.assign('./management_news.php')">新增公告</button>
                             </div>
                             <table id="newsTable" class="table table-hover table-bordered" style="width:100%">
                                 <thead>
