@@ -46,11 +46,11 @@
                     <legend class="col-form-label col-sm-3 float-sm-left">性別</legend>
                     <div class="col-sm-4">
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="gender" id="inlineRadio1" value="1" disabled required>
+                            <input class="form-check-input" type="radio" name="sex" id="inlineRadio1" value="1" disabled required>
                             <label class="form-check-label" for="inlineRadio1">男</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="gender" id="inlineRadio2" value="0" disabled required>
+                            <input class="form-check-input" type="radio" name="sex" id="inlineRadio2" value="0" disabled required>
                             <label class="form-check-label" for="inlineRadio2">女</label>
                         </div>
                     </div>

@@ -149,14 +149,14 @@
                     <legend class="col-form-label col-sm-3 float-sm-left">性別</legend>
                     <div class="col-sm-5">
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="gender" id="gender1" value="1" aria-describedby="genderErrMsg" disabled readonly required>
-                            <label class="form-check-label" for="gender1">男</label>
+                            <input class="form-check-input" type="radio" name="sex" id="sex1" value="1" aria-describedby="sexErrMsg" disabled readonly required>
+                            <label class="form-check-label" for="sex1">男</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="gender" id="gender2" value="2" aria-describedby="genderErrMsg" disabled readonly required>
-                            <label class="form-check-label" for="gender2">女</label>
+                            <input class="form-check-input" type="radio" name="sex" id="sex2" value="0" aria-describedby="sexErrMsg" disabled readonly required>
+                            <label class="form-check-label" for="sex2">女</label>
                         </div>
-                        <span class="error" id="genderErrMsg"></span>
+                        <span class="error" id="sexErrMsg"></span>
 
                     </div>
                 </fieldset>

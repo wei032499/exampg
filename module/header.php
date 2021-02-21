@@ -63,7 +63,7 @@
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <li><a class="dropdown-item" href="./enroll_list.php">*正備取生報到狀況</a></li>
-                        <li><a class="dropdown-item" href="./enroll_queue.php">*正(備)取生申明就讀(遞補)意願</a></li>
+                        <li><a class="dropdown-item" href="./enroll_queue.php">正(備)取生申明就讀(遞補)意願</a></li>
                     </ul>
                 </li>
                 <li class="nav-item dropdown">

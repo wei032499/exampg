@@ -2,7 +2,7 @@
 require_once(dirname(__FILE__) . '/jwt.php');
 require_once(dirname(__FILE__) . '/config.php'); //set config variables from database
 $cookie_options_httponly = array(
-    'expires' => time() + 1800,
+    // 'expires' => time() + 3600,
     'path' => explode("/API", substr(str_replace('\\', '/',  __DIR__ . "/"), str_replace('\\', '/', strlen($_SERVER['DOCUMENT_ROOT']))))[0] . "/",
     'httponly' => true,    // or false
     // 'domain' => '.example.com', // leading dot for compatibility or use subdomain
@@ -10,7 +10,7 @@ $cookie_options_httponly = array(
     'samesite' => 'Lax' // None || Lax  || Strict
 );
 $cookie_options = array(
-    'expires' => time() + 1800,
+    // 'expires' => time() + 3600,
     'path' => explode("/API", substr(str_replace('\\', '/',  __DIR__ . "/"), str_replace('\\', '/', strlen($_SERVER['DOCUMENT_ROOT']))))[0] . "/",
     'httponly' => false,    // or false
     // 'domain' => '.example.com', // leading dot for compatibility or use subdomain
@@ -42,7 +42,7 @@ set_error_handler(function ($err_severity, $err_msg, $err_file, $err_line, array
 function clearCookie()
 {
     foreach ($_COOKIE as $name => $value) {
-        setcookie($name, null, time() - 1800, explode("/API", substr(str_replace('\\', '/', __DIR__ . "/"), str_replace('\\', '/', strlen($_SERVER['DOCUMENT_ROOT']))))[0] . "/");
+        setcookie($name, null, time() - 3600, explode("/API", substr(str_replace('\\', '/', __DIR__ . "/"), str_replace('\\', '/', strlen($_SERVER['DOCUMENT_ROOT']))))[0] . "/");
     }
 }
 
@@ -180,7 +180,7 @@ class Token
             $this->payload['pwd'] = hash('sha256', oci_result($stmt, "PWD"));
             $this->payload['last_modified'] = oci_result($stmt, "L_ALT_DATE");
             $this->payload['iat'] = time();
-            $this->payload['exp'] =  time() + 1800;
+            $this->payload['exp'] =  time() + 3600;
             $this->payload['status'] = $this->getStatus();
         } else
             return false;

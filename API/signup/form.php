@@ -94,7 +94,7 @@ try {
         if (oci_result($stmt, 'PROVE_TYPE') === "1") {
             $result['data'] = array(
                 'id' => oci_result($stmt, 'ID'), 'name' => oci_result($stmt, 'NAME'),
-                'gender' => oci_result($stmt, 'SEX'),
+                'sex' => oci_result($stmt, 'SEX'),
                 'dept' => oci_result($stmt, 'DEPT_ID'), 'organize_id' => oci_result($stmt, 'ORGANIZE_ID'),
                 'orastatus_id' => oci_result($stmt, 'ORASTATUS_ID'), 'birthday' => oci_result($stmt, 'BIRTHDAY'),
                 'email' => oci_result($stmt, 'EMAIL'), 'zipcode' => oci_result($stmt, 'ZIP'),
@@ -115,7 +115,7 @@ try {
 
             $result['data'] = array(
                 'id' => oci_result($stmt, 'ID'), 'name' => oci_result($stmt, 'NAME'),
-                'gender' => oci_result($stmt, 'SEX'),
+                'sex' => oci_result($stmt, 'SEX'),
                 'dept' => oci_result($stmt, 'DEPT_ID'), 'organize_id' => oci_result($stmt, 'ORGANIZE_ID'),
                 'orastatus_id' => oci_result($stmt, 'ORASTATUS_ID'), 'birthday' => oci_result($stmt, 'BIRTHDAY'),
                 'email' => oci_result($stmt, 'EMAIL'), 'zipcode' => oci_result($stmt, 'ZIP'),
@@ -136,7 +136,7 @@ try {
         } else {
             $result['data'] = array(
                 'id' => oci_result($stmt, 'ID'), 'name' => oci_result($stmt, 'NAME'),
-                'gender' => oci_result($stmt, 'SEX'),
+                'sex' => oci_result($stmt, 'SEX'),
                 'dept' => oci_result($stmt, 'DEPT_ID'), 'organize_id' => oci_result($stmt, 'ORGANIZE_ID'),
                 'orastatus_id' => oci_result($stmt, 'ORASTATUS_ID'), 'birthday' => oci_result($stmt, 'BIRTHDAY'),
                 'email' => oci_result($stmt, 'EMAIL'), 'zipcode' => oci_result($stmt, 'ZIP'),
@@ -228,9 +228,9 @@ try {
 
 
 
-        $sql = "INSERT INTO SIGNUPDATA (ID,NAME,SEX,DEPT_ID,ORGANIZE_ID,ORASTATUS_ID,BIRTHDAY,EMAIL,ZIP,ADDRESS,TEL_H,TEL_O,TEL_M,LIAISONER,LIAISON_TEL,LIAISON_REL,CRIPPLE_TYPE,COMMENTS,PROVE_TYPE,SIGNUP_SN,SCHOOL,LOCK_UP,SUBJECT_ID,FILL_DATE,L_ALT_DATE,ZIP_O,ADDRESS_O,E_PLACE,AC_SCHOOL_NAME,AC_DEPT_NAME,AC_SCHOOL_TYPE,AC_GRADUATED,AC_DATE,AC_YEAR_OF_LEAVE,AC_YEAR_OF_STUDY,SCHOOL_ID,YEAR) VALUES (:id,:name,:gender,:dept_id,:organize_id,:orastatus_id,to_date(:birthday,'yyyy-mm-dd'),:email,:zip,:address,:tel_h,:tel_o,:tel_m,:conn_name,:conn_tel,:conn_rel,:disabled_type,:comments,:prove_type,:sn,'$SCHOOL_ID',0,:subjects,to_date('$time','yyyy-mm-dd HH24:MI:SS'),to_date('$time','yyyy-mm-dd HH24:MI:SS'),:zip2,:address2,:place,:ac_school,:ac_dept,:ac_school_type,:ac_graduated,to_date(:ac_date,'yyyy-mm-dd'),:year_leave,:year_study,'$SCHOOL_ID','$ACT_YEAR_NO')";
+        $sql = "INSERT INTO SIGNUPDATA (ID,NAME,SEX,DEPT_ID,ORGANIZE_ID,ORASTATUS_ID,BIRTHDAY,EMAIL,ZIP,ADDRESS,TEL_H,TEL_O,TEL_M,LIAISONER,LIAISON_TEL,LIAISON_REL,CRIPPLE_TYPE,COMMENTS,PROVE_TYPE,SIGNUP_SN,SCHOOL,LOCK_UP,SUBJECT_ID,FILL_DATE,L_ALT_DATE,ZIP_O,ADDRESS_O,E_PLACE,AC_SCHOOL_NAME,AC_DEPT_NAME,AC_SCHOOL_TYPE,AC_GRADUATED,AC_DATE,AC_YEAR_OF_LEAVE,AC_YEAR_OF_STUDY,SCHOOL_ID,YEAR) VALUES (:id,:name,:sex,:dept_id,:organize_id,:orastatus_id,to_date(:birthday,'yyyy-mm-dd'),:email,:zip,:address,:tel_h,:tel_o,:tel_m,:conn_name,:conn_tel,:conn_rel,:disabled_type,:comments,:prove_type,:sn,'$SCHOOL_ID',0,:subjects,to_date('$time','yyyy-mm-dd HH24:MI:SS'),to_date('$time','yyyy-mm-dd HH24:MI:SS'),:zip2,:address2,:place,:ac_school,:ac_dept,:ac_school_type,:ac_graduated,to_date(:ac_date,'yyyy-mm-dd'),:year_leave,:year_study,'$SCHOOL_ID','$ACT_YEAR_NO')";
         $stmt = oci_parse($conn, $sql);
-        $params = array($id, $_POST['name'], $_POST['gender'], $_POST['dept'], $_POST['organize_id'], $_POST['orastatus_id'], $_POST['birthday'], $email, $_POST['zipcode'], $_POST['address'], $_POST['tel_h_a'] . "-" . $_POST['tel_h'], $tel_o, $_POST['tel_m'], $_POST['conn_name'], $_POST['conn_tel'], $_POST['conn_rel'], $_POST['disabled_type'], $comments, $_POST['prove_type'], $payload['sn'], $subjects, $_POST['zipcode2'], $_POST['address2'], $_POST['place'], $ac_school, $ac_dept, $ac_school_type, $ac_graduated, $ac_date, $ac_year_leave, $ac_year_study);
+        $params = array($id, $_POST['name'], $_POST['sex'], $_POST['dept'], $_POST['organize_id'], $_POST['orastatus_id'], $_POST['birthday'], $email, $_POST['zipcode'], $_POST['address'], $_POST['tel_h_a'] . "-" . $_POST['tel_h'], $tel_o, $_POST['tel_m'], $_POST['conn_name'], $_POST['conn_tel'], $_POST['conn_rel'], $_POST['disabled_type'], $comments, $_POST['prove_type'], $payload['sn'], $subjects, $_POST['zipcode2'], $_POST['address2'], $_POST['place'], $ac_school, $ac_dept, $ac_school_type, $ac_graduated, $ac_date, $ac_year_leave, $ac_year_study);
         bind_by_array($stmt, $sql, $params);
 
 
@@ -281,7 +281,7 @@ try {
 
                     $sql = "INSERT INTO union_priority_all(id,organize_id,option_id,option_name,priority,sn,school_id,year) values(:id,:organize_id,:option_id,:option_name,:priority,:sn,'$SCHOOL_ID','$ACT_YEAR_NO')";
                     $stmt = oci_parse($conn, $sql);
-                    $params = array($id, $_POST['organize_id'], $_POST['union_priority'][$i], $option_name, $i + 2, $payload['sn']);
+                    $params = array($id, $_POST['organize_id'], $_POST['union_priority'][$i] . substr($_POST['orastatus_id'], -2), $option_name, $i + 2, $payload['sn']);
                     bind_by_array($stmt, $sql, $params);
                     oci_execute($stmt, OCI_DEFAULT);
                     oci_free_statement($stmt);
@@ -382,9 +382,9 @@ try {
         $email = $post_vars['email'];
         $id = $post_vars['id'];
 
-        $sql = "UPDATE SIGNUPDATA SET ID=:id,NAME=:name,SEX=:gender,DEPT_ID=:dept_id,ORGANIZE_ID=:organize_id,ORASTATUS_ID=:orastatus_id,BIRTHDAY=to_date(:birthday,'yyyy-mm-dd'),EMAIL=:email,ZIP=:zip,ADDRESS=:address,TEL_H=:tel_h,TEL_O=:tel_o,TEL_M=:tel_m,LIAISONER=:conn_name,LIAISON_TEL=:conn_tel,LIAISON_REL=:conn_rel,CRIPPLE_TYPE=:disabled_type,COMMENTS=:comments,PROVE_TYPE=:prove_type,L_ALT_DATE=to_date('$time','yyyy-mm-dd HH24:MI:SS'),ZIP_O=:zip2,ADDRESS_O=:address2,E_PLACE=:e_place,AC_SCHOOL_NAME=:ac_school,AC_DEPT_NAME=:ac_dept,AC_SCHOOL_TYPE=:ac_type,AC_GRADUATED=:ac_graduated,AC_DATE=to_date(:ac_date,'yyyy-mm-dd'),AC_YEAR_OF_LEAVE=:ac_year_leave,AC_YEAR_OF_STUDY=:ac_year_study,SUBJECT_ID=:subject_id WHERE SCHOOL_ID='$SCHOOL_ID' AND YEAR='$ACT_YEAR_NO' AND SIGNUP_SN=:sn";
+        $sql = "UPDATE SIGNUPDATA SET ID=:id,NAME=:name,SEX=:sex,DEPT_ID=:dept_id,ORGANIZE_ID=:organize_id,ORASTATUS_ID=:orastatus_id,BIRTHDAY=to_date(:birthday,'yyyy-mm-dd'),EMAIL=:email,ZIP=:zip,ADDRESS=:address,TEL_H=:tel_h,TEL_O=:tel_o,TEL_M=:tel_m,LIAISONER=:conn_name,LIAISON_TEL=:conn_tel,LIAISON_REL=:conn_rel,CRIPPLE_TYPE=:disabled_type,COMMENTS=:comments,PROVE_TYPE=:prove_type,L_ALT_DATE=to_date('$time','yyyy-mm-dd HH24:MI:SS'),ZIP_O=:zip2,ADDRESS_O=:address2,E_PLACE=:e_place,AC_SCHOOL_NAME=:ac_school,AC_DEPT_NAME=:ac_dept,AC_SCHOOL_TYPE=:ac_type,AC_GRADUATED=:ac_graduated,AC_DATE=to_date(:ac_date,'yyyy-mm-dd'),AC_YEAR_OF_LEAVE=:ac_year_leave,AC_YEAR_OF_STUDY=:ac_year_study,SUBJECT_ID=:subject_id WHERE SCHOOL_ID='$SCHOOL_ID' AND YEAR='$ACT_YEAR_NO' AND SIGNUP_SN=:sn";
         $stmt = oci_parse($conn, $sql);
-        $params = array($id, $post_vars['name'], $post_vars['gender'], $post_vars['dept'], $post_vars['organize_id'], $post_vars['orastatus_id'], $post_vars['birthday'], $email, $post_vars['zipcode'], $post_vars['address'], $post_vars['tel_h_a'] . "-" . $post_vars['tel_h'], $tel_o, $post_vars['tel_m'], $post_vars['conn_name'], $post_vars['conn_tel'], $post_vars['conn_rel'], $post_vars['disabled_type'], $comments, $post_vars['prove_type'], $post_vars['zipcode2'], $post_vars['address2'], $post_vars['place'], $ac_school, $ac_dept, $ac_school_type, $ac_graduated, $ac_date, $ac_year_leave, $ac_year_study, $subjects, $payload['sn']);
+        $params = array($id, $post_vars['name'], $post_vars['sex'], $post_vars['dept'], $post_vars['organize_id'], $post_vars['orastatus_id'], $post_vars['birthday'], $email, $post_vars['zipcode'], $post_vars['address'], $post_vars['tel_h_a'] . "-" . $post_vars['tel_h'], $tel_o, $post_vars['tel_m'], $post_vars['conn_name'], $post_vars['conn_tel'], $post_vars['conn_rel'], $post_vars['disabled_type'], $comments, $post_vars['prove_type'], $post_vars['zipcode2'], $post_vars['address2'], $post_vars['place'], $ac_school, $ac_dept, $ac_school_type, $ac_graduated, $ac_date, $ac_year_leave, $ac_year_study, $subjects, $payload['sn']);
         bind_by_array($stmt, $sql, $params);
 
 

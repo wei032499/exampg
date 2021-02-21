@@ -52,9 +52,9 @@ try {
             $signup_enable = 0;
             $checked = 0;
         }
-        $sql = "INSERT INTO SN_DB VALUES (:sn,:signup_enable,'0',:pwd,:email,null,:account_no,:checked,'',to_date(:time,'yyyy-mm-dd HH24:MI:SS'),:name,:gender,:id,:tel,:dept_id,:ip,'$SCHOOL_ID','$ACT_YEAR_NO')";
+        $sql = "INSERT INTO SN_DB VALUES (:sn,:signup_enable,'0',:pwd,:email,null,:account_no,:checked,'',to_date(:time,'yyyy-mm-dd HH24:MI:SS'),:name,:sex,:id,:tel,:dept_id,:ip,'$SCHOOL_ID','$ACT_YEAR_NO')";
         $stmt = oci_parse($conn, $sql);
-        $params = array(':sn' => $sn, ':signup_enable' => $signup_enable, ':pwd' => $pwd, ':email' => $_POST['email'], ':account_no' => $account_no, ':checked' => $checked, ':time' => $time, ':name' => $_POST['name'], ':gender' => $_POST['gender'], ':id' => $id, ':tel' => $_POST['tel'], ':dept_id' => $_POST['dept_id'], ':ip' => $ip);
+        $params = array(':sn' => $sn, ':signup_enable' => $signup_enable, ':pwd' => $pwd, ':email' => $_POST['email'], ':account_no' => $account_no, ':checked' => $checked, ':time' => $time, ':name' => $_POST['name'], ':sex' => $_POST['sex'], ':id' => $id, ':tel' => $_POST['tel'], ':dept_id' => $_POST['dept_id'], ':ip' => $ip);
         foreach ($params as $key => $val)
             oci_bind_by_name($stmt, $key, $params[$key]);
 
