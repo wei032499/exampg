@@ -34,7 +34,7 @@ try {
     $result = array();
     $result['code'] = $e->getCode();
     $result['message'] = $e->getMessage();
-    header('Content-Type:application/json');
-    echo json_encode($result);
+    // header('Content-Type:application/json');
+    // echo json_encode($result);
     header("Location: ./confirm.php");
 }
