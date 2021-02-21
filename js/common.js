@@ -1,3 +1,17 @@
+if (typeof URLSearchParams === "undefined") {
+    function URLSearchParams(url) {
+        this.url = url;
+    }
+    URLSearchParams.prototype.get = function (name) {
+        var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(this.url);
+        if (results == null) {
+            return null;
+        } else {
+            return decodeURI(results[1]) || 0;
+        }
+    }
+}
+
 
 function getSessionItems(itemName) {
     let sessionItems = {};
