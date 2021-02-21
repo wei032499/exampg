@@ -43,7 +43,7 @@ try {
     $result['code'] = $e->getCode();
     $result['message'] = $e->getMessage();
     $result['line'] = $e->getLine();
-    header('Content-Type:application/json');
-    echo json_encode($result);
-    // header("Location: ./signup.php");
+    // header('Content-Type:application/json');
+    // echo json_encode($result);
+    header("Location: ./signup.php");
 }

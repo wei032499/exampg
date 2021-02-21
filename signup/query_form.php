@@ -358,7 +358,7 @@
                     <label class="col-sm-3"></label>
                     <div class="col-sm-9 line-height-1">
                         <a target="_blank" href="./download_review.php">下載審查資料一覽表(pdf檔)</a><br>
-                        <a href="./download_evelope.php" target="_blank">下載信封封面(pdf檔)</a><br>
+                        <a target="_blank" href="./download_evelope.php">下載信封封面(pdf檔)</a><br>
                         身心障礙考生如欲申請各項應考需求，請另寄交申請表及證明文件至本校招生委員會。<br>
                         報名資料如有罕用字，致電腦無法正常顯示者，請另填罕用字回覆表傳真本校處理。<br>
                         准考證由考生自行下載列印，請於開放列印日期內，至<span class="font-weight-bold">網路報名系統 / 網路報名 / 准考證列印</span> 下載(不限次數)後，以A4白紙單面紙張自行列印，並妥為保存，本校不再另行寄發。<br>

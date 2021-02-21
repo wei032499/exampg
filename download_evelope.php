@@ -10,7 +10,7 @@ try {
 		$Token = new Token($conn, $_COOKIE['token']);
 		$payload = $Token->verify();
 		if ($payload === false || $payload['authority'] !== 1)
-			require_once('./signup/alter_login.php');
+			header("Location: ./query_signup.php");
 		else if ($payload['status'] !== 2 && $payload['status'] !== 3) {
 			if ($payload['status'] === 0)
 				echo "<script>alert('您尚未繳費或繳交的費用尚未入帳，若您已繳費，請30分鐘後再試一次。');window.location.replace('./');</script>";
@@ -37,15 +37,6 @@ try {
 			curl_close($ch);
 			if ($httpcode !== 200)
 				throw new Exception($data['message'], $data['code']);
-
-
-
-
-
-
-
-
-
 
 			require_once('./API/common/chinese.php');
 

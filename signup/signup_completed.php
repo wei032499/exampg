@@ -61,8 +61,8 @@
                             </ul>
                         </li>
                         <li>【請下載以下兩項表格】<br>
-                            <a href="exampg_report1.php" target=_blank>下載審查資料一覽表(PDF檔)</a><br>
-                            <a href="exampg_report2.php" target=_blank>下載信封封面(PDF檔)</a><br>
+                            <a target="_blank" href="./download_review.php">下載審查資料一覽表(PDF檔)</a><br>
+                            <a target="_blank" href="./download_evelope.php">下載信封封面(PDF檔)</a><br>
                             (您亦可利用資料查詢功能裡的「<span class='font-weight-bold'>報名資料查詢、下載審查資料一覽表及信封封面</span>」下載表格)
                         </li>
                     </ol>
