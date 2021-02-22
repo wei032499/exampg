@@ -42,8 +42,8 @@
                         <li><a class="dropdown-item" href="./signup.php">填寫報名表</a></li>
                         <li><a class="dropdown-item" href="./alter.php">修改報名資料</a></li>
                         <li><a class="dropdown-item" href="./confirm.php">資料確認</a></li>
-                        <!--<li><a class="dropdown-item" href="./letter.php">*推薦函作業</a></li>
-                        <li><a class="dropdown-item" href="#">*准考證列印</a></li>-->
+                        <li><a class="dropdown-item" href="./letter.php">推薦函作業</a></li>
+                        <!--<li><a class="dropdown-item" href="#">*准考證列印</a></li>-->
                     </ul>
                 </li>
                 <li class="nav-item dropdown">
@@ -88,7 +88,7 @@
             $("#navbarSupportedContent>ul>li").eq(0).addClass("active");
         } else if (filename === "intro_registration.php" || filename === "intro_payment.php") {
             $("#navbarSupportedContent>ul>li").eq(1).addClass("active");
-        } else if (filename === "order.php" || filename === "signup.php" || filename === "alter.php" || filename === "confirm.php") {
+        } else if (filename === "order.php" || filename === "signup.php" || filename === "alter.php" || filename === "confirm.php" || filename === "letter.php") {
             $("#navbarSupportedContent>ul>li").eq(3).addClass("active");
         } else if (filename.indexOf("query_") !== -1) {
             $("#navbarSupportedContent>ul>li").eq(4).addClass("active");

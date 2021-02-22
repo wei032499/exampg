@@ -34,15 +34,6 @@
                     :::報名費繳費方式及銷帳查詢方式說明
                 </h3>
             </div>
-            <script>
-                $(function() {
-                    let urlParams = new URLSearchParams(window.location.search);
-                    if (urlParams.get('tab') === null)
-                        $('#myTab a[href="#download"]').tab('show');
-                    else
-                        $('#myTab a[href="#' + urlParams.get('tab') + '"]').tab('show');
-                });
-            </script>
             <div id="content" class="card shadow p-4">
                 <p class="line-height-1">
                     一、繳費方式：<br>

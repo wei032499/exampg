@@ -8,7 +8,6 @@ try {
         $Token = new Token($conn, $_COOKIE['token']);
         $payload = $Token->verify();
         setcookie('token', $Token->refresh(), $cookie_options_httponly);
-        setcookie('username', $_COOKIE['username'], $cookie_options);
         if ($payload === false || $payload['authority'] !== 1)
             require_once('./signup/confirm_login.php');
         else if ($payload['status'] !== 2) {

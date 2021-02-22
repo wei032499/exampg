@@ -1,5 +1,6 @@
 <?php
 header('Content-Type:application/json');
+header("Cache-Control: no-cache");
 $result = array();
 $post_processing = array();
 try {
@@ -473,7 +474,6 @@ try {
         throw new Exception("Method Not Allowed", 405);
 
     setcookie('token', $Token->refresh(), $cookie_options_httponly);
-    setcookie('username', $_COOKIE['username'], $cookie_options);
 
     oci_commit($conn); //無發生任何錯誤，將資料寫進資料庫
 

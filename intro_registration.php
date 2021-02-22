@@ -207,7 +207,6 @@
 
     <script>
         $(function() {
-            //let urlParams = new URLSearchParams(window.location.search);urlParams.get('tab');
             if (window.location.hash === "")
                 $('#myTab a[href="#download"]').tab('show');
             else

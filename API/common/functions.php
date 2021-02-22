@@ -34,7 +34,12 @@ set_error_handler(function ($err_severity, $err_msg, $err_file, $err_line, array
         throw new ErrorException("Bad Request", 400, $err_severity, $err_file, $err_line);
     else if (strpos($err_msg, 'ORA-') !== false) {
         preg_match('/(?<=ORA-)\w+(?=:)/', $err_msg, $matches);
-        throw new ErrorException("系統發生錯誤，請聯繫系統管理員。錯誤代碼：" . $matches[0], 0, $err_severity, $err_file, $err_line);
+        $error_code = 0;
+        if ($matches[0] === "00001")
+            $error_code = 409;
+        else if ($matches[0] === "01400")
+            $error_code = 400;
+        throw new ErrorException("系統發生錯誤，請聯繫系統管理員。錯誤代碼：" . $matches[0], $error_code, $err_severity, $err_file, $err_line);
     } else
         throw new ErrorException("系統發生錯誤，請聯繫系統管理員。", 0, $err_severity, $err_file, $err_line);
 });
@@ -115,6 +120,8 @@ class Token
     {
         $this->conn = $conn;
         $this->payload = JWT::verifyToken($token);
+        if ($this->payload === false)
+            clearCookie();
     }
 
     private function getStatus()
@@ -461,6 +468,21 @@ function sendMail($msg_type, $payload)
             mail($to, $subject, $mail_msg, $headers);
             fclose($finc);
 
+            return $to;
+            break;
+
+        case '9': //推薦函填寫通知
+            $subject = "國立彰化師範大學 網路報名系統::推薦函填寫通知";
+            $subject = "=?UTF-8?B?" . base64_encode("$subject") . "?="; //郵件主旨(轉換編碼)
+            $finc = fopen(dirname(__FILE__) . "/inc/case_letter.inc", "r");
+            $to = $payload['to'];
+            $mail_msg = "";
+            while (!feof($finc)) {
+                $mail_msg .= str_replace("act_year_no", $ACT_YEAR_NO, str_replace("su_end_date", $SU_END_DATE, str_replace("stud_name", $payload['stud_name'], str_replace("dept_name", $payload['dept_name'], str_replace("r_name", $payload['r_name'], str_replace("r_token", $payload['r_token'], (fgets($finc, 4096))))))));
+            }
+            //$to = "bob@cc.ncue.edu.tw";
+            mail($to, $subject, $mail_msg, $headers);
+            fclose($finc);
             return $to;
             break;
     }

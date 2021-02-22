@@ -37,14 +37,17 @@ function getSessionItems(itemName) {
     }
     return sessionItems;
 }
-function getData(url, cache) {
+function getData(url, cache, payload) {
     if (cache === undefined)
         cache = true;
+    if (payload === undefined)
+        payload = null;
     return $.ajax({
         type: 'GET',
         url: url,
         cache: cache,
-        dataType: 'json'
+        dataType: 'json',
+        data: payload
     }).done(function (response) {
         return response.data;
     })
@@ -59,7 +62,6 @@ function getData(url, cache) {
                 msg = 'Uncaught Error.\n' + jqXHR.responseText;
             }
             alert(msg);
-
         });
 }
 function fillForm(items) {

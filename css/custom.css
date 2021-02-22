@@ -83,11 +83,21 @@ a.deco-none {
     color:black !important;
 }
 
-form span.error {
+form span.error, form label.error{
     color: #ff0000;
     padding: 0.5rem;
   }
 
 form input.error, form select.error{
     box-shadow: 0 0 1.5px 1px red;
+}
+
+.bg-success-light{
+    background-color: #dff0d8;
+}
+.bg-warning-light{
+    background-color: #fcf8e3;
+}
+.bg-info-light{
+    background-color: #d9edf7;
 }

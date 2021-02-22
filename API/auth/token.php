@@ -13,7 +13,6 @@ try {
     if ($payload === false)
         throw new Exception("Unauthorized", 401);
     setcookie('token', $Token->refresh(), $cookie_options_httponly);
-    setcookie('username', $_COOKIE['username'], $cookie_options);
     $result['status'] = $payload['status'];
     $result['authority'] = $payload['authority'];
 } catch (Exception $e) {
