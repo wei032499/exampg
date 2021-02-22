@@ -1,6 +1,7 @@
 <?php
 
 header('Content-Type:application/json');
+header("Cache-Control: no-cache");
 $result = array();
 $post_processing = array();
 try {
@@ -70,7 +71,6 @@ try {
     }
 
     setcookie('token', $Token->refresh(), $cookie_options_httponly);
-    setcookie('username', $_COOKIE['username'], $cookie_options);
 } catch (Exception $e) {
     oci_rollback($conn);
     setHeader($e->getCode());

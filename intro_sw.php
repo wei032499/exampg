@@ -47,15 +47,7 @@
 
 
     <?php require_once("./module/footer.php") ?>
-    <script>
-        /*$(function() {
-                    let urlParams = new URLSearchParams(window.location.search);
-                    if (urlParams.get('tab') === null)
-                        $('#myTab a[href="#download"]').tab('show');
-                    else
-                        $('#myTab a[href="#' + urlParams.get('tab') + '"]').tab('show');
-                });*/
-    </script>
+
 
 </body>
 

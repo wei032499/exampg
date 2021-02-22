@@ -217,7 +217,7 @@
                         </div>
                         <div class="row form-group">
                             <label for="inputTel_m" class="col-sm-2" style="min-width: 7rem;">手機：</label>
-                            <div class="col-sm-3">
+                            <div class="col-sm-4">
                                 <input type="tel" class="form-control-plaintext " id="inputTel_m" pattern="09\d{8}" placeholder="09xxxxxxxx" name="tel_m" readonly required>
                             </div>
                         </div>
@@ -225,7 +225,7 @@
                 </div>
                 <div class="form-group row">
                     <label for="inputEmail" class="col-sm-3">Email信箱</label>
-                    <div class="col-sm-5">
+                    <div class="col-md-5">
                         <input type="email" class="form-control-plaintext " id="inputEmail" name="email" placeholder="example@gmail.com" readonly required>
                     </div>
                 </div>
@@ -269,6 +269,7 @@
                             </div>
                             <span class="error" id="proveErrMsg"></span>
                         </div>
+                        <span style="color:red">※應屆畢業生請點選「學士學位」</span>
                         <div class="row col form-group tab-content" id="proveTabContent">
                             <div class="tab-pane fade" id="tab_prove1" role="tabpanel" aria-labelledby="prove1" style="width: 100%;">
                                 <div class="card p-4">
@@ -276,6 +277,7 @@
                                         <label for="inputGrad_schol" class="col-sm-2" style="min-width: 7rem;">學校名稱：</label>
                                         <div class=" col-sm align-items-center">
                                             <input type="text" class="form-control-plaintext " id="inputGrad_schol" name="grad_schol" readonly required>
+                                            <span style="color:red">※學校名稱及科系請填寫全銜</span>
                                         </div>
                                     </div>
                                     <div class="row form-group">
@@ -286,8 +288,8 @@
                                     </div>
                                     <div class="row form-group">
                                         <label for="inputGrad_date" class="col-sm-2" style="min-width: 7rem;">畢業年月：</label>
-                                        <div class=" col-sm-3 align-items-center">
-                                            <input style="min-width: 10rem;" type="month" class="form-control-plaintext " aria-describedby="grad_dateHelp" id="inputGrad_date" placeholder="yyyy-mm" pattern="(1\d{3}|2\d{3})-(0[1-9]|1[0-2])" name="grad_date" readonly required>
+                                        <div class=" col-sm-3 align-items-center" style="min-width: 10rem;">
+                                            <input type="month" class="form-control-plaintext " aria-describedby="grad_dateHelp" id="inputGrad_date" placeholder="yyyy-mm" pattern="(1\d{3}|2\d{3})-(0[1-9]|1[0-2])" name="grad_date" readonly required>
                                         </div>
                                         <small id="grad_dateHelp" class="form-text text-muted col-sm">(yyyy-mm)<br>*西元年 = 民國年 + 1911</small>
                                     </div>
@@ -299,6 +301,7 @@
                                         <label for="inputac_school" class="col-sm-2" style="min-width: 7rem;">學校名稱：</label>
                                         <div class=" col-sm align-items-center">
                                             <input type="text" class="form-control-plaintext " id="inputac_school" name="ac_school" readonly required>
+                                            <span style="color:red">※學校名稱及科系請填寫全銜</span>
                                         </div>
                                     </div>
                                     <div class="row form-group">

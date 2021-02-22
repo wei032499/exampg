@@ -1,5 +1,6 @@
 <?php
 header('Content-Type:application/json');
+header("Cache-Control: no-cache");
 $result = array('data' => array());
 $post_processing = array();
 try {
