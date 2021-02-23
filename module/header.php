@@ -1,12 +1,12 @@
 <header class="bg-header">
     <div class="container p-2 fs-3">
-        <div class="row" style="width:100%;display:flex;align-items:center">
-            <div class="mx-2" style="width: max-content">
-                <!--./images/favicon.ico  width="50"-->
-                <a href="https://www.ncue.edu.tw"><img src="https://www.ncue.edu.tw/var/file/0/1000/img/82/logo.png" alt="" /></a>
-            </div>
-            <div class="mx-2" style="width: max-content;word-break: keep-all"><a href="./" class="deco-none">網路報名系統(碩士班)</a></div>
+        <div style="align-items:center">
+            <a href="./">
+                <img id="logo1" src="./images/logo1.png" style="max-width:100%;" alt="" />
+                <img id="logo2" src="./images/logo2.png" style="max-width:100%;" alt="" />
+            </a>
         </div>
+
     </div>
 </header>
 <nav class="navbar navbar-expand-lg navbar-dark bg-subnavbar subnavbar">

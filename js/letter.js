@@ -56,9 +56,9 @@ $(function () {
     });
 
     //修改Email時,要先移除寄mail的按鈕,避免未存檔即寄
-    $("td").on("keyup", "input[type='email']", function () {
+    $("input[type='email']").on("keyup", function () {
         // alert("in");
-        $(this).closest("tr").find("button").remove();
+        $(this).closest("button").remove();
         //$(this).closest("button").remove();
     });
 
@@ -142,26 +142,34 @@ function loadData() {
             if (response.member.length > 0) {
                 $("#mybody").children().remove();
                 for (var i = 0; i < response.member.length; i++) {
+                    let disabled_name = "";
+                    let disabled_org = "";
+                    let disabled_title = "";
+                    let disabled_email = "";
                     if (response.member[i][8] != null &&
                         response.member[i][8].length > 10) {
                         //使用"disabled"無法傳送表單欄位,readonly可以
-                        var disabled_name = '  readonly="readonly" ';
-                        var disabled_org = '  readonly="readonly" ';
-                        var disabled_title = '  readonly="readonly" ';
-                        // var disabled_email =" disabled";
+                        disabled_name = '  readonly="readonly" ';
+                        disabled_org = '  readonly="readonly" ';
+                        disabled_title = '  readonly="readonly" ';
+                        //  disabled_email =" disabled";
                     }
                     //推薦人已讀取或已填寫,不可修改任何蘭位
                     if ((response.member[i][9] != null &&
                         response.member[i][9].length > 10) ||
                         (response.member[i][10] != null && response.member[i][10].length > 10)) {
-                        var disabled_name = '  readonly="readonly" ';
-                        var disabled_org = '  readonly="readonly" ';
-                        var disabled_title = '  readonly="readonly" ';
-                        var disabled_email = '  readonly="readonly" ';
+                        disabled_name = '  readonly="readonly" ';
+                        disabled_org = '  readonly="readonly" ';
+                        disabled_title = '  readonly="readonly" ';
+                        disabled_email = '  readonly="readonly" ';
                     }
                     $("#mybody").append(
                         '<tr class="text-center" id="addrow"><td >' + (response.member[i][0]) + '<input type="hidden" name="r_seq[]" value="' + (response.member[i][0]) + '"></td><td ><input type="text" name="r_name[]" class="form-control valid" aria-invalid="false" value="' + (response.member[i][1]) + '"' + (disabled_name) + ' required="required" title="" /></td><td ><input type="text" name="r_org[]" class="form-control valid" aria-invalid="false" value="' + (response.member[i][2]) + '"  ' + (disabled_org) + ' required="required" title="" /></td><td ><input type="text" name="r_title[]" class="form-control valid" aria-invalid="false" value="' + (response.member[i][3]) + '"  ' + (disabled_title) + ' required="required" title="" /></td><td class="col-md-4"><input type="email" name="r_email[]" class="form-control valid" aria-invalid="false" value="' + (response.member[i][4]) + '"  ' + (disabled_email) + ' required="required" title="" /><button type="button" class="btn btn-sm btn-success m-1"> 寄發Email通知 (請先存檔) </button><div class="text-left"><small>寄發 E-mail：' + (response.member[i][5]) + '<br>推薦人讀取：' + (response.member[i][6]) + '<br> 推薦人填寫：' + (response.member[i][7]) + '</small></div></td></tr>'
                     );
+                    //修改Email時,要先移除寄mail的按鈕,避免未存檔即寄
+                    $("#mybody tr").last().find("input[type='email']").on("keyup", function () {
+                        $(this).siblings("button").remove();
+                    });
                 }
             }
         })
