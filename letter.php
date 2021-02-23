@@ -9,7 +9,7 @@ try {
         $payload = $Token->verify();
         setcookie('token', $Token->refresh(), $cookie_options_httponly);
 
-        if ($payload === false)
+        if ($payload === false || $payload['authority'] !== 1)
             require_once('./signup/letter_login.php');
         else if ($payload['status'] !== 2 && $payload['status'] !== 3) {
             if ($payload['status'] === 0)

@@ -5,17 +5,13 @@ $result = array();
 try {
     require_once('../common/functions.php');
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        if (isset($_POST['oper']) && $_POST['oper'] === 'queue') {
-            if (isset($_COOKIE['token'])) {
-                $Token = new Token($conn, $_COOKIE['token']);
-                $payload = $Token->verify();
-                if ($payload !== false && isset($payload['id']) && isset($payload['sid'])) {
-                    unset($payload['id']);
-                    unset($payload['sid']);
-                    $token = JWT::getToken($payload);
-                    header("Cache-Control: private");
-                    setcookie('token', $token, $cookie_options_httponly);
-                }
+        if (isset($_POST['oper']) && $_POST['oper'] === 'queue' && isset($_COOKIE['token'])) {
+            $payload = JWT::verifyToken($_COOKIE['token']);
+            if ($payload !== false && isset($payload['id']) && isset($payload['sid'])) {
+                unset($payload['id']);
+                unset($payload['sid']);
+                $token = JWT::getToken($payload);
+                setcookie('token', $token, $cookie_options_httponly);
             }
         } else
             clearCookie();

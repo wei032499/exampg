@@ -56,7 +56,6 @@ function setHeader($code)
     if ($code === 400)
         header($_SERVER["SERVER_PROTOCOL"] . " 400 Bad Request");
     else if ($code === 401) {
-        clearCookie();
         header($_SERVER["SERVER_PROTOCOL"] . " 401 Unauthorized");
     } else if ($code === 403) {
         header($_SERVER["SERVER_PROTOCOL"] . " 403 Forbidden");
@@ -120,8 +119,6 @@ class Token
     {
         $this->conn = $conn;
         $this->payload = JWT::verifyToken($token);
-        if ($this->payload === false)
-            clearCookie();
     }
 
     private function getStatus()
@@ -148,26 +145,6 @@ class Token
             return 2; //已填寫報名表，資料尚未確認
         else
             return -1; //error
-
-        /*$sql = "SELECT SIGNUP_ENABLE,LOCK_UP,CHECKED FROM SN_DB WHERE SCHOOL_ID='$SCHOOL_ID' AND YEAR='$ACT_YEAR_NO' AND SN=:sn";
-        $stmt = oci_parse($this->conn, $sql);
-        oci_bind_by_name($stmt, ':sn', $this->payload['sn']);
-        oci_execute($stmt, OCI_DEFAULT);
-        oci_fetch($stmt);
-        $signup_enable = oci_result($stmt, "SIGNUP_ENABLE"); // 是否已入帳
-        $lockup = oci_result($stmt, "LOCK_UP"); // 是否已填寫報名表
-        $checked = oci_result($stmt, "CHECKED"); // 資料是否已確認
-        oci_free_statement($stmt);
-        if ($signup_enable === "0")
-            return 0; //尚未銷帳
-        else if ($checked === "1")
-            return 3; //資料已確認(已鎖定)
-        else if ($lockup === "0")
-            return 1; //尚未填寫報名表
-        else if ($lockup === "1")
-            return 2; //已填寫報名表，資料尚未確認
-        else
-            return -1; //error*/
     }
 
     /**
@@ -203,16 +180,13 @@ class Token
     public function verify()
     {
         global $SCHOOL_ID, $ACT_YEAR_NO;
-
-        if ($this->payload === false || !isset($_COOKIE['username'])) {
-            clearCookie();
+        if ($this->payload === false || !isset($this->payload['authority']) || !isset($_COOKIE['username'])) {
             return false;
         }
 
         $stmt = oci_parse($this->conn, "SELECT SN_DB.PWD, to_char(SIGNUPDATA.L_ALT_DATE,'yyyy-mm-dd HH24:MI:SS') as L_ALT_DATE FROM SN_DB LEFT JOIN SIGNUPDATA ON SN_DB.SCHOOL_ID=SIGNUPDATA.SCHOOL_ID AND SN_DB.YEAR=SIGNUPDATA.YEAR AND SN_DB.SN=SIGNUPDATA.SIGNUP_SN WHERE SN_DB.SCHOOL_ID='$SCHOOL_ID' AND SN_DB.YEAR='$ACT_YEAR_NO' AND SN_DB.SN=:sn");
         oci_bind_by_name($stmt, ':sn', $this->payload['sn']);
         if (!oci_execute($stmt, OCI_DEFAULT) || !oci_fetch($stmt) || $this->payload['last_modified'] !== oci_result($stmt, "L_ALT_DATE") || $this->payload['pwd'] !== hash('sha256', oci_result($stmt, "PWD"))) {
-            clearCookie();
             return false;
         }
         oci_free_statement($stmt);
