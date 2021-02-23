@@ -62,7 +62,6 @@ try {
             if (oci_fetch($stmt)) {
                 $payload['authority'] = 0;
                 $payload['sn'] = $_POST['serial_no'];
-                $payload['pwd'] = hash('sha256', $_POST['pwd']);
 
                 $username = oci_result($stmt, "NAME");
                 oci_free_statement($stmt);

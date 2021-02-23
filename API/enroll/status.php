@@ -46,6 +46,10 @@ try {
         oci_free_statement($stmt);
 
         if ($nrows == 0) {
+            unset($payload['id']);
+            unset($payload['sid']);
+            $token = JWT::getToken($payload);
+            setcookie('token', $token, $cookie_options_httponly);
             $post_processing[] = function () use ($sql) {
                 $mail_msg = $sql;
                 sendMail(0, array('title' => "無符合條件的資料！(queue_anno.php)", 'content' => $mail_msg));
