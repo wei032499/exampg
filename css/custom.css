@@ -106,3 +106,32 @@ form input.error, form select.error{
     color:blue;
     font-weight: bold;
 }
+@media (min-width: 768px)
+{
+    #header1 {
+        display: flex;
+    }
+    #header2 {
+        display: none;
+    }
+}
+@media (max-width: 767.98px) {
+    #header1 {
+        display: none;
+    }
+    #header2 {
+        display: flex;
+    }
+} 
+
+#logo1{
+    display: none;
+}
+@media (min-width: 576px){
+    #logo1{
+        display: block;
+    }
+    #logo2{
+        display: none;
+    }
+}
