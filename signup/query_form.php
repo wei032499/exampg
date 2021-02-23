@@ -368,8 +368,10 @@
                     </div>
                 </div>
                 <div class="form-group row" id="upload_row" style="display: none;">
-                    <label for="inputData" class="col-sm-3">備審資料上傳</label>
-                    <div class="form-control-file col-sm-4"><a id="fileLink" target="_blank" style="color:red"></a></div>
+                    <label for="inputData" class="col-sm-3" style="min-width: 10rem;">備審資料上傳</label>
+                    <div class="col-sm-8">
+                        <div class="form-control-file "><a id="fileLink" target="_blank" style="color:red"></a></div>
+                    </div>
                 </div>
             </form>
         </div>
