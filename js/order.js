@@ -6,10 +6,10 @@ function formReadOnly() {
     $("form .form-control").addClass('form-control-plaintext').removeClass('form-control');
     $("form select option").not(":selected").remove();
     $("form [type='radio']:not(:checked)").parent().remove();
-    $("form [type='radio']").parent().css('color', '#00008b');
+    $("form [type='radio']").parent().addClass('text-confirm');
     $("form [type='radio']").attr('type', 'hidden');
-    $("form input").css('color', '#00008b');
-    $("form select").css('color', '#00008b');
+    $("form input").addClass('text-confirm');
+    $("form select").addClass('text-confirm');
     $("form [type='number']").attr('type', 'text');
     $("form select").each(function () {
         let input = "<div class='" + $(this).attr('class') + "' style='" + $(this).attr('style') + "' >" + $(this).children("option:selected").text() + "</div>";

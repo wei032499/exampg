@@ -73,7 +73,7 @@ $(function () {
                 $(this)
                     .find("td:eq(0)")
                     .html(
-                        '<button type="button" class="btn btn-danger btn-sm" data-placement="right" title="移除推薦人">移除</button> ' +
+                        '<button type="button" class="btn btn-danger btn-sm" data-placement="right" title="移除推薦人">移除</button><br> ' +
                         count +
                         '<input type="hidden" name="r_seq[]" value="' +
                         count +
@@ -92,9 +92,8 @@ $(function () {
             return false;
         }
         $("tbody#mybody").append(
-            ` <tr class="text-center" id="addrow"><td class="col-md-1"><button type="button" class="btn btn-danger btn-sm" data-placement="right" title="移除推薦人">移除</i></button>
-      ${count + 1}<input type="hidden" name="r_seq[]" value="${count + 1
-            }"></td><td class="col-md-2"><input type="text" name="r_name[]" class="form-control valid" aria-invalid="false" value=""  required="required" title="" /></td><td class="col-md-2"><input type="text" name="r_org[]" class="form-control valid" aria-invalid="false" value=""  required="required" title="" /></td><td class="col-md-2"><input type="text" name="r_title[]" class="form-control valid" aria-invalid="false" value=""  required="required" title="" /></td><td class="col-md-4"><input type="email" name="r_email[]" class="form-control valid" aria-invalid="false" value="" required="required" title="" /></td></tr>`
+            '<tr class="text-center" id="addrow"><td ><button type="button" class="btn btn-danger btn-sm" data-placement="right" title="移除推薦人">移除</button><br>' +
+            (count + 1) + '<input type="hidden" name="r_seq[]" value="' + (count + 1) + '"></td><td ><input type="text" name="r_name[]" class="form-control valid" aria-invalid="false" value=""  required="required" title="" /></td><td ><input type="text" name="r_org[]" class="form-control valid" aria-invalid="false" value=""  required="required" title="" /></td><td ><input type="text" name="r_title[]" class="form-control valid" aria-invalid="false" value=""  required="required" title="" /></td><td class="col-md-4"><input type="email" name="r_email[]" class="form-control valid" aria-invalid="false" value="" required="required" title="" /></td></tr>'
         );
     });
 
@@ -161,7 +160,7 @@ function loadData() {
                         var disabled_email = '  readonly="readonly" ';
                     }
                     $("#mybody").append(
-                        ` <tr class="text-center" id="addrow"><td class="col-md-1">${response.member[i][0]}<input type="hidden" name="r_seq[]" value="${response.member[i][0]}"></td><td class="col-md-2"><input type="text" name="r_name[]" class="form-control valid" aria-invalid="false" value="${response.member[i][1]}" ${disabled_name} required="required" title="" /></td><td class="col-md-2"><input type="text" name="r_org[]" class="form-control valid" aria-invalid="false" value="${response.member[i][2]}"  ${disabled_org} required="required" title="" /></td><td class="col-md-2"><input type="text" name="r_title[]" class="form-control valid" aria-invalid="false" value="${response.member[i][3]}"  ${disabled_title} required="required" title="" /></td><td class="col-md-4"><input type="email" name="r_email[]" class="form-control valid" aria-invalid="false" value="${response.member[i][4]}"  ${disabled_email} required="required" title="" /><button type="button" class="btn btn-xs btn-success m-1"> 寄發Email通知 (請先存檔) </button><h6 class="text-left">寄發 E-mail：${response.member[i][5]}<br>推薦人讀取：${response.member[i][6]}<br> 推薦人填寫：${response.member[i][7]}</h6></td></tr>`
+                        '<tr class="text-center" id="addrow"><td >' + (response.member[i][0]) + '<input type="hidden" name="r_seq[]" value="' + (response.member[i][0]) + '"></td><td ><input type="text" name="r_name[]" class="form-control valid" aria-invalid="false" value="' + (response.member[i][1]) + '"' + (disabled_name) + ' required="required" title="" /></td><td ><input type="text" name="r_org[]" class="form-control valid" aria-invalid="false" value="' + (response.member[i][2]) + '"  ' + (disabled_org) + ' required="required" title="" /></td><td ><input type="text" name="r_title[]" class="form-control valid" aria-invalid="false" value="' + (response.member[i][3]) + '"  ' + (disabled_title) + ' required="required" title="" /></td><td class="col-md-4"><input type="email" name="r_email[]" class="form-control valid" aria-invalid="false" value="' + (response.member[i][4]) + '"  ' + (disabled_email) + ' required="required" title="" /><button type="button" class="btn btn-sm btn-success m-1"> 寄發Email通知 (請先存檔) </button><div class="text-left"><small>寄發 E-mail：' + (response.member[i][5]) + '<br>推薦人讀取：' + (response.member[i][6]) + '<br> 推薦人填寫：' + (response.member[i][7]) + '</small></div></td></tr>'
                     );
                 }
             }

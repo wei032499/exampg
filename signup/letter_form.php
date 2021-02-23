@@ -55,33 +55,33 @@
                                     <tr>
                                         <th class="text-center" style="min-width: 5rem;">序號</th>
                                         <th class="text-center" style="min-width:10rem;">姓名
-                                            <label for="r_name[]" class="error"></label>
+                                            <label for="r_name[]" class="error" style="display: none;"></label>
                                         </th>
 
                                         <th class="text-center" style="min-width:10rem;">服務單位
-                                            <label for="r_org[]" class="error"></label>
+                                            <label for="r_org[]" class="error" style="display: none;"></label>
                                         </th>
                                         <th class="text-center" style="min-width:10rem;">職稱
-                                            <label for="r_title[]" class="error"></label>
+                                            <label for="r_title[]" class="error" style="display: none;"></label>
                                         </th>
-                                        <th class="text-center" style="min-width:10rem;">Email
-                                            <label for="r_email[]" class="error"></label>
+                                        <th class="text-center" style="min-width:15rem;">Email
+                                            <label for="r_email[]" class="error" style="display: none;"></label>
                                         </th>
 
                                     </tr>
                                 </thead>
                                 <tbody id="mybody">
                                     <tr class="text-center" id="addrow">
-                                        <td class="col-md-1">1
+                                        <td>1
                                             <input type="hidden" name="r_seq[]" value="1">
                                         </td>
-                                        <td class="col-md-2">
+                                        <td>
                                             <input type="text" name="r_name[]" class="form-control valid" aria-invalid="false" value="" required="required" title="" />
                                         </td>
-                                        <td class="col-md-2">
+                                        <td>
                                             <input type="text" name="r_org[]" class="form-control valid" aria-invalid="false" value="" required="required" title="" />
                                         </td>
-                                        <td class="col-md-2">
+                                        <td>
                                             <input type="text" name="r_title[]" class="form-control valid" aria-invalid="false" value="" required="required" title="" />
                                         </td>
                                         <td class="col-md-4">
@@ -103,7 +103,7 @@
                 <div class="alert alert-warning my-1">
                     　<div class="text-danger "><b>注意事項：</b></div>
                     <ol>
-                        <li>最多只能填寫<span class="text-danger"> 2 </span>位推薦人資料，<span class="text-danger"><b>請務必確認所有資料都填寫正確再送出</b></span>。</span></li>
+                        <li>最多只能填寫<span class="text-danger"> 2 </span>位推薦人資料，<span class="text-danger"><b>請務必確認所有資料都填寫正確再送出</b>。</span></li>
                         <li><span class="text-danger"><b>「寄發Email」</b>後，推薦人「姓名」、「服務單位」及「職稱」等欄位即不可再修改。</span></li>
                         <li><span class="text-danger"><b>「推薦人讀取」</b>後，推薦人「Email」欄位不可再修改。</span></li>
 
