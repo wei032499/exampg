@@ -7,9 +7,7 @@ try {
     else {
         $Token = new Token($conn, $_COOKIE['token']);
         $payload = $Token->verify();
-
         setcookie('token', $Token->refresh(), $cookie_options_httponly);
-        setcookie('username', $_COOKIE['username'], $cookie_options);
 
         if ($payload === false)
             require_once('./signup/letter_login.php');

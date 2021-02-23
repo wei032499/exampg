@@ -101,3 +101,8 @@ form input.error, form select.error{
 .bg-info-light{
     background-color: #d9edf7;
 }
+
+.text-confirm {
+    color:blue;
+    font-weight: bold;
+}
