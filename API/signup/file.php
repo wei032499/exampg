@@ -57,7 +57,7 @@ try {
                     throw new Exception("檔案上傳錯誤");
                 $result['filename'] = $payload['sn'] . "." . $fileType;
             } else
-                throw new Exception("請上傳正確的檔案類型", 400);
+                throw new Exception("限PDF檔(*.pdf)", 400);
 
 
             $sql = "UPDATE SIGNUPDATA SET DOC_UPLOAD='1' WHERE SCHOOL_ID='$SCHOOL_ID' AND YEAR='$ACT_YEAR_NO' AND SIGNUP_SN=:sn";

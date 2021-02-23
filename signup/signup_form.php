@@ -367,9 +367,13 @@
                     </div>
                 </div>
                 <div class="form-group row" id="upload_row" style="display: none;">
-                    <label for="inputData" class="col-sm-3">備審資料上傳</label>
-                    <input type="file" class="form-control-file col-sm-4" id="inputData" name="file" disabled>
-                    <div class="form-control-file col-sm-5"><a id="fileLink" target="_blank" style="color:red"></a></div>
+                    <label for="inputData" class="col-sm-3" style="min-width: 10rem;">備審資料上傳<br>
+                        <span style="color:red">限PDF檔(*.pdf)</span>
+                    </label>
+                    <div class="col-sm-8">
+                        <input type="file" accept=".pdf" class="form-control-file ignore" id="inputData" name="file" disabled>
+                        <div class="form-control-file "><a id="fileLink" target="_blank" style="color:red"></a></div>
+                    </div>
                 </div>
                 <hr />
                 <div class="line-height-1">
@@ -411,6 +415,7 @@
         });
         $("form").validate({
             errorElement: "span",
+            ignore: ".ignore",
             messages: {
                 birthday: {
                     pattern: "格式錯誤。西元年四碼-月份兩碼-日期兩碼(yyyy-mm-dd)"
