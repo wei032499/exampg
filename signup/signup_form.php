@@ -48,7 +48,7 @@
                     <h3 class="col" style="letter-spacing: 0.2rem;min-width:14rem">
                         :::填寫報名表
                     </h3>
-                    <div id="loginInfo" class="col row justify-content-end mx-0 align-items-center" style="display: none !important;">
+                    <div id="loginInfo" class="col-sm row justify-content-end mx-0 align-items-center" style="display: none !important;">
                         <div>Hi~ <span id="username"></span> </div>
                         <button type="button" id="logout" style="min-width:4rem" class="btn btn-info btn-sm ml-3">登出</button>
                     </div>

@@ -6,13 +6,23 @@ try {
     else {
         $Token = new Token($conn, $_COOKIE['token']);
         $payload = $Token->verify();
-        setcookie('token', $Token->refresh(), $cookie_options_httponly);
+        // setcookie('token', $Token->refresh(), $cookie_options_httponly);
+        $cookieOpt = "token=" . $Token->refresh() . ";";
+        foreach ($cookie_options_httponly as $key => $value) {
+            if ($key === "httpOnly") {
+                if ($value === true)
+                    $cookieOpt .=  "httpOnly;";
+            } else
+                $cookieOpt .= $key . "=" . $value . ";";
+        }
+        header("Set-Cookie: " . $cookieOpt, false);
 
         if ($payload === false)
             require_once('./signup/signup_login.php');
         else if (isset($_GET['step']) && $_GET['step'] === "5")
             require_once('./signup/signup_completed.php');
         else if ($payload['status'] !== 1) {
+            header("Content-Type:text/html; charset=utf-8");
             if ($payload['status'] === 0)
                 echo "<script>alert('您尚未繳費或繳交的費用尚未入帳，若您已繳費，請30分鐘後再試一次。');window.location.replace('./');</script>";
             else if ($payload['status'] === 1)

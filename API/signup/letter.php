@@ -2,7 +2,7 @@
 header('Content-Type:application/json');
 header("Cache-Control: no-cache");
 $result = array();
-$post_processing = array();
+
 try {
     require_once('../common/db.php');
     if (!isset($_COOKIE['token']))
@@ -78,9 +78,11 @@ try {
             oci_free_statement($stmt);
 
             if (count($result1['R_NAME']) == 0) {
-                $data['code'] = 8;
-                $data['message'] = "寄發Email通知失敗(查無推薦人資料)";
-                mail('s0654017@gm.ncue.edu.tw', '寄發Email通知失敗(查無推薦人資料)', $sql, $headers);
+                $mail_msg = $sql;
+                $post_processing[] = function () use ($mail_msg) {
+                    sendMail(0, array('title' => "寄發Email通知失敗(查無推薦人資料)", 'content' => $mail_msg));
+                };
+                throw new Exception("寄發Email通知失敗(查無推薦人資料)");
             } else {
                 //sendmail
                 $to = $result1['R_EMAIL'][0];
@@ -94,9 +96,11 @@ try {
                 $nrows = oci_fetch_all($stmt, $result2); //$nrows -->總筆數
                 oci_free_statement($stmt);
                 if (count($result2['STUD_NAME']) == 0) {
-                    $data['code'] = 7;
-                    $data['message'] = "寄發Email通知失敗(查無考生資料)";
-                    mail('s0654017@gm.ncue.edu.tw', '寄發Email通知失敗(查無考生資料)', $sql, $headers);
+                    $mail_msg = $sql;
+                    $post_processing[] = function () use ($mail_msg) {
+                        sendMail(0, array('title' => "寄發Email通知失敗(查無考生資料)", 'content' => $mail_msg));
+                    };
+                    throw new Exception("寄發Email通知失敗(查無考生資料)");
                 } else {
 
                     $payload['to'] = $to;
@@ -181,8 +185,16 @@ try {
     } else
         throw new Exception("Method Not Allowed", 405);
 
-    setcookie('token', $Token->refresh(), $cookie_options_httponly);
-
+    // setcookie('token', $Token->refresh(), $cookie_options_httponly);
+    $cookieOpt = "token=" . $Token->refresh() . ";";
+    foreach ($cookie_options_httponly as $key => $value) {
+        if ($key === "httpOnly") {
+            if ($value === true)
+                $cookieOpt .=  "httpOnly;";
+        } else
+            $cookieOpt .= $key . "=" . $value . ";";
+    }
+    header("Set-Cookie: " . $cookieOpt, false);
     oci_commit($conn); //無發生任何錯誤，將資料寫進資料庫
 
 
@@ -201,7 +213,7 @@ try {
         $result['message'] = $e->getMessage();
 }
 
-register_shutdown_function("shutdown_function", $post_processing);
+
 
 oci_close($conn);
 echo json_encode($result);

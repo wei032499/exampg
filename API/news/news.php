@@ -2,7 +2,6 @@
 header('Content-Type:application/json');
 header("Cache-Control: no-cache");
 $result = array('data' => array());
-$post_processing = array();
 try {
     require_once('../common/db.php');
     if ($_SERVER['REQUEST_METHOD'] === 'GET') {
@@ -73,7 +72,6 @@ try {
     $result['line'] = $e->getLine();
 }
 
-register_shutdown_function("shutdown_function", $post_processing);
 
 echo json_encode($result);
 exit(); // You need to call this to send the response immediately

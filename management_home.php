@@ -37,7 +37,7 @@ if (!isset($_SESSION['username']))
                     <h3 class="col" style="letter-spacing: 0.2rem;">
                         :::網站管理
                     </h3>
-                    <div id="loginInfo" class="col row justify-content-end mx-0 align-items-center">
+                    <div id="loginInfo" class="col-sm row justify-content-end mx-0 align-items-center">
                         <!--<div>Hi~ <span id="username"></span> </div>-->
                         <button type="button" id="mLogout" style="min-width:4rem" class="btn btn-info btn-sm ml-3">登出</button>
                     </div>
@@ -50,9 +50,6 @@ if (!isset($_SESSION['username']))
                         <a class="nav-link " id="news-tab" data-toggle="tab" href="#news" role="tab" aria-controls="news" aria-selected="false">公告</a>
                     </li>
                 </ul>
-
-
-
 
                 <div class="tab-content" id="prointroTabContent">
                     <div class="tab-pane fade " id="news" role="tabpanel" aria-labelledby="news-tab">
@@ -169,7 +166,7 @@ if (!isset($_SESSION['username']))
                         let response = jqXHR.responseJSON;
                         let msg = '';
                         if (response === undefined)
-                            msg = exception;
+                            msg = exception + "\n" + "./API/news/news.php" + "\n" + jqXHR.responseText;
                         else if (response.hasOwnProperty('message')) {
                             msg = response.message;
                         } else {

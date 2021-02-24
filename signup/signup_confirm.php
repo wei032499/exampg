@@ -47,7 +47,7 @@
                     <h3 class="col-lg" style="letter-spacing: 0.2rem;min-width:14rem">
                         :::填寫報名表 <span style="color:red">(資料確認)</span>
                     </h3>
-                    <div id="loginInfo" class="col row justify-content-end mx-0 align-items-center" style="display: none !important;">
+                    <div id="loginInfo" class="col-sm row justify-content-end mx-0 align-items-center" style="display: none !important;">
                         <div>Hi~ <span id="username"></span> </div>
                         <button type="button" id="logout" style="min-width:4rem" class="btn btn-info btn-sm ml-3">登出</button>
                     </div>
@@ -422,7 +422,7 @@
                     let response = jqXHR.responseJSON;
                     let msg = '';
                     if (response === undefined)
-                        msg = exception;
+                        msg = exception + "\n" + "./API/signup/form.php" + "\n" + jqXHR.responseText;
                     else if (response.hasOwnProperty('message')) {
                         msg = response.message;
                     } else {

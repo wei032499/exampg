@@ -14,7 +14,7 @@
 header('Content-Type:application/json');
 $result = array();
 $payload = array('iss' => 'ncue', 'iat' => time(), 'exp' => time() + 3600);
-$post_processing = array();
+
 try {
     require_once('../common/db.php');
 
@@ -85,7 +85,7 @@ try {
 
             $Token = new Token($conn, JWT::getToken($payload));
             $token = $Token->refresh();
-            setcookie('username', $username, $cookie_options);
+            setcookie('username', $username, time() + 3600, explode("/API", substr(str_replace('\\', '/', __DIR__ . "/"), str_replace('\\', '/', strlen($_SERVER['DOCUMENT_ROOT']))))[0] . "/");
         }
 
 
@@ -96,7 +96,16 @@ try {
         header("Cache-Control: private");
 
 
-        setcookie('token', $token, $cookie_options_httponly);
+        // setcookie('token', $token, $cookie_options_httponly);
+        $cookieOpt = "token=" . $token . ";";
+        foreach ($cookie_options_httponly as $key => $value) {
+            if ($key === "httpOnly") {
+                if ($value === true)
+                    $cookieOpt .=  "httpOnly;";
+            } else
+                $cookieOpt .= $key . "=" . $value . ";";
+        }
+        header("Set-Cookie: " . $cookieOpt, false);
     } else throw new Exception("Method Not Allowed", 405);
 } catch (Exception $e) {
 
@@ -112,7 +121,7 @@ try {
     //$e->getMessage() . " on line " . $e->getLine()
 }
 
-register_shutdown_function("shutdown_function", $post_processing);
+
 
 oci_close($conn);
 echo json_encode($result);

@@ -55,7 +55,7 @@ function getData(url, cache, payload) {
             let response = jqXHR.responseJSON;
             let msg = '';
             if (response === undefined)
-                msg = exception;
+                msg = exception + "\n" + url + "\n" + jqXHR.responseText;
             else if (response.hasOwnProperty('message')) {
                 msg = response.message;
             } else {
@@ -117,7 +117,7 @@ function logout(redirect) {
             let response = jqXHR.responseJSON;
             let msg = '';
             if (response === undefined)
-                msg = exception;
+                msg = exception + "\n" + "./API/auth/logout.php" + "\n" + jqXHR.responseText;
             else if (response.hasOwnProperty('message')) {
                 msg = response.message;
             } else {

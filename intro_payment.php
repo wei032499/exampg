@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="./css/custom.css" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
+    <script src="./js/common.js"></script>
     <script src="./js/jquery.print.min.js"></script>
     <script>
         if (sessionStorage === undefined)
@@ -30,9 +31,15 @@
                     <div style='width: 8px;height: 8px;display: block;background: #c84c37;'></div>
                     <div style='width: 8px;height: 8px;display: block;background: #3a7eb8;'></div>
                 </div>
-                <h3 style="letter-spacing: 0.2rem;">
-                    :::報名費繳費方式及銷帳查詢方式說明
-                </h3>
+                <div class="row ">
+                    <h3 class="col" style="letter-spacing: 0.2rem;">
+                        :::報名費繳費方式及銷帳查詢方式說明
+                    </h3>
+                    <div id="loginInfo" class="col-sm row justify-content-end mx-0 align-items-center" style="display: none !important;">
+                        <div>Hi~ <span id="username"></span> </div>
+                        <button type="button" id="logout" style="min-width:4rem" class="btn btn-info btn-sm ml-3">登出</button>
+                    </div>
+                </div>
             </div>
             <div id="content" class="card shadow p-4">
                 <p class="line-height-1">

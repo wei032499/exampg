@@ -49,7 +49,7 @@ if (!isset($_SESSION['username']))
                     <h3 class="col" style="letter-spacing: 0.2rem;min-width:14rem">
                         :::網站管理 <span style="color:red">(公告)</span>
                     </h3>
-                    <div id="loginInfo" class="col row justify-content-end mx-0 align-items-center">
+                    <div id="loginInfo" class="col-sm row justify-content-end mx-0 align-items-center">
                         <!--<div>Hi~ <span id="username"></span> </div>-->
                         <button type="button" id="mLogout" style="min-width:4rem" class="btn btn-info btn-sm ml-3">登出</button>
                     </div>
@@ -119,7 +119,7 @@ if (!isset($_SESSION['username']))
                     let response = jqXHR.responseJSON;
                     let msg = '';
                     if (response === undefined)
-                        msg = exception;
+                        msg = exception + "\n" + "./API/news/news.php" + "\n" + jqXHR.responseText;
                     else if (response.hasOwnProperty('message')) {
                         msg = response.message;
                     } else {
