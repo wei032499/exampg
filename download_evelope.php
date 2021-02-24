@@ -1,5 +1,5 @@
 <?php
-$post_processing = array();
+
 try {
 	require_once('./API/common/db.php');
 
@@ -12,6 +12,7 @@ try {
 		if ($payload === false || $payload['authority'] !== 1)
 			header("Location: ./query_signup.php");
 		else if ($payload['status'] !== 2 && $payload['status'] !== 3) {
+			header("Content-Type:text/html; charset=utf-8");
 			if ($payload['status'] === 0)
 				echo "<script>alert('您尚未繳費或繳交的費用尚未入帳，若您已繳費，請30分鐘後再試一次。');window.location.replace('./');</script>";
 			else if ($payload['status'] === 1)
@@ -172,5 +173,5 @@ try {
 	echo "<script>alert('" . $e->getMessage() . "');window.location.replace('./');</script>";
 }
 
-register_shutdown_function("shutdown_function", $post_processing);
+
 exit(); // You need to call this to send the response immediately

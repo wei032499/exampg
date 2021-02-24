@@ -23,10 +23,10 @@ function genPassword()
         $type_c = rand(1, 2);
         switch ($type_c) {
             case 1:
-                $pwd .= chr(random_int(48, 57));
+                $pwd .= chr(rand(48, 57));
                 break;
             case 2:
-                $pwd .= chr(random_int(65, 90));
+                $pwd .= chr(rand(65, 90));
                 break;
         }
         $digit++;
@@ -86,8 +86,8 @@ function genOrder($graduated)
     } else {
         $dept_id = $_POST['dept_id'];
         global $post_processing;
-        $post_processing[] = function () use ($dept_id) {
-            $mail_msg = "報考系所資料錯誤" . "<br>" . "dept_id：" . $dept_id;
+        $mail_msg = "報考系所資料錯誤" . "<br>" . "dept_id：" . $dept_id;
+        $post_processing[] = function () use ($mail_msg) {
             sendMail(0, array('title' => "招生系統錯誤", 'content' => $mail_msg));
         };
         throw new Exception("報考系所資料錯誤，請重新填寫！", 400);

@@ -149,7 +149,7 @@
                     let response = jqXHR.responseJSON;
                     let msg = '';
                     if (response === undefined)
-                        msg = exception;
+                        msg = exception + "\n" + "./API/order/order.php" + "\n" + jqXHR.responseText;
                     else if (response.hasOwnProperty('message')) {
                         msg = response.message;
                     } else {

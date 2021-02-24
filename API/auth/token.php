@@ -2,7 +2,7 @@
 
 header('Content-Type:application/json');
 $result = array();
-$post_processing = array();
+
 try {
     require_once('../common/db.php');
     if (!isset($_COOKIE['token']))
@@ -12,7 +12,16 @@ try {
     $payload = $Token->verify();
     if ($payload === false)
         throw new Exception("Unauthorized", 401);
-    setcookie('token', $Token->refresh(), $cookie_options_httponly);
+    // setcookie('token', $Token->refresh(), $cookie_options_httponly);
+    $cookieOpt = "token=" . $Token->refresh() . ";";
+    foreach ($cookie_options_httponly as $key => $value) {
+        if ($key === "httpOnly") {
+            if ($value === true)
+                $cookieOpt .=  "httpOnly;";
+        } else
+            $cookieOpt .= $key . "=" . $value . ";";
+    }
+    header("Set-Cookie: " . $cookieOpt, false);
     $result['status'] = $payload['status'];
     $result['authority'] = $payload['authority'];
 } catch (Exception $e) {
@@ -24,7 +33,7 @@ try {
     //$e->getMessage() . " on line " . $e->getLine()
 }
 
-register_shutdown_function("shutdown_function", $post_processing);
+
 
 oci_close($conn);
 echo json_encode($result);

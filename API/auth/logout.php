@@ -11,7 +11,16 @@ try {
                 unset($payload['id']);
                 unset($payload['sid']);
                 $token = JWT::getToken($payload);
-                setcookie('token', $token, $cookie_options_httponly);
+                // setcookie('token', $token, $cookie_options_httponly);
+                $cookieOpt = "token=" . $token . ";";
+                foreach ($cookie_options_httponly as $key => $value) {
+                    if ($key === "httpOnly") {
+                        if ($value === true)
+                            $cookieOpt .=  "httpOnly;";
+                    } else
+                        $cookieOpt .= $key . "=" . $value . ";";
+                }
+                header("Set-Cookie: " . $cookieOpt, false);
             }
         } else
             clearCookie();

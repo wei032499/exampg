@@ -43,7 +43,7 @@
                     <h3 class="col-lg" style="letter-spacing: 0.2rem;">
                         :::報名資料查詢
                     </h3>
-                    <div id="loginInfo" class="col row justify-content-end mx-0 align-items-center" style="display: none !important;">
+                    <div id="loginInfo" class="col-sm row justify-content-end mx-0 align-items-center" style="display: none !important;">
                         <div>Hi~ <span id="username"></span> </div>
                         <button type="button" id="logout" style="min-width:4rem" class="btn btn-info btn-sm ml-3">登出</button>
                     </div>

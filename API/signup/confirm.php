@@ -2,7 +2,7 @@
 
 header('Content-Type:application/json');
 $result = array();
-$post_processing = array();
+
 try {
     require_once('../common/db.php');
     if (!isset($_COOKIE['token']))
@@ -88,8 +88,16 @@ try {
     } else
         throw new Exception("Method Not Allowed", 405);
 
-    setcookie('token', $Token->refresh(), $cookie_options_httponly);
-
+    // setcookie('token', $Token->refresh(), $cookie_options_httponly);
+    $cookieOpt = "token=" . $Token->refresh() . ";";
+    foreach ($cookie_options_httponly as $key => $value) {
+        if ($key === "httpOnly") {
+            if ($value === true)
+                $cookieOpt .=  "httpOnly;";
+        } else
+            $cookieOpt .= $key . "=" . $value . ";";
+    }
+    header("Set-Cookie: " . $cookieOpt, false);
     oci_commit($conn); //無發生任何錯誤，將資料寫進資料庫
 
 } catch (Exception $e) {
@@ -102,7 +110,7 @@ try {
     //$e->getMessage() . " on line " . $e->getLine()
 }
 
-register_shutdown_function("shutdown_function", $post_processing);
+
 
 oci_close($conn);
 echo json_encode($result);

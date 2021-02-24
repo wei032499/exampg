@@ -1,23 +1,28 @@
 <?php
 header('Content-Type:application/json');
 $result = array();
-$post_processing = array();
+
 try {
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         require_once('../common/db.php');
-        $sql = "SELECT 1 FROM SN_DB WHERE  school_id='$SCHOOL_ID' and year='$ACT_YEAR_NO' and EMAIL=:email and checked='1' ORDER BY ORDER_NO DESC";
+        $sql = "SELECT SN,EMAIL,ACCOUNT_NO,PWD FROM SN_DB WHERE SCHOOL_ID='$SCHOOL_ID' AND year='$ACT_YEAR_NO' and EMAIL=:email and checked='1' ORDER BY ORDER_NO DESC";
         $stmt = oci_parse($conn, $sql);
         oci_bind_by_name($stmt, ':email',  $_POST['email']);
 
         oci_execute($stmt, OCI_DEFAULT);
+        $nrows = oci_fetch_all($stmt, $result1); //$nrows -->總筆數
+        oci_free_statement($stmt);
 
-        if (oci_fetch($stmt)) {
-            $email = $_POST['email'];
-            $post_processing[] = function () use ($email) {
+        if ($nrows === 0)
+            throw new Exception("查無資料！", 404);
+
+        for ($i = 0; $i < $nrows; $i++) {
+            $sm_payload = array('sn' => $result1['SN'][$i], 'pwd' => $result1['PWD'][$i], 'email' => $result1['EMAIL'][$i], 'account_no' => $result1['ACCOUNT_NO'][$i]);
+            $post_processing[] = function () use ($sm_payload) {
                 /**
                  * 寄發通知信
                  */
-                $to = sendMail(6, array('email' => $email));
+                $to = sendMail(6, $sm_payload);
 
 
                 /**
@@ -27,10 +32,7 @@ try {
                 fwrite($fp, "查詢序號密碼回覆 - API/auth/forget.php - $to - \n");
                 fclose($fp);
             };
-        } else
-            throw new Exception("查無資料！", 404);
-
-        oci_free_statement($stmt);
+        }
     } else throw new Exception("Method Not Allowed", 405);
 } catch (Exception $e) {
 
@@ -46,7 +48,7 @@ try {
     //$e->getMessage() . " on line " . $e->getLine()
 }
 
-register_shutdown_function("shutdown_function", $post_processing);
+
 
 oci_close($conn);
 echo json_encode($result);

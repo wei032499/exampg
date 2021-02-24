@@ -3,7 +3,7 @@
 header('Content-Type:application/json');
 header("Cache-Control: no-cache");
 $result = array();
-$post_processing = array();
+
 try {
     require_once('../common/db.php');
     if (!isset($_COOKIE['token']))
@@ -70,7 +70,16 @@ try {
             throw new Exception("Bad Request", 400);
     }
 
-    setcookie('token', $Token->refresh(), $cookie_options_httponly);
+    // setcookie('token', $Token->refresh(), $cookie_options_httponly);
+    $cookieOpt = "token=" . $Token->refresh() . ";";
+    foreach ($cookie_options_httponly as $key => $value) {
+        if ($key === "httpOnly") {
+            if ($value === true)
+                $cookieOpt .=  "httpOnly;";
+        } else
+            $cookieOpt .= $key . "=" . $value . ";";
+    }
+    header("Set-Cookie: " . $cookieOpt, false);
 } catch (Exception $e) {
     oci_rollback($conn);
     setHeader($e->getCode());
@@ -81,7 +90,7 @@ try {
     //$e->getMessage() . " on line " . $e->getLine()
 }
 
-register_shutdown_function("shutdown_function", $post_processing);
+
 
 oci_close($conn);
 echo json_encode($result);

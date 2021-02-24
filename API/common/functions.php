@@ -25,8 +25,8 @@ set_error_handler(function ($err_severity, $err_msg, $err_file, $err_line, array
     }
 
     global $post_processing;
-    $post_processing[] = function () use ($err_file, $err_msg, $err_line) {
-        $mail_msg = $err_file . "<br>" . $err_msg . " on line " . $err_line;
+    $mail_msg = $err_file . "<br>" . $err_msg . " on line " . $err_line;
+    $post_processing[] = function () use ($mail_msg) {
         sendMail(0, array('title' => "招生系統錯誤", 'content' => $mail_msg));
     };
 
@@ -42,7 +42,7 @@ set_error_handler(function ($err_severity, $err_msg, $err_file, $err_line, array
         throw new ErrorException("系統發生錯誤，請聯繫系統管理員。錯誤代碼：" . $matches[0], $error_code, $err_severity, $err_file, $err_line);
     } else
         throw new ErrorException("系統發生錯誤，請聯繫系統管理員。", 0, $err_severity, $err_file, $err_line);
-});
+}, E_ALL);
 
 function clearCookie()
 {
@@ -69,9 +69,20 @@ function setHeader($code)
         header($_SERVER["SERVER_PROTOCOL"] . " 500 Internal Server Error");
 }
 
-function shutdown_function($post_processing)
+function shutdown_function()
 {
+    global $post_processing;
     try {
+        $last_error = error_get_last();
+        if ($last_error['type'] === E_ERROR) {
+            $mail_msg = $last_error['file'] . "<br>" . $last_error['message'] . " on line " . $last_error['line'];
+            sendMail(0, array('title' => "招生系統錯誤", 'content' => $mail_msg));
+            header($_SERVER["SERVER_PROTOCOL"] . " 500 Internal Server Error");
+            $result = array();
+            $result['message'] = "系統發生錯誤，請聯繫系統管理員。\n" . $last_error['message'];
+            echo json_encode($result);
+        }
+
         foreach ($post_processing as $function) {
             $function();
         }
@@ -215,7 +226,6 @@ function sendMail($msg_type, $payload)
 
 
     //通知
-    //mail('s0654017@gm.ncue.edu.tw', '已成功發送招生mail通知', $msg_type, $headers);
 
     switch ($msg_type) {
         case '0':
@@ -363,16 +373,10 @@ function sendMail($msg_type, $payload)
             return $to;
             break;
         case '6': //查詢序號密碼
-            $sql = "SELECT SN,EMAIL,ACCOUNT_NO,PWD FROM SN_DB WHERE SCHOOL_ID='$SCHOOL_ID' AND YEAR='$ACT_YEAR_NO' AND EMAIL=:email AND checked='1' ORDER BY ORDER_NO DESC";
-            $stmt = oci_parse($conn, $sql);
-            oci_bind_by_name($stmt, ':email',  $payload['email']);
-            oci_execute($stmt, OCI_DEFAULT);
-            oci_fetch($stmt);
-            $sn = oci_result($stmt, "SN");;
-            $pwd = oci_result($stmt, "PWD");
-            $to = oci_result($stmt, "EMAIL");
-            $account_no = oci_result($stmt, "ACCOUNT_NO");
-            oci_free_statement($stmt);
+            $sn = $payload['sn'];;
+            $pwd = $payload['pwd'];
+            $to = $payload['email'];
+            $account_no = $payload['account_no'];
 
             $subject = "國立彰化師範大學 網路報名系統::查詢序號密碼回覆";
             $subject = "=?UTF-8?B?" . base64_encode("$subject") . "?="; //郵件主旨(轉換編碼)
@@ -461,3 +465,6 @@ function sendMail($msg_type, $payload)
             break;
     }
 }
+
+$post_processing = array();
+register_shutdown_function("shutdown_function");

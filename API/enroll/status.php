@@ -2,7 +2,7 @@
 header('Content-Type:application/json');
 header("Cache-Control: no-cache");
 $result = array();
-$post_processing = array();
+
 try {
     require_once('../common/db.php');
     if ($_SERVER['REQUEST_METHOD'] === 'GET') {
@@ -49,9 +49,18 @@ try {
             unset($payload['id']);
             unset($payload['sid']);
             $token = JWT::getToken($payload);
-            setcookie('token', $token, $cookie_options_httponly);
-            $post_processing[] = function () use ($sql) {
-                $mail_msg = $sql;
+            // setcookie('token', $token, $cookie_options_httponly);
+            $cookieOpt = "token=" . $Token->refresh() . ";";
+            foreach ($cookie_options_httponly as $key => $value) {
+                if ($key === "httpOnly") {
+                    if ($value === true)
+                        $cookieOpt .=  "httpOnly;";
+                } else
+                    $cookieOpt .= $key . "=" . $value . ";";
+            }
+            header("Set-Cookie: " . $cookieOpt, false);
+            $mail_msg = $sql;
+            $post_processing[] = function () use ($mail_msg) {
                 sendMail(0, array('title' => "無符合條件的資料！(queue_anno.php)", 'content' => $mail_msg));
             };
             throw new  Exception('無符合條件的資料');
@@ -262,7 +271,7 @@ try {
     $result['line'] = $e->getLine();
 }
 
-register_shutdown_function("shutdown_function", $post_processing);
+
 
 oci_close($conn);
 echo json_encode($result);

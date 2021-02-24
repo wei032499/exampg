@@ -1,7 +1,7 @@
 <?php
 header('Content-Type:application/json');
 $result = array('data' => array('dept' => array(), 'group' => array(), 'status' => array()));
-$post_processing = array();
+
 try {
     require_once('../common/db.php');
     if ($_SERVER['REQUEST_METHOD'] === 'GET') {
@@ -91,7 +91,7 @@ try {
     $result['line'] = $e->getLine();
 }
 
-register_shutdown_function("shutdown_function", $post_processing);
+
 
 oci_close($conn);
 echo json_encode($result);

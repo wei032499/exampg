@@ -327,7 +327,7 @@ function checkUploadStatus() {
             let response = jqXHR.responseJSON;
             let msg = '';
             if (response === undefined)
-                msg = exception;
+                msg = exception + "\n" + './API/signup/file.php' + "\n" + jqXHR.responseText;
             else if (response.hasOwnProperty('message')) {
                 msg = response.message;
             } else {
@@ -389,7 +389,7 @@ $("form [name='file']").on('change', function () {
                 let response = jqXHR.responseJSON;
                 let msg = '';
                 if (response === undefined)
-                    msg = exception;
+                    msg = exception + "\n" + './API/signup/file.php' + "\n" + jqXHR.responseText;
                 else if (response.hasOwnProperty('message')) {
                     msg = response.message;
                 } else {

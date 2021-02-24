@@ -2,7 +2,7 @@
 header('Content-Type:application/json');
 header("Cache-Control: no-cache");
 $result = array();
-$post_processing = array();
+
 try {
     require_once('../common/db.php');
     $acttime = date("Y/m/d H:i:s");
@@ -151,7 +151,7 @@ try {
     $result['message'] = $e->getMessage();
 }
 
-register_shutdown_function("shutdown_function", $post_processing);
+
 
 oci_close($conn);
 echo json_encode($result);
