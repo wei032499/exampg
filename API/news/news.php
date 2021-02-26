@@ -26,8 +26,8 @@ try {
             }
         }
     } else if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        session_start();
-        if (!isset($_SESSION['username']))
+        $payload = JWT::verifyToken($_COOKIE['token']);
+        if ($payload === false || !isset($payload['admin']) || $payload['admin'] !== 0)
             throw new Exception("Unauthorized", 401);
 
         $timestamp = time();
@@ -38,8 +38,8 @@ try {
         bind_by_array($stmt, $sql, $params);
         oci_execute($stmt, OCI_DEFAULT);
     } else if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
-        session_start();
-        if (!isset($_SESSION['username']))
+        $payload = JWT::verifyToken($_COOKIE['token']);
+        if ($payload === false || !isset($payload['admin']) || $payload['admin'] !== 0)
             throw new Exception("Unauthorized", 401);
 
         parse_str(file_get_contents("php://input"), $post_vars);
@@ -50,8 +50,8 @@ try {
         bind_by_array($stmt, $sql, $params);
         oci_execute($stmt, OCI_DEFAULT);
     } else if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
-        session_start();
-        if (!isset($_SESSION['username']))
+        $payload = JWT::verifyToken($_COOKIE['token']);
+        if ($payload === false || !isset($payload['admin']) || $payload['admin'] !== 0)
             throw new Exception("Unauthorized", 401);
 
         parse_str(file_get_contents("php://input"), $post_vars);
@@ -69,9 +69,9 @@ try {
     $result = array();
     $result['code'] = $e->getCode();
     $result['message'] = $e->getMessage();
-    $result['line'] = $e->getLine();
+    //$result['line'] = $e->getLine();
 }
 
 
 echo json_encode($result);
-exit(); // You need to call this to send the response immediately
+exit();

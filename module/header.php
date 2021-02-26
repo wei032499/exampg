@@ -52,7 +52,7 @@
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <li><a class="dropdown-item" href="./query_acc.php">報名費銷帳查詢</a></li>
-                        <li><a class="dropdown-item" href="#">*成績查詢</a></li>
+                        <li><a class="dropdown-item" href="./query_score.php">*成績查詢</a></li>
                         <li><a class="dropdown-item" href="./query_pwd.php">查詢序號密碼</a></li>
                         <li><a class="dropdown-item" href="./query_signup.php">報名資料查詢、下載審查資料一覽表及信封封面</a></li>
                     </ul>

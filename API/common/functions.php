@@ -44,6 +44,24 @@ set_error_handler(function ($err_severity, $err_msg, $err_file, $err_line, array
         throw new ErrorException("系統發生錯誤，請聯繫系統管理員。", 0, $err_severity, $err_file, $err_line);
 }, E_ALL);
 
+/**
+ * 將cookie options array轉換為string (用於header的Set-Cookie)
+ * @param array cookie options array
+ * @return string
+ */
+function getCookieOptions($array)
+{
+    $cookieOpt = "";
+    foreach ($array as $key => $value) {
+        if ($key === "httpOnly") {
+            if ($value === true)
+                $cookieOpt .=  "httpOnly;";
+        } else
+            $cookieOpt .= $key . "=" . $value . ";";
+    }
+    return $cookieOpt;
+}
+
 function clearCookie()
 {
     foreach ($_COOKIE as $name => $value) {
@@ -69,30 +87,6 @@ function setHeader($code)
         header($_SERVER["SERVER_PROTOCOL"] . " 500 Internal Server Error");
 }
 
-function shutdown_function()
-{
-    global $post_processing;
-    try {
-        $last_error = error_get_last();
-        if ($last_error['type'] === E_ERROR) {
-            $mail_msg = $last_error['file'] . "<br>" . $last_error['message'] . " on line " . $last_error['line'];
-            sendMail(0, array('title' => "招生系統錯誤", 'content' => $mail_msg));
-            header($_SERVER["SERVER_PROTOCOL"] . " 500 Internal Server Error");
-            $result = array();
-            $result['message'] = "系統發生錯誤，請聯繫系統管理員。\n" . $last_error['message'];
-            echo json_encode($result);
-        }
-
-        foreach ($post_processing as $function) {
-            $function();
-        }
-    } catch (Exception $e) {
-        // $result = array();
-        // $result['code'] = $e->getCode(); 
-        // $result['message'] = $e->getMessage();
-        // $result['line'] = $e->getLine();
-    }
-}
 
 function bind_by_array($stmt, $sql, $array)
 {
@@ -107,6 +101,9 @@ function bind_by_array($stmt, $sql, $array)
     return true;
 }
 
+/**
+ * 需與資料庫狀態同步的token
+ */
 class Token
 {
     /**
@@ -132,6 +129,13 @@ class Token
         $this->payload = JWT::verifyToken($token);
     }
 
+    /**
+     * 取得目前帳號狀態：
+     *  0 => 尚未銷帳
+     *  1 => 尚未填寫報名表
+     *  2 => 已填寫報名表，資料尚未確認
+     *  3 => 資料已確認(已鎖定)
+     */
     private function getStatus()
     {
         global $SCHOOL_ID, $ACT_YEAR_NO;
@@ -466,5 +470,29 @@ function sendMail($msg_type, $payload)
     }
 }
 
+/**
+ * 程式結束時執行的function
+ */
 $post_processing = array();
 register_shutdown_function("shutdown_function");
+
+function shutdown_function()
+{
+    global $post_processing;
+    try {
+        $last_error = error_get_last();
+        if ($last_error['type'] === E_ERROR) {
+            $mail_msg = $last_error['file'] . "<br>" . $last_error['message'] . " on line " . $last_error['line'];
+            sendMail(0, array('title' => "招生系統錯誤", 'content' => $mail_msg));
+            header($_SERVER["SERVER_PROTOCOL"] . " 500 Internal Server Error");
+            $result = array();
+            $result['message'] = "系統發生錯誤，請聯繫系統管理員。\n" . $last_error['message'];
+            echo json_encode($result);
+        }
+
+        foreach ($post_processing as $function) {
+            $function();
+        }
+    } catch (Exception $e) {
+    }
+}

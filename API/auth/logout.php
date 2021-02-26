@@ -12,14 +12,7 @@ try {
                 unset($payload['sid']);
                 $token = JWT::getToken($payload);
                 // setcookie('token', $token, $cookie_options_httponly);
-                $cookieOpt = "token=" . $token . ";";
-                foreach ($cookie_options_httponly as $key => $value) {
-                    if ($key === "httpOnly") {
-                        if ($value === true)
-                            $cookieOpt .=  "httpOnly;";
-                    } else
-                        $cookieOpt .= $key . "=" . $value . ";";
-                }
+                $cookieOpt = "token=" . $token . ";" . getCookieOptions($cookie_options_httponly);
                 header("Set-Cookie: " . $cookieOpt, false);
             }
         } else
@@ -32,7 +25,6 @@ try {
     $result = array();
     $result['code'] = $e->getCode();
     $result['message'] = $e->getMessage();
-    //$e->getMessage() . " on line " . $e->getLine()
 }
 
 echo json_encode($result);

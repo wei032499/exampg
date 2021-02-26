@@ -147,7 +147,7 @@ try {
     setHeader($e->getCode());
     $result = array();
     $result['code'] = $e->getCode();
-    $result['line'] = $e->getLine();
+    //$result['line'] = $e->getLine();
     $result['message'] = $e->getMessage();
 }
 
@@ -155,4 +155,4 @@ try {
 
 oci_close($conn);
 echo json_encode($result);
-exit(); // You need to call this to send the response immediately
+exit();

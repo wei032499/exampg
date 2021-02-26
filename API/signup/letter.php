@@ -186,14 +186,7 @@ try {
         throw new Exception("Method Not Allowed", 405);
 
     // setcookie('token', $Token->refresh(), $cookie_options_httponly);
-    $cookieOpt = "token=" . $Token->refresh() . ";";
-    foreach ($cookie_options_httponly as $key => $value) {
-        if ($key === "httpOnly") {
-            if ($value === true)
-                $cookieOpt .=  "httpOnly;";
-        } else
-            $cookieOpt .= $key . "=" . $value . ";";
-    }
+    $cookieOpt = "token=" . $Token->refresh() . ";" . getCookieOptions($cookie_options_httponly);
     header("Set-Cookie: " . $cookieOpt, false);
     oci_commit($conn); //無發生任何錯誤，將資料寫進資料庫
 
@@ -204,8 +197,8 @@ try {
     oci_rollback($conn);
     setHeader($e->getCode());
     $result = array();
-    $result['code'] = $e->getCode(); //$e->getCode();
-    $result['line'] = $e->getLine();
+    $result['code'] = $e->getCode();
+    //$result['line'] = $e->getLine();
 
     if ($e->getCode() === 409)
         $result['message'] = "ERROR！相同資料已存在。";
@@ -217,4 +210,4 @@ try {
 
 oci_close($conn);
 echo json_encode($result);
-exit(); // You need to call this to send the response immediately
+exit();

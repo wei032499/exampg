@@ -27,6 +27,7 @@ try {
                 header("Content-Length:" . filesize($attachment_location));
                 header("Content-Disposition: attachment; filename=" . $payload['sn'] . ".pdf");
                 readfile($attachment_location);
+                exit();
             }
         } else
             throw new Exception("Not Found", 404);
@@ -68,30 +69,22 @@ try {
             oci_commit($conn);
         } else
             throw new Exception("Bad Request", 400);
-    }
+    } else
+        throw new Exception("Method Not Allowed", 405);
 
     // setcookie('token', $Token->refresh(), $cookie_options_httponly);
-    $cookieOpt = "token=" . $Token->refresh() . ";";
-    foreach ($cookie_options_httponly as $key => $value) {
-        if ($key === "httpOnly") {
-            if ($value === true)
-                $cookieOpt .=  "httpOnly;";
-        } else
-            $cookieOpt .= $key . "=" . $value . ";";
-    }
+    $cookieOpt = "token=" . $Token->refresh() . ";" . getCookieOptions($cookie_options_httponly);
     header("Set-Cookie: " . $cookieOpt, false);
 } catch (Exception $e) {
     oci_rollback($conn);
     setHeader($e->getCode());
     $result = array();
-    $result['code'] = $e->getCode(); //$e->getCode();
+    $result['code'] = $e->getCode();
     $result['message'] = $e->getMessage();
-
-    //$e->getMessage() . " on line " . $e->getLine()
 }
 
 
 
 oci_close($conn);
 echo json_encode($result);
-exit(); // You need to call this to send the response immediately
+exit();

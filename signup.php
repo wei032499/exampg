@@ -7,14 +7,7 @@ try {
         $Token = new Token($conn, $_COOKIE['token']);
         $payload = $Token->verify();
         // setcookie('token', $Token->refresh(), $cookie_options_httponly);
-        $cookieOpt = "token=" . $Token->refresh() . ";";
-        foreach ($cookie_options_httponly as $key => $value) {
-            if ($key === "httpOnly") {
-                if ($value === true)
-                    $cookieOpt .=  "httpOnly;";
-            } else
-                $cookieOpt .= $key . "=" . $value . ";";
-        }
+        $cookieOpt = "token=" . $Token->refresh() . ";" . getCookieOptions($cookie_options_httponly);
         header("Set-Cookie: " . $cookieOpt, false);
 
         if ($payload === false)
@@ -49,7 +42,7 @@ try {
     $result = array();
     $result['code'] = $e->getCode();
     $result['message'] = $e->getMessage();
-    $result['line'] = $e->getLine();
+    //$result['line'] = $e->getLine();
     // header('Content-Type:application/json');
     // echo json_encode($result);
     header("Location: ./signup.php");

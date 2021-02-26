@@ -1,9 +1,3 @@
-<?php
-session_start();
-if (!isset($_SESSION['username']))
-    header("Location: ./management_login.php");
-
-?>
 <!doctype html>
 <html lang="zh-Hant-TW">
 
@@ -111,7 +105,7 @@ if (!isset($_SESSION['username']))
                 }).done(function(response) {
                     toastr.clear();
                     toastr.success("公告成功！");
-                    window.location.replace('./management_home.php');
+                    window.location.replace('./management.php');
 
                 })
                 .fail(function(jqXHR, exception) {
