@@ -1,10 +1,11 @@
+---
 openapi: 3.0.0
 servers:
-  - url: 'http://localhost/exampg_m/API'
-    description: ''
-    variables: {}
+- url: http://example.com
+  description: ''
+  variables: {}
 info:
-  version: 769b8572-0254-4d29-9ce8-4fe43dd9cbe1
+  version: 1.0.0
   title: exampg
   description: |-
     # Introduction
@@ -27,10 +28,10 @@ info:
   license:
     name: ''
 paths:
-  /auth/admin.php:
+  "/auth/admin.php":
     post:
       summary: Admin Login
-      description: 「網站管理」登入
+      description: "「網站管理」登入"
       operationId: AdminLogin
       parameters: []
       responses:
@@ -42,37 +43,37 @@ paths:
                 type: array
                 items: {}
       requestBody:
-        description: 「網站管理」登入
+        description: "「網站管理」登入"
         required: true
         content:
           multipart/form-data:
             schema:
               type: object
               required:
-                - account
-                - pwd
+              - account
+              - pwd
               properties:
                 account:
                   type: string
-                  example: ''
+                  example: "{{admin_account}}"
                 pwd:
                   type: string
-                  example: ''
+                  example: "{{admin_pwd}}"
             example:
-              - key: account
-                value: ''
-                description: 管理者帳號
-                type: text
-              - key: pwd
-                value: ''
-                description: 管理者密碼
-                type: text
+            - key: account
+              value: "{{admin_account}}"
+              description: 管理者帳號
+              type: text
+            - key: pwd
+              value: "{{admin_pwd}}"
+              description: 管理者密碼
+              type: text
       tags:
-        - auth
-  /auth/admin.php/logout:
+      - auth
+  "/auth/admin.php/logout":
     post:
       summary: Admin Logout
-      description: 「網站管理」登出
+      description: "「網站管理」登出"
       operationId: AdminLogout
       parameters: []
       responses:
@@ -80,28 +81,28 @@ paths:
           description: ''
           headers: {}
       requestBody:
-        description: 「網站管理」登出
+        description: "「網站管理」登出"
         required: true
         content:
           multipart/form-data:
             schema:
               type: object
               required:
-                - oper
+              - oper
               properties:
                 oper:
                   type: string
                   example: logout
             example:
-              - key: oper
-                value: logout
-                type: text
+            - key: oper
+              value: logout
+              type: text
       tags:
-        - auth
-  /auth/login.php/1:
+      - auth
+  "/auth/login.php/1":
     post:
       summary: Login 1
-      description: 「填寫報名表」登入
+      description: "「填寫報名表」登入"
       operationId: Login1
       parameters: []
       responses:
@@ -111,37 +112,37 @@ paths:
             application/json:
               schema: {}
       requestBody:
-        description: 「填寫報名表」登入
+        description: "「填寫報名表」登入"
         required: true
         content:
           multipart/form-data:
             schema:
               type: object
               required:
-                - serial_no
-                - pwd
+              - serial_no
+              - pwd
               properties:
                 serial_no:
                   type: string
-                  example: ''
+                  example: "{{sn}}"
                 pwd:
                   type: string
-                  example: ''
+                  example: "{{pwd}}"
             example:
-              - key: serial_no
-                value: ''
-                description: 報名序號
-                type: text
-              - key: pwd
-                value: ''
-                description: 密碼
-                type: text
+            - key: serial_no
+              value: "{{sn}}"
+              description: 報名序號
+              type: text
+            - key: pwd
+              value: "{{pwd}}"
+              description: 密碼
+              type: text
       tags:
-        - auth
-  /auth/login.php/2:
+      - auth
+  "/auth/login.php/2":
     post:
       summary: Login 2
-      description: 「修改報名資料」、「報名資料確認」、「報名資料查詢」、「推薦函作業」登入
+      description: "「修改報名資料」、「報名資料確認」、「報名資料查詢」、「推薦函作業」登入"
       operationId: Login2
       parameters: []
       responses:
@@ -151,45 +152,45 @@ paths:
             application/json:
               schema: {}
       requestBody:
-        description: 「修改報名資料」、「報名資料確認」、「報名資料查詢」、「推薦函作業」登入
+        description: "「修改報名資料」、「報名資料確認」、「報名資料查詢」、「推薦函作業」登入"
         required: true
         content:
           multipart/form-data:
             schema:
               type: object
               required:
-                - serial_no
-                - pwd
-                - IDNumber
+              - serial_no
+              - pwd
+              - IDNumber
               properties:
                 serial_no:
                   type: string
-                  example: ''
+                  example: "{{sn}}"
                 pwd:
                   type: string
-                  example: ''
+                  example: "{{pwd}}"
                 IDNumber:
                   type: string
-                  example: ''
+                  example: "{{IDNumber}}"
             example:
-              - key: serial_no
-                value: ''
-                description: 報名序號
-                type: text
-              - key: pwd
-                value: ''
-                description: 密碼
-                type: text
-              - key: IDNumber
-                value: ''
-                description: 身分證字號
-                type: text
+            - key: serial_no
+              value: "{{sn}}"
+              description: 報名序號
+              type: text
+            - key: pwd
+              value: "{{pwd}}"
+              description: 密碼
+              type: text
+            - key: IDNumber
+              value: "{{IDNumber}}"
+              description: 身分證字號
+              type: text
       tags:
-        - auth
-  /auth/login.php/3:
+      - auth
+  "/auth/login.php/3":
     post:
       summary: Login 3
-      description: 「成績查詢」、「申明就讀意願」登入
+      description: "「成績查詢」、「申明就讀意願」登入"
       operationId: Login3
       parameters: []
       responses:
@@ -199,34 +200,34 @@ paths:
             application/json:
               schema: {}
       requestBody:
-        description: 「成績查詢」、「申明就讀意願」登入
+        description: "「成績查詢」、「申明就讀意願」登入"
         required: true
         content:
           multipart/form-data:
             schema:
               type: object
               required:
-                - IDNumber
-                - sid
+              - IDNumber
+              - sid
               properties:
                 IDNumber:
                   type: string
-                  example: ''
+                  example: "{{IDNumber}}"
                 sid:
                   type: string
-                  example: ''
+                  example: "{{sid}}"
             example:
-              - key: IDNumber
-                value: ''
-                description: 身分證字號
-                type: text
-              - key: sid
-                value: ''
-                description: 准考證號
-                type: text
+            - key: IDNumber
+              value: "{{IDNumber}}"
+              description: 身分證字號
+              type: text
+            - key: sid
+              value: "{{sid}}"
+              description: 准考證號
+              type: text
       tags:
-        - auth
-  /auth/logout.php:
+      - auth
+  "/auth/logout.php":
     post:
       summary: Logout
       description: |-
@@ -241,7 +242,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/200'
+                "$ref": "#/components/schemas/200"
               example:
                 result: success
       requestBody:
@@ -255,19 +256,19 @@ paths:
             schema:
               type: object
               required:
-                - oper
+              - oper
               properties:
                 oper:
                   type: string
                   example: ''
             example:
-              - key: oper
-                value: ''
-                description: (Optional) eq. "queue"
-                type: text
+            - key: oper
+              value: ''
+              description: (Optional) eq. "queue"
+              type: text
       tags:
-        - auth
-  /auth/forget.php:
+      - auth
+  "/auth/forget.php":
     post:
       summary: Get Password
       description: 查詢序號密碼
@@ -285,19 +286,19 @@ paths:
             schema:
               type: object
               required:
-                - email
+              - email
               properties:
                 email:
                   type: string
-                  example: ''
+                  example: "{{email}}"
             example:
-              - key: email
-                value: ''
-                description: 取得繳費帳號時的email
-                type: text
+            - key: email
+              value: "{{email}}"
+              description: 取得繳費帳號時的email
+              type: text
       tags:
-        - auth
-  /auth/token.php:
+      - auth
+  "/auth/token.php":
     post:
       summary: Token Refreshing
       operationId: TokenRefreshing
@@ -308,7 +309,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/200'
+                "$ref": "#/components/schemas/200"
               example:
                 status: 0
                 authority: 0
@@ -317,13 +318,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/401'
+                "$ref": "#/components/schemas/401"
               example:
                 code: 401
                 message: Unauthorized
       tags:
-        - auth
-  /signup/form.php:
+      - auth
+  "/signup/form.php":
     get:
       summary: Signup Info
       description: 取得已填寫的報名表資訊
@@ -336,10 +337,10 @@ paths:
             application/json:
               schema: {}
       tags:
-        - signup
+      - signup
     post:
       summary: New Signup Info
-      description: 「填寫報名表」
+      description: "「填寫報名表」"
       operationId: NewSignupInfo
       parameters: []
       responses:
@@ -347,7 +348,7 @@ paths:
           description: ''
           headers: {}
       requestBody:
-        description: 「填寫報名表」
+        description: "「填寫報名表」"
         required: true
         content:
           multipart/form-data:
@@ -356,10 +357,10 @@ paths:
               properties: {}
             example: []
       tags:
-        - signup
+      - signup
     put:
       summary: Edit Signup Info
-      description: 「修改報名資料」
+      description: "「修改報名資料」"
       operationId: EditSignupInfo
       parameters: []
       responses:
@@ -367,7 +368,7 @@ paths:
           description: ''
           headers: {}
       requestBody:
-        description: 「修改報名資料」
+        description: "「修改報名資料」"
         required: true
         content:
           multipart/form-data:
@@ -376,11 +377,11 @@ paths:
               properties: {}
             example: []
       tags:
-        - signup
-  /signup/confirm.php:
+      - signup
+  "/signup/confirm.php":
     post:
       summary: Confirm Signup Info
-      description: 「報名資料確認」
+      description: "「報名資料確認」"
       operationId: ConfirmSignupInfo
       parameters: []
       responses:
@@ -388,8 +389,8 @@ paths:
           description: ''
           headers: {}
       tags:
-        - signup
-  /signup/file.php/check:
+      - signup
+  "/signup/file.php/check":
     get:
       summary: Check Review Document
       description: 確認備審資料是否存在
@@ -407,20 +408,20 @@ paths:
                 type: array
                 items: {}
       tags:
-        - signup
-  /signup/file.php:
+      - signup
+  "/signup/file.php":
     get:
       summary: Download Review Document
       description: 下載備審資料
       operationId: DownloadReviewDocument
       parameters:
-        - $ref: '#/components/parameters/export'
+      - "$ref": "#/components/parameters/export"
       responses:
         '200':
           description: ''
           headers: {}
       tags:
-        - signup
+      - signup
     post:
       summary: Upload Review Document
       description: 上傳備審資料
@@ -440,8 +441,8 @@ paths:
               properties: {}
             example: []
       tags:
-        - signup
-  /dept/list.php:
+      - signup
+  "/dept/list.php":
     get:
       summary: Department List
       description: 獲取可報考系所的清單
@@ -454,9 +455,9 @@ paths:
             application/json:
               schema: {}
       tags:
-        - dept
-  /dept/union.php: {}
-  /enroll/status.php:
+      - dept
+  "/dept/union.php": {}
+  "/enroll/status.php":
     get:
       summary: Intention to Study
       description: 取得就讀意願相關資料
@@ -469,7 +470,7 @@ paths:
             application/json:
               schema: {}
       tags:
-        - enroll
+      - enroll
     post:
       summary: Declare Intention to Study
       description: 申明就讀意願
@@ -487,8 +488,8 @@ paths:
             schema:
               type: object
               required:
-                - item
-                - code
+              - item
+              - code
               properties:
                 item:
                   type: string
@@ -497,17 +498,17 @@ paths:
                   type: string
                   example: ''
             example:
-              - key: item
-                value: ''
-                description: 0：申明；1：放棄
-                type: text
-              - key: code
-                value: ''
-                description: 驗證碼
-                type: text
+            - key: item
+              value: ''
+              description: 0：申明；1：放棄
+              type: text
+            - key: code
+              value: ''
+              description: 驗證碼
+              type: text
       tags:
-        - enroll
-  /news/news.php:
+      - enroll
+  "/news/news.php":
     get:
       summary: News
       description: 獲取公告內容
@@ -519,9 +520,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/200'
+                "$ref": "#/components/schemas/200"
       tags:
-        - news
+      - news
     post:
       summary: Post News
       description: 新增公告
@@ -539,8 +540,8 @@ paths:
             schema:
               type: object
               required:
-                - position
-                - content
+              - position
+              - content
               properties:
                 position:
                   type: string
@@ -549,16 +550,16 @@ paths:
                   type: string
                   example: ''
             example:
-              - key: position
-                value: ''
-                description: 0：置頂；1：預設；2：置底
-                type: text
-              - key: content
-                value: ''
-                description: 公告內容
-                type: text
+            - key: position
+              value: ''
+              description: 0：置頂；1：預設；2：置底
+              type: text
+            - key: content
+              value: ''
+              description: 公告內容
+              type: text
       tags:
-        - news
+      - news
     put:
       summary: Edit News
       description: 編輯公告
@@ -576,9 +577,9 @@ paths:
             schema:
               type: object
               required:
-                - id
-                - position
-                - content
+              - id
+              - position
+              - content
               properties:
                 id:
                   type: string
@@ -590,20 +591,20 @@ paths:
                   type: string
                   example: ''
             example:
-              - key: id
-                value: ''
-                description: 公告ID
-                type: text
-              - key: position
-                value: ''
-                description: 0：置頂；1：預設；2：置底
-                type: text
-              - key: content
-                value: ''
-                description: 公告內容
-                type: text
+            - key: id
+              value: ''
+              description: 公告ID
+              type: text
+            - key: position
+              value: ''
+              description: 0：置頂；1：預設；2：置底
+              type: text
+            - key: content
+              value: ''
+              description: 公告內容
+              type: text
       tags:
-        - news
+      - news
     delete:
       summary: Delete News
       description: 刪除公告
@@ -614,11 +615,11 @@ paths:
           description: ''
           headers: {}
       tags:
-        - news
-  /order/order.php:
+      - news
+  "/order/order.php":
     post:
       summary: Create Order
-      description: 「取得繳費帳號」
+      description: "「取得繳費帳號」"
       operationId: CreateOrder
       parameters: []
       responses:
@@ -626,19 +627,19 @@ paths:
           description: ''
           headers: {}
       requestBody:
-        description: 「取得繳費帳號」
+        description: "「取得繳費帳號」"
         required: true
         content:
           multipart/form-data:
             schema:
               type: object
               required:
-                - id
-                - email
-                - name
-                - sex
-                - tel
-                - dept_id
+              - id
+              - email
+              - name
+              - sex
+              - tel
+              - dept_id
               properties:
                 id:
                   type: string
@@ -659,36 +660,36 @@ paths:
                   type: string
                   example: ''
             example:
-              - key: id
-                value: ''
-                description: 身分證字號
-                type: text
-              - key: email
-                value: ''
-                description: 信箱
-                type: text
-              - key: name
-                value: ''
-                description: 姓名
-                type: text
-              - key: sex
-                value: ''
-                description: 性別
-                type: text
-              - key: tel
-                value: ''
-                description: 電話
-                type: text
-              - key: dept_id
-                value: ''
-                description: 報考系所ID
-                type: text
+            - key: id
+              value: ''
+              description: 身分證字號
+              type: text
+            - key: email
+              value: ''
+              description: 信箱
+              type: text
+            - key: name
+              value: ''
+              description: 姓名
+              type: text
+            - key: sex
+              value: ''
+              description: 性別
+              type: text
+            - key: tel
+              value: ''
+              description: 電話
+              type: text
+            - key: dept_id
+              value: ''
+              description: 報考系所ID
+              type: text
       tags:
-        - order
-  /order/status.php:
+      - order
+  "/order/status.php":
     post:
       summary: Get Payment Status
-      description: 「報名費銷帳查詢」
+      description: "「報名費銷帳查詢」"
       operationId: GetPaymentStatus
       parameters: []
       responses:
@@ -697,29 +698,29 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/200'
+                "$ref": "#/components/schemas/200"
               example:
                 message: ''
       requestBody:
-        description: 「報名費銷帳查詢」
+        description: "「報名費銷帳查詢」"
         required: true
         content:
           multipart/form-data:
             schema:
               type: object
               required:
-                - account_no
+              - account_no
               properties:
                 account_no:
                   type: string
                   example: ''
             example:
-              - key: account_no
-                value: ''
-                description: 繳費帳號(99216-3xxxxxxx-x)
-                type: text
+            - key: account_no
+              value: ''
+              description: 繳費帳號(99216-3xxxxxxx-x)
+              type: text
       tags:
-        - order
+      - order
 components:
   schemas:
     '200':
