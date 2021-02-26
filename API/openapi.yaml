@@ -250,13 +250,10 @@ paths:
           oper：<br>
           未設定=>登出所有系統<br>
           queue=>登出「申明就讀意願」系統
-        required: true
         content:
           multipart/form-data:
             schema:
               type: object
-              required:
-              - oper
               properties:
                 oper:
                   type: string
