@@ -1,0 +1,773 @@
+---
+openapi: 3.0.0
+servers:
+- url: http://example.com
+  description: ''
+  variables: {}
+info:
+  version: 1.0.0
+  title: exampg
+  description: |-
+    # Introduction
+    國立彰化師範大學網路報名系統API
+
+    # Overview
+
+
+    # Authentication
+    登入成功後，以cookie認證登入資訊(JWT存放於cookie)<br>
+    Unauthorized：尚未登入或登入資訊已過期<br>
+    Forbidden：無此操作權限
+
+    # Error Codes
+
+
+    # Rate limit
+  termsOfService: ''
+  contact: {}
+  license:
+    name: ''
+paths:
+  "/auth/admin.php":
+    post:
+      summary: Admin Login
+      description: "「網站管理」登入"
+      operationId: AdminLogin
+      parameters: []
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items: {}
+      requestBody:
+        description: "「網站管理」登入"
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+              - account
+              - pwd
+              properties:
+                account:
+                  type: string
+                  example: "{{admin_account}}"
+                pwd:
+                  type: string
+                  example: "{{admin_pwd}}"
+            example:
+            - key: account
+              value: "{{admin_account}}"
+              description: 管理者帳號
+              type: text
+            - key: pwd
+              value: "{{admin_pwd}}"
+              description: 管理者密碼
+              type: text
+      tags:
+      - auth
+  "/auth/admin.php/logout":
+    post:
+      summary: Admin Logout
+      description: "「網站管理」登出"
+      operationId: AdminLogout
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      requestBody:
+        description: "「網站管理」登出"
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+              - oper
+              properties:
+                oper:
+                  type: string
+                  example: logout
+            example:
+            - key: oper
+              value: logout
+              type: text
+      tags:
+      - auth
+  "/auth/login.php/1":
+    post:
+      summary: Login 1
+      description: "「填寫報名表」登入"
+      operationId: Login1
+      parameters: []
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema: {}
+      requestBody:
+        description: "「填寫報名表」登入"
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+              - serial_no
+              - pwd
+              properties:
+                serial_no:
+                  type: string
+                  example: "{{sn}}"
+                pwd:
+                  type: string
+                  example: "{{pwd}}"
+            example:
+            - key: serial_no
+              value: "{{sn}}"
+              description: 報名序號
+              type: text
+            - key: pwd
+              value: "{{pwd}}"
+              description: 密碼
+              type: text
+      tags:
+      - auth
+  "/auth/login.php/2":
+    post:
+      summary: Login 2
+      description: "「修改報名資料」、「報名資料確認」、「報名資料查詢」、「推薦函作業」登入"
+      operationId: Login2
+      parameters: []
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema: {}
+      requestBody:
+        description: "「修改報名資料」、「報名資料確認」、「報名資料查詢」、「推薦函作業」登入"
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+              - serial_no
+              - pwd
+              - IDNumber
+              properties:
+                serial_no:
+                  type: string
+                  example: "{{sn}}"
+                pwd:
+                  type: string
+                  example: "{{pwd}}"
+                IDNumber:
+                  type: string
+                  example: "{{IDNumber}}"
+            example:
+            - key: serial_no
+              value: "{{sn}}"
+              description: 報名序號
+              type: text
+            - key: pwd
+              value: "{{pwd}}"
+              description: 密碼
+              type: text
+            - key: IDNumber
+              value: "{{IDNumber}}"
+              description: 身分證字號
+              type: text
+      tags:
+      - auth
+  "/auth/login.php/3":
+    post:
+      summary: Login 3
+      description: "「成績查詢」、「申明就讀意願」登入"
+      operationId: Login3
+      parameters: []
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema: {}
+      requestBody:
+        description: "「成績查詢」、「申明就讀意願」登入"
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+              - IDNumber
+              - sid
+              properties:
+                IDNumber:
+                  type: string
+                  example: "{{IDNumber}}"
+                sid:
+                  type: string
+                  example: "{{sid}}"
+            example:
+            - key: IDNumber
+              value: "{{IDNumber}}"
+              description: 身分證字號
+              type: text
+            - key: sid
+              value: "{{sid}}"
+              description: 准考證號
+              type: text
+      tags:
+      - auth
+  "/auth/logout.php":
+    post:
+      summary: Logout
+      description: |-
+        oper：<br>
+        未設定=>登出所有系統<br>
+        queue=>登出「申明就讀意願」系統
+      operationId: Logout
+      parameters: []
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/200"
+              example:
+                result: success
+      requestBody:
+        description: |-
+          oper：<br>
+          未設定=>登出所有系統<br>
+          queue=>登出「申明就讀意願」系統
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                oper:
+                  type: string
+                  example: ''
+            example:
+            - key: oper
+              value: ''
+              description: (Optional) eq. "queue"
+              type: text
+      tags:
+      - auth
+  "/auth/forget.php":
+    post:
+      summary: Get Password
+      description: 查詢序號密碼
+      operationId: GetPassword
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      requestBody:
+        description: 查詢序號密碼
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+              - email
+              properties:
+                email:
+                  type: string
+                  example: "{{email}}"
+            example:
+            - key: email
+              value: "{{email}}"
+              description: 取得繳費帳號時的email
+              type: text
+      tags:
+      - auth
+  "/auth/token.php":
+    post:
+      summary: Token Refreshing
+      operationId: TokenRefreshing
+      parameters: []
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/200"
+              example:
+                status: 0
+                authority: 0
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/401"
+              example:
+                code: 401
+                message: Unauthorized
+      tags:
+      - auth
+  "/signup/form.php":
+    get:
+      summary: Signup Info
+      description: 取得已填寫的報名表資訊
+      operationId: SignupInfo
+      parameters: []
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema: {}
+      tags:
+      - signup
+    post:
+      summary: New Signup Info
+      description: "「填寫報名表」"
+      operationId: NewSignupInfo
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      requestBody:
+        description: "「填寫報名表」"
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties: {}
+            example: []
+      tags:
+      - signup
+    put:
+      summary: Edit Signup Info
+      description: "「修改報名資料」"
+      operationId: EditSignupInfo
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      requestBody:
+        description: "「修改報名資料」"
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties: {}
+            example: []
+      tags:
+      - signup
+  "/signup/confirm.php":
+    post:
+      summary: Confirm Signup Info
+      description: "「報名資料確認」"
+      operationId: ConfirmSignupInfo
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      tags:
+      - signup
+  "/signup/file.php/check":
+    get:
+      summary: Check Review Document
+      description: 確認備審資料是否存在
+      operationId: CheckReviewDocument
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+        '404':
+          description: File exist
+          content:
+            application/json:
+              schema:
+                type: array
+                items: {}
+      tags:
+      - signup
+  "/signup/file.php":
+    get:
+      summary: Download Review Document
+      description: 下載備審資料
+      operationId: DownloadReviewDocument
+      parameters:
+      - "$ref": "#/components/parameters/export"
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      tags:
+      - signup
+    post:
+      summary: Upload Review Document
+      description: 上傳備審資料
+      operationId: UploadReviewDocument
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      requestBody:
+        description: 上傳備審資料
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties: {}
+            example: []
+      tags:
+      - signup
+  "/dept/list.php":
+    get:
+      summary: Department List
+      description: 獲取可報考系所的清單
+      operationId: DepartmentList
+      parameters: []
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema: {}
+      tags:
+      - dept
+  "/dept/union.php": {}
+  "/enroll/status.php":
+    get:
+      summary: Intention to Study
+      description: 取得就讀意願相關資料
+      operationId: IntentiontoStudy
+      parameters: []
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema: {}
+      tags:
+      - enroll
+    post:
+      summary: Declare Intention to Study
+      description: 申明就讀意願
+      operationId: DeclareIntentiontoStudy
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      requestBody:
+        description: 申明就讀意願
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+              - item
+              - code
+              properties:
+                item:
+                  type: string
+                  example: ''
+                code:
+                  type: string
+                  example: ''
+            example:
+            - key: item
+              value: ''
+              description: 0：申明；1：放棄
+              type: text
+            - key: code
+              value: ''
+              description: 驗證碼
+              type: text
+      tags:
+      - enroll
+  "/news/news.php":
+    get:
+      summary: News
+      description: 獲取公告內容
+      operationId: News
+      parameters: []
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/200"
+      tags:
+      - news
+    post:
+      summary: Post News
+      description: 新增公告
+      operationId: PostNews
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      requestBody:
+        description: 新增公告
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+              - position
+              - content
+              properties:
+                position:
+                  type: string
+                  example: ''
+                content:
+                  type: string
+                  example: ''
+            example:
+            - key: position
+              value: ''
+              description: 0：置頂；1：預設；2：置底
+              type: text
+            - key: content
+              value: ''
+              description: 公告內容
+              type: text
+      tags:
+      - news
+    put:
+      summary: Edit News
+      description: 編輯公告
+      operationId: EditNews
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      requestBody:
+        description: 編輯公告
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+              - id
+              - position
+              - content
+              properties:
+                id:
+                  type: string
+                  example: ''
+                position:
+                  type: string
+                  example: ''
+                content:
+                  type: string
+                  example: ''
+            example:
+            - key: id
+              value: ''
+              description: 公告ID
+              type: text
+            - key: position
+              value: ''
+              description: 0：置頂；1：預設；2：置底
+              type: text
+            - key: content
+              value: ''
+              description: 公告內容
+              type: text
+      tags:
+      - news
+    delete:
+      summary: Delete News
+      description: 刪除公告
+      operationId: DeleteNews
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      tags:
+      - news
+  "/order/order.php":
+    post:
+      summary: Create Order
+      description: "「取得繳費帳號」"
+      operationId: CreateOrder
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      requestBody:
+        description: "「取得繳費帳號」"
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+              - id
+              - email
+              - name
+              - sex
+              - tel
+              - dept_id
+              properties:
+                id:
+                  type: string
+                  example: ''
+                email:
+                  type: string
+                  example: ''
+                name:
+                  type: string
+                  example: ''
+                sex:
+                  type: string
+                  example: ''
+                tel:
+                  type: string
+                  example: ''
+                dept_id:
+                  type: string
+                  example: ''
+            example:
+            - key: id
+              value: ''
+              description: 身分證字號
+              type: text
+            - key: email
+              value: ''
+              description: 信箱
+              type: text
+            - key: name
+              value: ''
+              description: 姓名
+              type: text
+            - key: sex
+              value: ''
+              description: 性別
+              type: text
+            - key: tel
+              value: ''
+              description: 電話
+              type: text
+            - key: dept_id
+              value: ''
+              description: 報考系所ID
+              type: text
+      tags:
+      - order
+  "/order/status.php":
+    post:
+      summary: Get Payment Status
+      description: "「報名費銷帳查詢」"
+      operationId: GetPaymentStatus
+      parameters: []
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/200"
+              example:
+                message: ''
+      requestBody:
+        description: "「報名費銷帳查詢」"
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+              - account_no
+              properties:
+                account_no:
+                  type: string
+                  example: ''
+            example:
+            - key: account_no
+              value: ''
+              description: 繳費帳號(99216-3xxxxxxx-x)
+              type: text
+      tags:
+      - order
+components:
+  schemas:
+    '200':
+      type: object
+      properties:
+        result:
+          type: string
+          description: ''
+          default: success
+    '401':
+      type: object
+      properties:
+        code:
+          type: integer
+          description: ''
+          default: 401
+        message:
+          type: string
+          description: ''
+          default: Unauthorized
+    '404':
+      type: object
+      properties:
+        code:
+          type: integer
+          description: ''
+          default: 404
+        message:
+          type: string
+          description: ''
+          default: Not Found
+  parameters:
+    export:
+      name: export
+      in: query
+      required: true
+      style: form
+      schema:
+        type: string
+        example: download
+    dept_id:
+      name: dept_id
+      in: query
+      required: true
+      style: form
+      schema:
+        type: number
+      description: dept_id、subject_id 擇一請求 (union_type=5)
+security: []
+tags: []
+externalDocs:
+  url: ''
+  description: ''
