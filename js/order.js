@@ -1,3 +1,4 @@
+//將表單轉換為readonly
 function formReadOnly() {
     $("form [name='section[]'").not(":checked").parent().remove();
     $("form [name='section[]'").on('click', function () {

@@ -247,9 +247,9 @@ try {
 	$result = array();
 	$result['code'] = $e->getCode();
 	$result['message'] = $e->getMessage();
-	$result['line'] = $e->getLine();
+	//$result['line'] = $e->getLine();
 	echo "<script>alert('" . $e->getMessage() . "');window.location.replace('./');</script>";
 }
 
 
-exit(); // You need to call this to send the response immediately
+exit();

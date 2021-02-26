@@ -12,6 +12,7 @@
  *      1 => 身分證登入
  */
 header('Content-Type:application/json');
+header("Cache-Control: private");
 $result = array();
 $payload = array('iss' => 'ncue', 'iat' => time(), 'exp' => time() + 3600);
 
@@ -89,22 +90,12 @@ try {
         }
 
 
-
         $result['access_token'] = $token;
         $result['token_type'] = "Bearer";
         $result['expires_in'] = 3600;
-        header("Cache-Control: private");
-
 
         // setcookie('token', $token, $cookie_options_httponly);
-        $cookieOpt = "token=" . $token . ";";
-        foreach ($cookie_options_httponly as $key => $value) {
-            if ($key === "httpOnly") {
-                if ($value === true)
-                    $cookieOpt .=  "httpOnly;";
-            } else
-                $cookieOpt .= $key . "=" . $value . ";";
-        }
+        $cookieOpt = "token=" . $token . ";" . getCookieOptions($cookie_options_httponly);
         header("Set-Cookie: " . $cookieOpt, false);
     } else throw new Exception("Method Not Allowed", 405);
 } catch (Exception $e) {
@@ -114,15 +105,11 @@ try {
     $result = array();
     $result['code'] = $e->getCode();
     $result['message'] = $e->getMessage();
-    $result['line'] = $e->getLine();
-
-
-
-    //$e->getMessage() . " on line " . $e->getLine()
+    //$result['line'] = $e->getLine();
 }
 
 
 
 oci_close($conn);
 echo json_encode($result);
-exit(); // You need to call this to send the response immediately
+exit();

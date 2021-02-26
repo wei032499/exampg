@@ -41,15 +41,11 @@ try {
     $result = array();
     $result['code'] = $e->getCode();
     $result['message'] = $e->getMessage();
-    $result['line'] = $e->getLine();
+    //$result['line'] = $e->getLine();
 
-
-
-    //$e->getMessage() . " on line " . $e->getLine()
 }
-
 
 
 oci_close($conn);
 echo json_encode($result);
-exit(); // You need to call this to send the response immediately
+exit();

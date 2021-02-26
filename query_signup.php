@@ -3,22 +3,15 @@ try {
     require_once('./API/common/db.php');
 
     if (!isset($_COOKIE['token']))
-        require_once('./signup/query_login.php');
+        require_once('./query/signup_login.php');
     else {
         $Token = new Token($conn, $_COOKIE['token']);
         $payload = $Token->verify();
         // setcookie('token', $Token->refresh(), $cookie_options_httponly);
-        $cookieOpt = "token=" . $Token->refresh() . ";";
-        foreach ($cookie_options_httponly as $key => $value) {
-            if ($key === "httpOnly") {
-                if ($value === true)
-                    $cookieOpt .=  "httpOnly;";
-            } else
-                $cookieOpt .= $key . "=" . $value . ";";
-        }
+        $cookieOpt = "token=" . $Token->refresh() . ";" . getCookieOptions($cookie_options_httponly);
         header("Set-Cookie: " . $cookieOpt, false);
         if ($payload === false || $payload['authority'] !== 1)
-            require_once('./signup/query_login.php');
+            require_once('./query/signup_login.php');
         else if ($payload['status'] !== 2 && $payload['status'] !== 3) {
             header("Content-Type:text/html; charset=utf-8");
             if ($payload['status'] === 0)
@@ -34,7 +27,7 @@ try {
         } else if (!isset($_GET['step']))
             header("Location: ./query_signup.php?step=2");
         else if ($_GET['step'] === "2")
-            require_once('./signup/query_form.php');
+            require_once('./query/signup_form.php');
         else
             header("Location: ./query_signup.php");
     }

@@ -2,7 +2,18 @@
 require_once('./API/common/db.php');
 
 try {
-    require_once('./management/news.php');
+    if (!isset($_COOKIE['token']))
+        require_once('./management/login.php');
+    else {
+        $payload = JWT::verifyToken($_COOKIE['token']);
+        if ($payload === false || !isset($payload['admin']) || $payload['admin'] !== 0)
+            require_once('./management/login.php');
+        else if (isset($_GET['page'])) {
+            if ($_GET['page'] === "news")
+                require_once("./management/news.php");
+        } else
+            require_once("./management/home.php");
+    }
 } catch (Exception $e) {
     setHeader($e->getCode());
     $result = array();
@@ -14,4 +25,4 @@ try {
 }
 
 
-exit(); // You need to call this to send the response immediately
+exit();

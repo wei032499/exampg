@@ -1,4 +1,8 @@
-
+/**
+ * 全域變數：
+ *  deptObj=>可選系所
+ *  isConfirmForm=>true(需轉換為readonly form)
+ */
 
 //initail
 $(function () {
@@ -239,9 +243,6 @@ $(function () {
         });
     }
 
-    /*$("form [name='dept']>option:checked").change();
-    $("form [name='organize_id']>option:checked").change();
-    $("form [name='orastatus_id']>option:checked").change();*/
     $("form [name='disabled']:checked").change();
     $("form [name='disabled_type']:checked").change();
     $("form [name='prove_type']:checked").change();
@@ -405,6 +406,7 @@ $("form [name='file']").on('change', function () {
 });
 
 
+//將表單轉換為readonly
 function formReadOnly() {
     $("form [name='section[]'").not(":checked").parent().remove();
     $("form [name='section[]'").on('click', function () {

@@ -50,14 +50,7 @@ try {
             unset($payload['sid']);
             $token = JWT::getToken($payload);
             // setcookie('token', $token, $cookie_options_httponly);
-            $cookieOpt = "token=" . $Token->refresh() . ";";
-            foreach ($cookie_options_httponly as $key => $value) {
-                if ($key === "httpOnly") {
-                    if ($value === true)
-                        $cookieOpt .=  "httpOnly;";
-                } else
-                    $cookieOpt .= $key . "=" . $value . ";";
-            }
+            $cookieOpt = "token=" . $token . ";" . getCookieOptions($cookie_options_httponly);
             header("Set-Cookie: " . $cookieOpt, false);
             $mail_msg = $sql;
             $post_processing[] = function () use ($mail_msg) {
@@ -246,17 +239,6 @@ try {
 
             $result['intention'] = -1;
         }
-
-
-        // $ip = $_SERVER["REMOTE_ADDR"]; //使用者IP
-        // $a_date = date("Ymd");
-        // $a_time = date("His");
-        // $sql = "insert into exampg_log(user_id,a_ip,a_date,a_time,a_type,mark,school_id,year) values(:sid,'$ip','$a_date','$a_time',:type,'" . $_SERVER['PHP_SELF'] . "','$SCHOOL_ID','$ACT_YEAR_NO')";
-        // $stmt = oci_parse($conn, $sql);
-        // oci_bind_by_name($stmt, ':sid',  $sid);
-        // oci_bind_by_name($stmt, ':type',  $_POST['item']);
-        // oci_execute($stmt, OCI_DEFAULT);
-        // oci_free_statement($stmt);
     } else
         throw new Exception("Method Not Allowed", 405);
 
@@ -266,13 +248,13 @@ try {
     oci_rollback($conn);
     setHeader($e->getCode());
     $result = array();
-    $result['code'] = $e->getCode(); //$e->getCode();
+    $result['code'] = $e->getCode();
     $result['message'] = $e->getMessage();
-    $result['line'] = $e->getLine();
+    //$result['line'] = $e->getLine();
 }
 
 
 
 oci_close($conn);
 echo json_encode($result);
-exit(); // You need to call this to send the response immediately
+exit();

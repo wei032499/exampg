@@ -8,14 +8,7 @@ try {
         $Token = new Token($conn, $_COOKIE['token']);
         $payload = $Token->verify();
         // setcookie('token', $Token->refresh(), $cookie_options_httponly);
-        $cookieOpt = "token=" . $Token->refresh() . ";";
-        foreach ($cookie_options_httponly as $key => $value) {
-            if ($key === "httpOnly") {
-                if ($value === true)
-                    $cookieOpt .=  "httpOnly;";
-            } else
-                $cookieOpt .= $key . "=" . $value . ";";
-        }
+        $cookieOpt = "token=" . $Token->refresh() . ";" . getCookieOptions($cookie_options_httponly);
         header("Set-Cookie: " . $cookieOpt, false);
         if ($payload === false || $payload['authority'] !== 1)
             require_once('./signup/confirm_login.php');

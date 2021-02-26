@@ -34,16 +34,25 @@ try {
             $sql_add = " oral_flag ='9' ";
         }
 
+        $sql = "SELECT DEPT_ID,SUBJECT_ID FROM SIGNUPDATA WHERE SIGNUP_SN=:sn AND YEAR='$ACT_YEAR_NO' AND SCHOOL_ID='$SCHOOL_ID'";
+        $stmt = oci_parse($conn, $sql);
+        oci_bind_by_name($stmt, ':sn',  $payload['sn']);
+        oci_execute($stmt, OCI_DEFAULT);
+        if (!oci_fetch($stmt))
+            throw new Exception("找不到資料");
+        $dept_id =  oci_result($stmt, 'DEPT_ID');
+        $subject_id = intval(oci_result($stmt, 'SUBJECT_ID'));
+        oci_free_statement($stmt);
+
         $sql = "SELECT UPLOAD_TYPE FROM DEPARTMENT WHERE school_id='$SCHOOL_ID' AND year='$ACT_YEAR_NO' AND $sql_add AND ID=:dept";
         $stmt = oci_parse($conn, $sql);
-        oci_bind_by_name($stmt, ':dept',  $_POST['dept']);
+        oci_bind_by_name($stmt, ':dept',  $dept_id);
         oci_execute($stmt, OCI_DEFAULT);
         oci_fetch($stmt);
         $upload_type = intval(oci_result($stmt, 'UPLOAD_TYPE'));
         oci_free_statement($stmt);
-
         //upload_type 審查資料繳交方式:  1:郵寄  2:上傳  3:郵寄+上傳
-        if ($upload_type >= 2) // 確認檔案是否上傳
+        if ($upload_type >= 2 && ($dept_id !== "334" || $subject_id === "8")) //車輛所 考科選擇"資料審查(3349118)"時才需上傳檔案
         {
             $location = "../../upload/";
             $attachment_location = $location . $ACT_YEAR_NO . "-" . $payload['sn'] . ".pdf";
@@ -64,13 +73,6 @@ try {
         oci_execute($stmt, OCI_DEFAULT);
         oci_free_statement($stmt);
 
-        /*$sql = "UPDATE SN_DB SET CHECK_DATE=to_date('$time','yyyy-mm-dd HH24:MI:SS'),CHECKED='1' WHERE SCHOOL_ID='$SCHOOL_ID' AND YEAR='$ACT_YEAR_NO' AND SN=:sn";
-        $stmt = oci_parse($conn, $sql);
-        oci_bind_by_name($stmt, ':sn',  $payload['sn']);
-        oci_execute($stmt, OCI_DEFAULT);
-        oci_free_statement($stmt);*/
-
-
         $post_processing[] = function () use ($payload) {
             /**
              * 寄發通知信
@@ -89,14 +91,7 @@ try {
         throw new Exception("Method Not Allowed", 405);
 
     // setcookie('token', $Token->refresh(), $cookie_options_httponly);
-    $cookieOpt = "token=" . $Token->refresh() . ";";
-    foreach ($cookie_options_httponly as $key => $value) {
-        if ($key === "httpOnly") {
-            if ($value === true)
-                $cookieOpt .=  "httpOnly;";
-        } else
-            $cookieOpt .= $key . "=" . $value . ";";
-    }
+    $cookieOpt = "token=" . $Token->refresh() . ";" . getCookieOptions($cookie_options_httponly);
     header("Set-Cookie: " . $cookieOpt, false);
     oci_commit($conn); //無發生任何錯誤，將資料寫進資料庫
 
@@ -104,14 +99,13 @@ try {
     oci_rollback($conn);
     setHeader($e->getCode());
     $result = array();
-    $result['code'] = $e->getCode(); //$e->getCode();
+    $result['code'] = $e->getCode();
     $result['message'] = $e->getMessage();
-    $result['line'] = $e->getLine();
-    //$e->getMessage() . " on line " . $e->getLine()
+    //$result['line'] = $e->getLine();
 }
 
 
 
 oci_close($conn);
 echo json_encode($result);
-exit(); // You need to call this to send the response immediately
+exit();

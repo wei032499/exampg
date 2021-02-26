@@ -1,9 +1,3 @@
-<?php
-session_start();
-if (!isset($_SESSION['username']))
-    header("Location: ./management_login.php");
-
-?>
 <!doctype html>
 <html lang="zh-Hant-TW">
 
@@ -55,7 +49,7 @@ if (!isset($_SESSION['username']))
                     <div class="tab-pane fade " id="news" role="tabpanel" aria-labelledby="news-tab">
                         <div class="card p-4">
                             <div class="mb-3">
-                                <button type="button" class="btn btn-primary btn-sm" onclick="window.location.assign('./management_news.php')">新增公告</button>
+                                <button type="button" class="btn btn-primary btn-sm" onclick="window.location.assign('./management.php?page=news')">新增公告</button>
                             </div>
                             <table id="newsTable" class="table table-hover table-bordered" style="width:100%">
                                 <thead>
@@ -113,7 +107,7 @@ if (!isset($_SESSION['username']))
                     },
                     {
                         "render": function(data, type, row, meta) {
-                            data = '<button type="button" class="btn btn-warning btn-sm m-1" style="min-width:3rem" onclick="window.location.assign(\'./management_news.php?id=' + row.id + '\')">修改</button>';
+                            data = '<button type="button" class="btn btn-warning btn-sm m-1" style="min-width:3rem" onclick="window.location.assign(\'./management.php?page=news&id=' + row.id + '\')">修改</button>';
                             data += '<button type="button" class="btn btn-danger btn-sm m-1" style="min-width:3rem" onclick="deleteNews(' + row.id + ')">刪除</button>';
                             return data;
                         }

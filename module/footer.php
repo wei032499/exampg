@@ -6,7 +6,7 @@
                 <div class="col-sm-3" style="min-width: max-content;">機關電話：<a href="tel:04-7232105">04-7232105 (總機)</a></div>
                 <div class="col-sm-3" style="min-width: max-content;">招生試務：5632~5637(分機)</div>
             </div>
-            <div class="p-2"><a href="./management_home.php">網站管理</a></div>
+            <div class="p-2"><a href="./management.php">網站管理</a></div>
             <!--<div class="p-2">電子郵件：<a href="mailto:">...</a></div>-->
         </address>
     </div>

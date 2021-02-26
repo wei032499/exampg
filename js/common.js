@@ -1,3 +1,4 @@
+//用於部分未定義"URLSearchParams"的瀏覽器
 if (typeof URLSearchParams === "undefined") {
     function URLSearchParams(url) {
         this.url = url;
@@ -12,7 +13,7 @@ if (typeof URLSearchParams === "undefined") {
     }
 }
 
-
+//將儲存於sessionStorage的serialized form轉換為object
 function getSessionItems(itemName) {
     let sessionItems = {};
     let storage = sessionStorage.getItem(itemName);
@@ -37,9 +38,11 @@ function getSessionItems(itemName) {
     }
     return sessionItems;
 }
+
+//從指定url取得data object
 function getData(url, cache, payload) {
     if (cache === undefined)
-        cache = true;
+        cache = false;
     if (payload === undefined)
         payload = null;
     return $.ajax({
@@ -64,6 +67,8 @@ function getData(url, cache, payload) {
             alert(msg);
         });
 }
+
+//將data object寫回form
 function fillForm(items) {
     let keys = Object.keys(items);
     for (let i = 0; i < keys.length; i++) {
@@ -100,7 +105,6 @@ function fillForm(items) {
 }
 
 
-
 function logout(redirect) {
     if (redirect === undefined)
         redirect = true;
@@ -128,6 +132,7 @@ function logout(redirect) {
 
 }
 
+//取得cookie中指定key的value
 function getCookie(name) {
     const cookieArray = document.cookie.split('; ');
     for (let i = 0; i < cookieArray.length; i++) {

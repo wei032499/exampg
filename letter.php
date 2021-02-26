@@ -7,15 +7,9 @@ try {
     else {
         $Token = new Token($conn, $_COOKIE['token']);
         $payload = $Token->verify();
+        +getCookieOptions($cookie_options_httponly);
         // setcookie('token', $Token->refresh(), $cookie_options_httponly);
-        $cookieOpt = "token=" . $Token->refresh() . ";";
-        foreach ($cookie_options_httponly as $key => $value) {
-            if ($key === "httpOnly") {
-                if ($value === true)
-                    $cookieOpt .=  "httpOnly;";
-            } else
-                $cookieOpt .= $key . "=" . $value . ";";
-        }
+        $cookieOpt = "token=" . $Token->refresh() . ";" . getCookieOptions($cookie_options_httponly);
         header("Set-Cookie: " . $cookieOpt, false);
 
         if ($payload === false || $payload['authority'] !== 1)
@@ -40,7 +34,7 @@ try {
     $result = array();
     $result['code'] = $e->getCode();
     $result['message'] = $e->getMessage();
-    $result['line'] = $e->getLine();
+    //$result['line'] = $e->getLine();
     // header('Content-Type:application/json');
     // echo json_encode($result);
     header("Location: ./letter.php");

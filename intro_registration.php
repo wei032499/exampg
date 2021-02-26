@@ -74,32 +74,32 @@
                     <div class="tab-pane fade" id="account_order" role="tabpanel" aria-labelledby="account_order-tab">
                         <div class="card p-4">
                             <p class="line-height-1">
-                                欲報名的考生，請先上網填寫報名費繳費帳號申請單，取得報名費繳費帳號， 以下為<a href="./account_order.php">取得繳費帳號</a>之圖例。<br>
+                                欲報名的考生，請先上網填寫報名費繳費帳號申請單，取得報名費繳費帳號， 以下為<a href="./order.php">取得繳費帳號</a>之圖例。<br>
                                 <br>
                                 圖一、填寫申請單：請務必留下正確的資料。<br>
                                 <br>
-                                <img src="./images/account_1.png" /><br>(點擊圖片放大)<br>
+                                <img src="https://aps.ncue.edu.tw/exampg_m/images/account_1.jpg" /><br>(點擊圖片放大)<br>
                                 <br>
                                 圖二、資料確認：若因資料錯誤而造成權益的損失，概由填表人自負。<br>
                                 <br>
-                                <img src="./images/account_2.png" /><br>(點擊圖片放大)<br>
+                                <img src="https://aps.ncue.edu.tw/exampg_m/images/account_2.jpg" /><br>(點擊圖片放大)<br>
                                 <br>
-                                圖三、申請作業完成：請記下系統給您的繳費帳號，進行繳費並確認銷帳完成，請參考「流程說明」功能裡的「報名費繳費方式及銷帳查詢方式說明」。<br>
+                                圖三、申請作業完成：請記下系統給您的繳費帳號，進行繳費並確認銷帳完成，請參考「流程說明」功能裡的「<a href="./intro_payment.php">報名費繳費方式及銷帳查詢方式說明</a>」。<br>
                                 <br>
-                                <img src="./images/account_3.png" /><br>(點擊圖片放大)<br>
+                                <img src="https://aps.ncue.edu.tw/exampg_m/images/account_3.jpg" /><br>(點擊圖片放大)<br>
                                 <br>
-                                ◆系統會在確認您繳費後，自動將序號、密碼傳送至您所登錄之E-mail信箱；當您收到序號密碼通知後，即可登入「<a href="./form.php">填寫報名表</a>」，填寫您的報名資料。<br>
+                                ◆系統會在確認您繳費後，自動將序號、密碼傳送至您所登錄之E-mail信箱；當您收到序號密碼通知後，即可登入「<a href="./signup.php">填寫報名表</a>」，填寫您的報名資料。<br>
                             </p>
                         </div>
                     </div>
                     <div class="tab-pane fade" id="signup_form" role="tabpanel" aria-labelledby="signup_form-tab">
                         <div class="card p-4">
                             <p class="line-height-1">
-                                完成報名費繳費後約一小時，系統確認入帳後，將會自動傳送序號及密碼至您所填的電子郵件信箱。在您收到系統寄送給您的電子郵件後，即可利用「網路報名」功能裡的「<a href="./form.php">填寫報名表</a>」，輸入序號及密碼進行填寫報名表作業。<br>
+                                完成報名費繳費後約一小時，系統確認入帳後，將會自動傳送序號及密碼至您所填的電子郵件信箱。在您收到系統寄送給您的電子郵件後，即可利用「網路報名」功能裡的「<a href="./signup.php">填寫報名表</a>」，輸入序號及密碼進行填寫報名表作業。<br>
                                 <br><br>
                                 注意：報名表初填完成即完成報名，不可再申請退還報名費(除同等學力審查不合格外)，惟在報名截止前仍可進行資料修改或直接進行資料確認 。<br>
                                 <br><br>
-                                您亦可以利用「資料查詢」功能裡的「報名費銷帳查詢」，來確認是否完成銷帳。以下為登入「<a href="./form.php">填寫報名表</a>」之圖例。<br>
+                                您亦可以利用「資料查詢」功能裡的「<a href="./query_acc.php">報名費銷帳查詢</a>」，來確認是否完成銷帳。以下為登入「<a href="./signup.php">填寫報名表</a>」之圖例。<br>
                                 <br>
                                 圖一、輸入序號及密碼：請輸入序號及密碼，請注意所有英文字母皆為大寫。<br>
                                 <br>
@@ -122,22 +122,22 @@
                                 <br>
                                 <img src="https://aps.ncue.edu.tw/exampg_m/images/sign5.jpg" /><br>(點擊圖片放大)<br>
                                 <br>
-                                圖六、初步報名完成，請在報名期間內完成「資料確認」，在完成「資料確認」前，您的資料可以不限次數進行修改、上傳或更新已上傳的備審資料等。<br>
+                                圖六、初步報名完成，請在報名期間內完成「<a href="./confirm.php">資料確認</a>」，在完成「<a href="./confirm.php">資料確認</a>」前，您的資料可以不限次數進行修改、上傳或更新已上傳的備審資料等。<br>
                                 <br>
                                 <img src="https://aps.ncue.edu.tw/exampg_m/images/sign6.jpg" /><br>(點擊圖片放大)<br>
                                 <br>
-                                ◆每組序號、密碼僅可填寫一次報名表，若資料需修改/上傳備審資料/更新已上傳備審資料，請利用網路報名功能裡的「修改報名資料」。<br>
+                                ◆每組序號、密碼僅可填寫一次報名表，若資料需修改/上傳備審資料/更新已上傳備審資料，請利用網路報名功能裡的「<a href="./alter.php">修改報名資料</a>」。<br>
                             </p>
                         </div>
                     </div>
                     <div class="tab-pane fade" id="alter_form" role="tabpanel" aria-labelledby="alter_form-tab">
                         <div class="card p-4">
                             <p class="line-height-1">
-                                若您的資料有異動時，您可以利用網路報名功能裡的「修改報名資料」，來更新您的資料。<br>
+                                若您的資料有異動時，您可以利用網路報名功能裡的「<a href="./alter.php">修改報名資料</a>」，來更新您的資料。<br>
                                 <br>
-                                以下為「修改報名資料」之圖例。<br>
+                                以下為「<a href="./alter.php">修改報名資料</a>」之圖例。<br>
                                 <br>
-                                圖一、登入：「修改報名資料」除了需輸入序號及密碼外，還需輸入您於報名表中所填的身分證字號。<br>
+                                圖一、登入：「<a href="./alter.php">修改報名資料</a>」除了需輸入序號及密碼外，還需輸入您於報名表中所填的身分證字號。<br>
                                 <br>
                                 <img src="https://aps.ncue.edu.tw/exampg_m/images/alter1.jpg" /><br>(點擊圖片放大)<br>
                                 <br>
@@ -153,7 +153,7 @@
                                 <br>
                                 <img src="https://aps.ncue.edu.tw/exampg_m/images/alter4.jpg" /><br>(點擊圖片放大)<br>
                                 <br>
-                                圖五、報名資料修改完成：請在報名期間完成「資料確認」。<br>
+                                圖五、報名資料修改完成：請在報名期間完成「<a href="./confirm.php">資料確認</a>」。<br>
                                 <br>
                                 <img src="https://aps.ncue.edu.tw/exampg_m/images/alter5.jpg" /><br>(點擊圖片放大)<br>
                             </p>
@@ -169,23 +169,23 @@
                                 <br>
                                 請注意：一旦完成資料確認後，即不可再更改報名資料。<br>
                                 <br>
-                                以下為「資料確認」之圖例。<br>
+                                以下為「<a href="./confirm.php">資料確認</a>」之圖例。<br>
                                 <br>
-                                圖一、登入：「資料確認」除了需輸入序號及密碼外，還需輸入您於報名表中所填的身分證字號。<br>
+                                圖一、登入：「<a href="./confirm.php">資料確認</a>」除了需輸入序號及密碼外，還需輸入您於報名表中所填的身分證字號。<br>
                                 <br>
                                 <img src="https://aps.ncue.edu.tw/exampg_m/images/confirm1.jpg" /><br>(點擊圖片放大)<br>
                                 <br>
-                                圖二、請仔細檢視所有資料，並確定無誤後，按下"確認"，即完成「資料確認」；若發現資料有誤可按"取消"，進行「修改報名資料」。<br>
+                                圖二、請仔細檢視所有資料，並確定無誤後，按下"確認"，即完成「<a href="./confirm.php">資料確認</a>」；若發現資料有誤可按"取消"，進行「<a href="./alter.php">修改報名資料</a>」。<br>
                                 <br>
                                 <img src="https://aps.ncue.edu.tw/exampg_m/images/confirm2.jpg" /><br>(點擊圖片放大)<br>
                                 <br>
-                                ◆當您完成修改後，若要進行資料確認，請重新登入「資料確認」。<br>
+                                ◆當您完成修改後，若要進行資料確認，請重新登入「<a href="./confirm.php">資料確認</a>」。<br>
                                 <br>
                                 圖三、資料確認完成，日後請密切注意網頁上的相關資料。<br>
                                 <br>
                                 <img src="https://aps.ncue.edu.tw/exampg_m/images/confirm3.jpg" /><br>(點擊圖片放大)<br>
                                 <br>
-                                ◆進行「填寫報名表」、「修改報名資料」、「資料確認」等動作後，系統會自動寄送E-mail通知信至您登錄之電子郵件信箱。<br>
+                                ◆進行「填寫報名表」、「<a href="./alter.php">修改報名資料</a>」、「<a href="./confirm.php">資料確認</a>」等動作後，系統會自動寄送E-mail通知信至您登錄之電子郵件信箱。<br>
                             </p>
                         </div>
                     </div>
@@ -193,7 +193,7 @@
             </div>
         </div>
 
-        <div id="imgModal" class="modal" tabindex="-1">
+        <!--<div id="imgModal" class="modal" tabindex="-1">
             <div class="modal-dialog modal-xl">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -207,7 +207,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div>-->
     </section>
 
     <?php require_once("./module/footer.php") ?>
@@ -225,8 +225,9 @@
         });
 
         $("#prointroTabContent img").on('click', function() {
-            $("#imgModal img").attr('src', $(this).attr('src'));
-            $('#imgModal').modal('show')
+            window.location.assign($(this).attr('src'));
+            /*$("#imgModal img").attr('src', $(this).attr('src'));
+            $('#imgModal').modal('show')*/
         });
     </script>
 
