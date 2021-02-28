@@ -18,8 +18,8 @@ try {
             }
         } else if (!isset($_POST['oper'])) {
             $adminF = fopen("admin.txt", "r");
-            $account = fgets($adminF);
-            $pwd = fgets($adminF);
+            $account = rtrim(fgets($adminF));
+            $pwd = rtrim(fgets($adminF));
             fclose($adminF);
             if ($_POST['account'] === $account && $_POST['pwd'] === $pwd) {
                 if (isset($_COOKIE['token'])) {
