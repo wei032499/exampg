@@ -37,6 +37,7 @@ API Documentation：https://wei032499.github.io/exampg/
 ## 後端(Back-end)
 #### db_account.php (`./API/common/db_account.php`)：資料庫連線資訊
 #### db.php (`./API/common/db.php`)：與資料庫建立連線`$conn`
+#### config.php (`./API/common/config.php`)：儲存於資料庫的共用變數
 #### functions.php (`./API/common/functions.php`)：定義共用的函數
 #### auth資料夾 (`./API/auth/`)：帳號驗證相關
 #### common資料夾 (`./API/common/`)：共用函數與檔案
