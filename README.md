@@ -1,6 +1,8 @@
 # 國立彰化師範大學網路報名系統
 API Documentation：https://wei032499.github.io/exampg/
 
+[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/66c5dba4d9a9998ff21d)
+
 ## 概述(Overview)
 1. 以存放在cookie的JSON Web Token (JWT)作權限驗證。
 1. 利用browser的sessionStorage做資料的暫存(表單確認頁)。
@@ -75,3 +77,6 @@ API Documentation：https://wei032499.github.io/exampg/
     substr(ID,1,5) => ORASTATUS_ID
     substr(ID,4,1) => '0'(不分組)、'9'(不分組選考)
     substr(ID,6,1) => SECTION ('0'表示口試或審查)
+
+## 其他相關文件
+請參照`./documentation/`資料夾
