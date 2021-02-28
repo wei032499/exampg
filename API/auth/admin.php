@@ -17,7 +17,11 @@ try {
                 }
             }
         } else if (!isset($_POST['oper'])) {
-            if ($_POST['account'] === "exampg" && $_POST['pwd'] === "exampg_ncue") {
+            $adminF = fopen("admin.txt", "r");
+            $account = fgets($adminF);
+            $pwd = fgets($adminF);
+            fclose($adminF);
+            if ($_POST['account'] === $account && $_POST['pwd'] === $pwd) {
                 if (isset($_COOKIE['token'])) {
                     $payload = JWT::verifyToken($_COOKIE['token']);
                     if ($payload === false)
@@ -40,8 +44,6 @@ try {
     $result['message'] = $e->getMessage();
     //$result['line'] = $e->getLine();
 }
-
-
 
 oci_close($conn);
 echo json_encode($result);
