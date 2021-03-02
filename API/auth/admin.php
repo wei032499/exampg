@@ -17,7 +17,7 @@ try {
                 }
             }
         } else if (!isset($_POST['oper'])) {
-            $adminF = fopen("admin.txt", "r");
+            $adminF = fopen("../common/admin.txt", "r");
             $account = rtrim(fgets($adminF));
             $pwd = rtrim(fgets($adminF));
             fclose($adminF);
