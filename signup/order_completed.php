@@ -77,7 +77,7 @@
             $('#acc2_end_date').text(sessionStorage.getItem('acc2_end_date'));
         });
         $("#print_btn").on('click', function() {
-            let print_area = $("<div></div>").html("<h1 style='text-align:center;margin-bottom:1.5rem'>國立彰化師範大學 網路報名系統</h1>" + $("#content").prop("outerHTML"));
+            var print_area = $("<div></div>").html("<h1 style='text-align:center;margin-bottom:1.5rem'>國立彰化師範大學 網路報名系統</h1>" + $("#content").prop("outerHTML"));
             $(print_area).print({
                 globalStyles: true,
                 title: "國立彰化師範大網路報名繳費帳號",

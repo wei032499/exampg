@@ -32,7 +32,7 @@ try {
                 $cookieOpt = "token=" . $token . ";" . getCookieOptions($cookie_options_httponly);
                 header("Set-Cookie: " . $cookieOpt);
             } else
-                throw new Exception("登入失敗！", 401);
+                throw new Exception("帳號或密碼錯誤", 401);
         } else
             throw new Exception("Bad Request", 400);
     } else

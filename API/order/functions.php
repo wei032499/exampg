@@ -138,29 +138,29 @@ function checkGraduated($conn, $id, $ACT_YEAR_NO)
         oci_execute($stmt, OCI_DEFAULT);
         oci_fetch($stmt);
         $nrows = oci_result($stmt, 1); //$nrows -->總筆數
+        oci_free_statement($stmt);
         if ($nrows > 0) {
             $graduated = 2;
         } /*else {
-                //96年以前在職專班畢業生(尚未電腦化)
-                //需再修改account_c.php
-                if ($id === "L120210922" || $id === "Q220098486" || $id === "N121851563" || $id === "N220261405" || $id === "N122009956") {
-                    $graduated = 1;
-                }
-                //畢業生報名費打八折(106/12/6淑琬確認--限在學,畢業生,延長修業 , 108/09/19 淑琬要求排除學分班(94))
-                $sql = "SELECT count(*) from dean.s30_student WHERE  stu_idno=:id and stu_status in ('1','8','29')  and substr(stu_id,4,2)!='94' ";
-                $stmt = oci_parse($conn, $sql);
-                $params = array(':id' => $id);
-                foreach ($params as $key => $val)
-                    oci_bind_by_name($stmt, $key, $params[$key]);
-                oci_execute($stmt, OCI_DEFAULT);
-                oci_fetch($stmt);
-                $nrows = oci_result($stmt, 1); //$nrows -->總筆數
-                if ($nrows > 0) {
-                    $graduated = 1;
-                } else {
-                    $graduated = 0;
-                }
-            }*/
+            //96年以前在職專班畢業生(尚未電腦化)
+            //需再修改account_c.php
+            if ($id === "L120210922" || $id === "Q220098486" || $id === "N121851563" || $id === "N220261405" || $id === "N122009956") {
+                $graduated = 1;
+            }
+            //畢業生報名費打八折(106/12/6淑琬確認--限在學,畢業生,延長修業 , 108/09/19 淑琬要求排除學分班(94))
+            $sql = "SELECT count(*) from dean.s30_student WHERE  stu_idno=:id and stu_status in ('1','8','29')  and substr(stu_id,4,2)!='94' ";
+            $stmt = oci_parse($conn, $sql);
+            oci_bind_by_name($stmt, ':id',  $id);
+            oci_execute($stmt, OCI_DEFAULT);
+            oci_fetch($stmt);
+            $nrows = oci_result($stmt, 1); //$nrows -->總筆數
+            oci_free_statement($stmt);
+            if ($nrows > 0) {
+                $graduated = 1;
+            } else {
+                $graduated = 0;
+            }
+        }*/
     }
 
     return $graduated;

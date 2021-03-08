@@ -1,6 +1,38 @@
+var broswerV = getBroswer();
+if ((broswerV.broswer === "Chrome" && broswerV.version < 45) ||
+    (broswerV.broswer === "Firefox" && broswerV.version < 38) ||
+    (broswerV.broswer === "Edge" && broswerV.version < 12) ||
+    (broswerV.broswer === "IE" && broswerV.version < 10) ||
+    (broswerV.broswer === "Safari" && broswerV.version < 9) ||
+    (broswerV.broswer === "Opera" && broswerV.version < 30)) {
+    alert("不支援此瀏覽器版本！請改用下列瀏覽器版本：\nChrome >= 45\nFirefox >= 38\nEdge >= 12\nIE >= 10\nSafari >= 9\nOpera >= 30");
+}
+
+function getBroswer() {
+    var sys = {};
+    var ua = navigator.userAgent.toLowerCase();
+    var s;
+    (s = ua.match(/edge\/([\d.]+)/)) ? sys.edge = s[1] :
+        (s = ua.match(/rv:([\d.]+)\) like gecko/)) ? sys.ie = s[1] :
+            (s = ua.match(/msie ([\d.]+)/)) ? sys.ie = s[1] :
+                (s = ua.match(/firefox\/([\d.]+)/)) ? sys.firefox = s[1] :
+                    (s = ua.match(/chrome\/([\d.]+)/)) ? sys.chrome = s[1] :
+                        (s = ua.match(/opera.([\d.]+)/)) ? sys.opera = s[1] :
+                            (s = ua.match(/version\/([\d.]+).*safari/)) ? sys.safari = s[1] : 0;
+
+    if (sys.edge) return { broswer: "Edge", version: parseFloat(sys.edge) };
+    if (sys.ie) return { broswer: "IE", version: parseFloat(sys.ie) };
+    if (sys.firefox) return { broswer: "Firefox", version: parseFloat(sys.firefox) };
+    if (sys.chrome) return { broswer: "Chrome", version: parseFloat(sys.chrome) };
+    if (sys.opera) return { broswer: "Opera", version: parseFloat(sys.opera) };
+    if (sys.safari) return { broswer: "Safari", version: parseFloat(sys.safari) };
+
+    return { broswer: "", version: parseFloat("0") };
+}
+
 //用於部分未定義"URLSearchParams"的瀏覽器
 if (typeof URLSearchParams === "undefined") {
-    function URLSearchParams(url) {
+    var URLSearchParams = function (url) {
         this.url = url;
     }
     URLSearchParams.prototype.get = function (name) {
@@ -15,15 +47,15 @@ if (typeof URLSearchParams === "undefined") {
 
 //將儲存於sessionStorage的serialized form轉換為object
 function getSessionItems(itemName) {
-    let sessionItems = {};
-    let storage = sessionStorage.getItem(itemName);
+    var sessionItems = {};
+    var storage = sessionStorage.getItem(itemName);
     if (storage !== null) {
-        let elements = storage.split('&');
-        for (let i = 0; i < elements.length; i++) {
-            let strParts = elements[i].split("=");
+        var elements = storage.split('&');
+        for (var i = 0; i < elements.length; i++) {
+            var strParts = elements[i].split("=");
             strParts[0] = decodeURIComponent(strParts[0]);
             strParts[1] = decodeURIComponent(strParts[1]);
-            let key = strParts[0];
+            var key = strParts[0];
             if (key.substr(-2) === "[]") //arrayObj
             {
                 key = key.slice(0, -2);
@@ -55,8 +87,8 @@ function getData(url, cache, payload) {
         return response.data;
     })
         .fail(function (jqXHR, exception) {
-            let response = jqXHR.responseJSON;
-            let msg = '';
+            var response = jqXHR.responseJSON;
+            var msg = '';
             if (response === undefined)
                 msg = exception + "\n" + url + "\n" + jqXHR.responseText;
             else if (response.hasOwnProperty('message')) {
@@ -70,11 +102,11 @@ function getData(url, cache, payload) {
 
 //將data object寫回form
 function fillForm(items) {
-    let keys = Object.keys(items);
-    for (let i = 0; i < keys.length; i++) {
+    var keys = Object.keys(items);
+    for (var i = 0; i < keys.length; i++) {
         if (Array.isArray(items[keys[i]])) {
-            for (let j = 0; j < items[keys[i]].length; j++) {
-                let end = "";
+            for (var j = 0; j < items[keys[i]].length; j++) {
+                var end = "";
                 if (keys[i].substr(-2) !== "[]")
                     end = "[]";
                 if ($("form [name='" + keys[i] + end + "']:eq(" + j + ")").prop("tagName") === "SELECT") {
@@ -118,8 +150,8 @@ function logout(redirect) {
             window.location.replace('./');
     })
         .fail(function (jqXHR, exception) {
-            let response = jqXHR.responseJSON;
-            let msg = '';
+            var response = jqXHR.responseJSON;
+            var msg = '';
             if (response === undefined)
                 msg = exception + "\n" + "./API/auth/logout.php" + "\n" + jqXHR.responseText;
             else if (response.hasOwnProperty('message')) {
@@ -134,10 +166,10 @@ function logout(redirect) {
 
 //取得cookie中指定key的value
 function getCookie(name) {
-    const cookieArray = document.cookie.split('; ');
-    for (let i = 0; i < cookieArray.length; i++) {
-        let cookieName = cookieArray[i].split('=')[0];
-        let cookieValue = cookieArray[i].split('=')[1];
+    var cookieArray = document.cookie.split('; ');
+    for (var i = 0; i < cookieArray.length; i++) {
+        var cookieName = cookieArray[i].split('=')[0];
+        var cookieValue = cookieArray[i].split('=')[1];
         if (cookieName === name)
             return cookieValue;
     }

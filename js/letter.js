@@ -35,8 +35,8 @@ $(function () {
                 $(this).removeAttr('disabled');
             })
             .fail(function (jqXHR, exception) {
-                let response = jqXHR.responseJSON;
-                let msg = '';
+                var response = jqXHR.responseJSON;
+                var msg = '';
                 if (response === undefined)
                     msg = exception + "\n" + "./API/signup/letter.php" + "\n" + jqXHR.responseText;
                 else if (response.hasOwnProperty('message')) {
@@ -114,8 +114,8 @@ $(function () {
                     loadData();
                 })
                 .fail(function (jqXHR, exception) {
-                    let response = jqXHR.responseJSON;
-                    let msg = '';
+                    var response = jqXHR.responseJSON;
+                    var msg = '';
                     if (response === undefined)
                         msg = exception + "\n" + "./API/signup/letter.php" + "\n" + jqXHR.responseText;
                     else if (response.hasOwnProperty('message')) {
@@ -142,10 +142,10 @@ function loadData() {
             if (response.member.length > 0) {
                 $("#mybody").children().remove();
                 for (var i = 0; i < response.member.length; i++) {
-                    let disabled_name = "";
-                    let disabled_org = "";
-                    let disabled_title = "";
-                    let disabled_email = "";
+                    var disabled_name = "";
+                    var disabled_org = "";
+                    var disabled_title = "";
+                    var disabled_email = "";
                     if (response.member[i][8] != null &&
                         response.member[i][8].length > 10) {
                         //使用"disabled"無法傳送表單欄位,readonly可以
@@ -174,8 +174,8 @@ function loadData() {
             }
         })
         .fail(function (jqXHR, exception) {
-            let response = jqXHR.responseJSON;
-            let msg = '';
+            var response = jqXHR.responseJSON;
+            var msg = '';
             if (response === undefined)
                 msg = exception + "\n" + "./API/signup/letter.php" + "\n" + jqXHR.responseText;
             else if (response.hasOwnProperty('message')) {

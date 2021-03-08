@@ -81,8 +81,8 @@
 </nav>
 <script>
     $(function() {
-        let path_array = window.location.pathname.split('/');
-        let filename = path_array[path_array.length - 1];
+        var path_array = window.location.pathname.split('/');
+        var filename = path_array[path_array.length - 1];
         $("#navbarSupportedContent>ul>li").find(".active").removeClass("active");
         if (filename === "" || filename === "index.php") {
             $("#navbarSupportedContent>ul>li").eq(0).addClass("active");

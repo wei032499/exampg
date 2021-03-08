@@ -46,7 +46,7 @@ try {
             oci_bind_by_name($stmt, ':sid',  $_POST['sid']);
             oci_execute($stmt, OCI_DEFAULT);
             if (!oci_fetch($stmt))
-                throw new Exception("登入失敗！", 401);
+                throw new Exception("身分證或准考証號錯誤", 401);
             oci_free_statement($stmt);
 
             $payload['id'] = $_POST['IDNumber'];
@@ -78,15 +78,15 @@ try {
                         $payload['authority'] = 1;
                         $username = oci_result($stmt, "NAME");
                     } else
-                        throw new Exception("登入失敗！", 401);
+                        throw new Exception("帳號密碼或身分證錯誤", 401);
                     oci_free_statement($stmt);
                 }
             } else
-                throw new Exception("登入失敗！", 401);
+                throw new Exception("帳號或密碼錯誤", 401);
 
             $Token = new Token($conn, JWT::getToken($payload));
             $token = $Token->refresh();
-            setcookie('username', $username, time() + 3600, explode("/API", substr(str_replace('\\', '/', __DIR__ . "/"), str_replace('\\', '/', strlen($_SERVER['DOCUMENT_ROOT']))))[0] . "/");
+            setcookie('username', $username, time() + 3600, ROOTDIR);
         }
 
 

@@ -9,17 +9,9 @@
 
     <link rel="stylesheet" href="./css/bootstrap.min.css" />
     <link rel="stylesheet" href="./css/custom.css" />
-    <link rel="stylesheet" href="./css/toastr.min.css" />
     <script src="./js/jquery.min.js"></script>
     <script src="./js/bootstrap.bundle.min.js"></script>
-    <script src="./js/toastr.min.js"></script>
     <script src="./js/common.js"></script>
-
-    <!--jQuery Validation Plugin-->
-    <script src="./js/jquery.validate.min.js"></script>
-    <script src="./js/additional-methods.min.js"></script>
-    <script src="./js/messages_zh_TW.min.js"></script>
-
     <script>
         if (sessionStorage === undefined) {
             alert("未支援Web Storage！\n請更換瀏覽器再試。");
@@ -81,6 +73,7 @@
                     </label>
                     <div class="col-sm-4">
                         <input type="text" class="form-control" id="inputId" aria-describedby="inputIdHelp" pattern="[A-Z]\d{9}" name="id" required>
+                        <span id="statusMsg" class="color-info"></span>
                     </div>
                 </div>
                 <div class="form-group row">
@@ -127,10 +120,50 @@
 
     <?php require_once("./module/footer.php") ?>
 
+    <!--toastr-->
+    <link rel="stylesheet" href="./css/toastr.min.css" />
+    <script src="./js/toastr.min.js"></script>
+
+    <!--jQuery Validation Plugin-->
+    <script src="./js/jquery.validate.min.js"></script>
+    <script src="./js/additional-methods.min.js"></script>
+    <script src="./js/messages_zh_TW.min.js"></script>
+
+    <!--custom-->
+    <script src="./js/order.js"></script>
     <script>
         $(function() {
-            let formData = getSessionItems('order');
+            var formData = getSessionItems('order');
             fillForm(formData);
+        });
+
+        $("#inputId").on('blur', function() {
+            $.ajax({
+                    type: 'POST',
+                    url: './API/order/check_graduated.php',
+                    data: {
+                        id: this.value
+                    },
+                    dataType: 'json'
+                }).done(function(response) {
+                    toastr.clear();
+                    $("#statusMsg").text(response.message);
+
+                })
+                .fail(function(jqXHR, exception) {
+                    $("#statusMsg").text('');
+                    toastr.clear();
+                    var response = jqXHR.responseJSON;
+                    var msg = '';
+                    if (response === undefined)
+                        msg = exception + "\n" + './API/order/check_graduated.php' + "\n" + jqXHR.responseText;
+                    else if (response.hasOwnProperty('message')) {
+                        msg = response.message;
+                    } else {
+                        msg = 'Uncaught Error.\n' + jqXHR.responseText;
+                    }
+                    toastr.error(msg);
+                });
         });
 
         $("form").validate({

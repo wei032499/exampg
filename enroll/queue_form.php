@@ -112,8 +112,8 @@
         $(function() {
             $("#name").text(formData.name);
             $("#sex").text(formData.sex);
-            for (let i = 0; i < formData.result.length; i++) {
-                let row = "";
+            for (var i = 0; i < formData.result.length; i++) {
+                var row = "";
                 if (formData.result[i].ranking === 0)
                     row = '<div class="row"><div class="col" >' + formData.result[i].dept + '</div><div class="col-5" id="rank">' + "正取" + '</div></div>';
                 else
@@ -158,8 +158,8 @@
                     window.location.replace('./');
                 })
                 .fail(function(jqXHR, exception) {
-                    let response = jqXHR.responseJSON;
-                    let msg = '';
+                    var response = jqXHR.responseJSON;
+                    var msg = '';
                     if (response === undefined)
                         msg = exception + "\n" + "./API/auth/logout.php" + "\n" + jqXHR.responseText;
                     else if (response.hasOwnProperty('message')) {
@@ -206,8 +206,8 @@
                     $("form [type='submit']").removeAttr('disabled');
 
                     toastr.clear();
-                    let response = jqXHR.responseJSON;
-                    let msg = '';
+                    var response = jqXHR.responseJSON;
+                    var msg = '';
                     if (response === undefined)
                         msg = exception + "\n" + "./API/enroll/status.php" + "\n" + jqXHR.responseText;
                     else if (response.hasOwnProperty('message')) {

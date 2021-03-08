@@ -437,15 +437,15 @@
                 }
             },
             submitHandler: function(form) {
-                for (let i = 0; i < $("form [name='union_priority[]']").length; i++)
+                for (var i = 0; i < $("form [name='union_priority[]']").length; i++)
                     if ($("form [name='union_priority[]']").eq(i).val() === "-1")
                         if (confirm("有放棄的志願序，確定繼續嗎？"))
                             break;
                         else
                             return false;
-                for (let i = 0; i < $("form [name='union_priority[]']").length; i++)
+                for (var i = 0; i < $("form [name='union_priority[]']").length; i++)
                     if ($("form [name='union_priority[]']").eq(i).val() !== "-1")
-                        for (let j = i + 1; j < $("form [name='union_priority[]']").length; j++)
+                        for (var j = i + 1; j < $("form [name='union_priority[]']").length; j++)
                             if ($("form [name='union_priority[]']").eq(i).val() === $("form [name='union_priority[]']").eq(j).val()) {
                                 alert("不可選填重複的志願！");
                                 return false;

@@ -91,7 +91,7 @@
 
     <script>
         $("#print_btn").on('click', function() {
-            let print_area = $("<div></div>").html("<h1 style='text-align:center;margin-bottom:1.5rem'>國立彰化師範大學 網路報名系統</h1>" + $("#content").prop("outerHTML"));
+            var print_area = $("<div></div>").html("<h1 style='text-align:center;margin-bottom:1.5rem'>國立彰化師範大學 網路報名系統</h1>" + $("#content").prop("outerHTML"));
             $(print_area).print({
                 globalStyles: true,
                 title: "報名費繳費方式及銷帳查詢方式說明",

@@ -9,7 +9,7 @@ $(function () {
     if (typeof deptObj !== 'undefined') {
         // fill department list
         $("form [name='dept']").empty().append('<option selected hidden disabled></option>');
-        for (let i = 0; i < deptObj.dept.length; i++)
+        for (var i = 0; i < deptObj.dept.length; i++)
             $("form [name='dept']").append("<option value='" + deptObj.dept[i].dept_id + "'>" + deptObj.dept[i].name + "</option>");
 
         //報考系所
@@ -21,13 +21,13 @@ $(function () {
             $("form [name='orastatus_id']").empty().append('<option selected hidden disabled></option>');
             $("form [name='organize_id']").empty();
 
-            for (let i = 0; i < deptObj.group[$("form [name='dept']").val()].length; i++)
+            for (var i = 0; i < deptObj.group[$("form [name='dept']").val()].length; i++)
                 $("form [name='organize_id']").append("<option value='" + deptObj.group[$("form [name='dept']").val()][i].group_id + "'>" + deptObj.group[$("form [name='dept']").val()][i].name + "</option>");
             if (deptObj.group[$("form [name='dept']").val()].length > 1)
                 $("form [name='organize_id']").append('<option selected hidden disabled></option>');
             else
                 $("form [name='organize_id']>option:selected").change().blur();
-            let index = deptObj.dept.map(function (e) {
+            var index = deptObj.dept.map(function (e) {
                 return e.dept_id;
             }).indexOf($("form [name='dept']").val());
 
@@ -56,19 +56,19 @@ $(function () {
             {
 
                 $.when(getData("./API/dept/union.php?dept_id=" + this.value)).done(function (_deptObj) {
-                    let options = "<option value='" + $("form [name='dept']>option:selected").val() + "' selected>" + $("form [name='dept']>option:selected").text() + "</option>";
+                    var options = "<option value='" + $("form [name='dept']>option:selected").val() + "' selected>" + $("form [name='dept']>option:selected").text() + "</option>";
                     $("#union>div").append('<select class="form-control form-group" name="union_priority[]" readonly required>' + options + '</select>');
 
-                    let unionDepts = _deptObj.data;
+                    var unionDepts = _deptObj.data;
                     options = "<option value='-1' selected>放棄志願</option>";
-                    for (let i = 0; i < unionDepts.length; i++)
+                    for (var i = 0; i < unionDepts.length; i++)
                         if (unionDepts[i].dept_id !== $("form [name='dept']>option:selected").val())
                             options += "<option value='" + unionDepts[i].dept_id + "'>" + unionDepts[i].name + "</option>";
-                    for (let i = 0; i < unionDepts.length - 1; i++) //生成剩下可選聯合招生系所
+                    for (var i = 0; i < unionDepts.length - 1; i++) //生成剩下可選聯合招生系所
                         $("#union>div").append('<select class="form-control form-group" name="union_priority[]" required>' + options + '</select>');
 
                     if (typeof formData !== 'undefined' && typeof formData['union_priority'] !== 'undefined') {
-                        for (let i = 0; i < formData['union_priority'].length; i++) {
+                        for (var i = 0; i < formData['union_priority'].length; i++) {
                             $("form [name='union_priority[]']:eq(" + i + ") >option[value='" + formData['union_priority'][i] + "']").removeAttr("disabled");
                             $("form [name='union_priority[]']:eq(" + i + ") ").val(formData['union_priority'][i]).change();
                         }
@@ -77,7 +77,7 @@ $(function () {
                     if (typeof isConfirmForm !== "undefined" && isConfirmForm === true) {
                         $("form select[name='union_priority[]']").each(function () {
                             $(this).addClass('form-control-plaintext').removeClass('form-control');
-                            let text = "<div class='text-confirm' >" + $(this).children("option:selected").text() + "</div>";// class='" + $(this).attr('class') + "'
+                            var text = "<div class='text-confirm' >" + $(this).children("option:selected").text() + "</div>";// class='" + $(this).attr('class') + "'
                             $(this).css('display', 'none');
                             $(this).before(text);
                         });
@@ -98,7 +98,7 @@ $(function () {
         });
         $("form [name='organize_id']").on('change', function () {
             $("form [name='orastatus_id']").empty();
-            for (let i = 0; i < deptObj.status[$("form [name='dept']").val()][$("form [name='organize_id']").val()].length; i++)
+            for (var i = 0; i < deptObj.status[$("form [name='dept']").val()][$("form [name='organize_id']").val()].length; i++)
                 $("form [name='orastatus_id']").append("<option value='" + deptObj.status[$("form [name='dept']").val()][$("form [name='organize_id']").val()][i].status_id + "'>" + deptObj.status[$("form [name='dept']").val()][$("form [name='organize_id']").val()][i].name + "</option>");
             if (deptObj.status[$("form [name='dept']").val()][$("form [name='organize_id']").val()].length > 1)
                 $("form [name='orastatus_id']").append('<option selected hidden disabled></option>');
@@ -110,8 +110,8 @@ $(function () {
             $("#subject").css('visibility', 'hidden');
             $("#subject>div").empty();
 
-            let isOptional = false;
-            let index = deptObj.dept.map(function (e) {
+            var isOptional = false;
+            var index = deptObj.dept.map(function (e) {
                 return e.dept_id;
             }).indexOf($("form [name='dept']").val());
             if (deptObj.dept[index].union_type !== "5") //不為不須選考科組別之聯合
@@ -123,13 +123,13 @@ $(function () {
             {
                 isOptional = true;
 
-                let keys = Object.keys(deptObj.subject[$("form [name='dept']").val()][$("form [name='organize_id']").val()][$("form [name='orastatus_id']").val()]);
-                for (let i = 0; i < keys.length; i++) {
-                    let options = "";
-                    let subject_count = deptObj.subject[$("form [name='dept']").val()][$("form [name='organize_id']").val()][$("form [name='orastatus_id']").val()][keys[i]].length;
-                    for (let j = 0; j < subject_count; j++) {
-                        let subject_id = deptObj.subject[$("form [name='dept']").val()][$("form [name='organize_id']").val()][$("form [name='orastatus_id']").val()][keys[i]][j].subject_id;
-                        let subject_name = deptObj.subject[$("form [name='dept']").val()][$("form [name='organize_id']").val()][$("form [name='orastatus_id']").val()][keys[i]][j].name;
+                var keys = Object.keys(deptObj.subject[$("form [name='dept']").val()][$("form [name='organize_id']").val()][$("form [name='orastatus_id']").val()]);
+                for (var i = 0; i < keys.length; i++) {
+                    var options = "";
+                    var subject_count = deptObj.subject[$("form [name='dept']").val()][$("form [name='organize_id']").val()][$("form [name='orastatus_id']").val()][keys[i]].length;
+                    for (var j = 0; j < subject_count; j++) {
+                        var subject_id = deptObj.subject[$("form [name='dept']").val()][$("form [name='organize_id']").val()][$("form [name='orastatus_id']").val()][keys[i]][j].subject_id;
+                        var subject_name = deptObj.subject[$("form [name='dept']").val()][$("form [name='organize_id']").val()][$("form [name='orastatus_id']").val()][keys[i]][j].name;
                         options += "<option value='" + subject_id + "'>" + subject_name + "</option>";
 
                     }
@@ -152,17 +152,17 @@ $(function () {
             } else {
                 //同一section或有多個subjects，即表示可選考科
 
-                let keys = Object.keys(deptObj.subject[$("form [name='dept']").val()][$("form [name='organize_id']").val()][$("form [name='orastatus_id']").val()]);
-                for (let i = 0; i < keys.length; i++) {
-                    let options = "<option selected hidden disabled></option>";
-                    let subject_count = deptObj.subject[$("form [name='dept']").val()][$("form [name='organize_id']").val()][$("form [name='orastatus_id']").val()][keys[i]].length;
+                var keys = Object.keys(deptObj.subject[$("form [name='dept']").val()][$("form [name='organize_id']").val()][$("form [name='orastatus_id']").val()]);
+                for (var i = 0; i < keys.length; i++) {
+                    var options = "<option selected hidden disabled></option>";
+                    var subject_count = deptObj.subject[$("form [name='dept']").val()][$("form [name='organize_id']").val()][$("form [name='orastatus_id']").val()][keys[i]].length;
 
                     if (subject_count > 1) //有1個以上考科才顯示選擇
                     {
                         isOptional = true;
-                        for (let j = 0; j < subject_count; j++) {
-                            let subject_id = deptObj.subject[$("form [name='dept']").val()][$("form [name='organize_id']").val()][$("form [name='orastatus_id']").val()][keys[i]][j].subject_id;
-                            let subject_name = deptObj.subject[$("form [name='dept']").val()][$("form [name='organize_id']").val()][$("form [name='orastatus_id']").val()][keys[i]][j].name;
+                        for (var j = 0; j < subject_count; j++) {
+                            var subject_id = deptObj.subject[$("form [name='dept']").val()][$("form [name='organize_id']").val()][$("form [name='orastatus_id']").val()][keys[i]][j].subject_id;
+                            var subject_name = deptObj.subject[$("form [name='dept']").val()][$("form [name='organize_id']").val()][$("form [name='orastatus_id']").val()][keys[i]][j].name;
                             options += "<option value='" + subject_id + "'>" + subject_name + "</option>";
 
                         }
@@ -180,27 +180,27 @@ $(function () {
             $("form [name='subject[]']").on('change', function () {
                 if (this.value === "")
                     return false;
-                let index = deptObj.dept.map(function (e) {
+                var index = deptObj.dept.map(function (e) {
                     return e.dept_id;
                 }).indexOf($("form [name='dept']").val());
                 if (deptObj.dept[index].union_type !== "5") //不為不須選考科組別之聯合
                 {
                     $.when(getData("./API/dept/union.php?subject_id=" + this.value)).done(function (_deptObj) {
                         $("#union>div").empty();
-                        let options = "<option value='" + $("form [name='dept']>option:selected").val() + "' selected>" + $("form [name='dept']>option:selected").text() + "</option>";
+                        var options = "<option value='" + $("form [name='dept']>option:selected").val() + "' selected>" + $("form [name='dept']>option:selected").text() + "</option>";
                         $("#union>div").append('<select class="form-control form-group" name="union_priority[]" readonly required>' + options + '</select>');
 
-                        let unionDepts = _deptObj.data;
+                        var unionDepts = _deptObj.data;
                         options = "<option value='-1' selected>放棄志願</option>";
-                        for (let i = 0; i < unionDepts.length; i++)
+                        for (var i = 0; i < unionDepts.length; i++)
                             if (unionDepts[i].dept_id !== $("form [name='dept']>option:selected").val())
                                 options += "<option value='" + unionDepts[i].dept_id + "'>" + unionDepts[i].name + "</option>";
 
-                        for (let i = 0; i < unionDepts.length - 1; i++) //生成剩下可選聯合招生系所
+                        for (var i = 0; i < unionDepts.length - 1; i++) //生成剩下可選聯合招生系所
                             $("#union>div").append('<select class="form-control form-group" name="union_priority[]" required>' + options + '</select>');
 
                         if (typeof formData !== 'undefined' && typeof formData['union_priority'] !== 'undefined') {
-                            for (let i = 0; i < formData['union_priority'].length; i++) {
+                            for (var i = 0; i < formData['union_priority'].length; i++) {
                                 $("form [name='union_priority[]']:eq(" + i + ") >option[value='" + formData['union_priority'][i] + "']").removeAttr("disabled");
                                 $("form [name='union_priority[]']:eq(" + i + ") ").val(formData['union_priority'][i]).change();
                             }
@@ -209,7 +209,7 @@ $(function () {
                         if (typeof isConfirmForm !== "undefined" && isConfirmForm === true) {
                             $("form select[name='union_priority[]']").each(function () {
                                 $(this).addClass('form-control-plaintext').removeClass('form-control');
-                                let text = "<div  class='text-confirm' >" + $(this).children("option:selected").text() + "</div>";//class='" + $(this).attr('class') + "'
+                                var text = "<div  class='text-confirm' >" + $(this).children("option:selected").text() + "</div>";//class='" + $(this).attr('class') + "'
                                 $(this).css('display', 'none');
                                 $(this).before(text);
                             });
@@ -218,16 +218,16 @@ $(function () {
                             $("#union").css('display', '');
                     });
                 }
-                let section = this.value.substr(5, 1);
+                var section = this.value.substr(5, 1);
                 index = deptObj.subject[$("form [name='dept']").val()][$("form [name='organize_id']").val()][$("form [name='orastatus_id']").val()][section].map(function (e) {
                     return e.subject_id;
                 }).indexOf(this.value);
-                let subject = deptObj.subject[$("form [name='dept']").val()][$("form [name='organize_id']").val()][$("form [name='orastatus_id']").val()][section][index];
+                var subject = deptObj.subject[$("form [name='dept']").val()][$("form [name='organize_id']").val()][$("form [name='orastatus_id']").val()][section][index];
                 if (subject.upload !== undefined && subject.upload === false) {
                     $("#upload_row").css('display', 'none');
                     $("form [name='file']").attr('disabled', true);
                 } else {
-                    let index = deptObj.dept.map(function (e) {
+                    var index = deptObj.dept.map(function (e) {
                         return e.dept_id;
                     }).indexOf($("form [name='dept']").val());
                     if (deptObj.dept[index].upload_type > 1) //upload_type 審查資料繳交方式:  1:郵寄  2:上傳  3:郵寄+上傳
@@ -325,8 +325,8 @@ function checkUploadStatus() {
             $('form #fileLink').removeAttr('href');
         } else {
             toastr.clear();
-            let response = jqXHR.responseJSON;
-            let msg = '';
+            var response = jqXHR.responseJSON;
+            var msg = '';
             if (response === undefined)
                 msg = exception + "\n" + './API/signup/file.php' + "\n" + jqXHR.responseText;
             else if (response.hasOwnProperty('message')) {
@@ -387,8 +387,8 @@ $("form [name='file']").on('change', function () {
             .fail(function (jqXHR, exception) {
                 // toastr.remove();
                 toastr.clear();
-                let response = jqXHR.responseJSON;
-                let msg = '';
+                var response = jqXHR.responseJSON;
+                var msg = '';
                 if (response === undefined)
                     msg = exception + "\n" + './API/signup/file.php' + "\n" + jqXHR.responseText;
                 else if (response.hasOwnProperty('message')) {
@@ -421,12 +421,12 @@ function formReadOnly() {
     $("form select").addClass('text-confirm');
     $("form [type='number']").attr('type', 'text');
     $("form input:not([type='radio'])").each(function () {
-        let text = "<div  class='text-confirm' >" + $(this).val() + "</div>";//class='" + $(this).attr('class') + "'
+        var text = "<div  class='text-confirm' >" + $(this).val() + "</div>";//class='" + $(this).attr('class') + "'
         $(this).css('display', 'none');
         $(this).before(text);
     });
     $("form select").each(function () {
-        let text = "<div  class='text-confirm' >" + $(this).children("option:selected").text() + "</div>";//class='" + $(this).attr('class') + "'
+        var text = "<div  class='text-confirm' >" + $(this).children("option:selected").text() + "</div>";//class='" + $(this).attr('class') + "'
         $(this).css('display', 'none');
         $(this).before(text);
     });

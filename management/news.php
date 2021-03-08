@@ -14,7 +14,7 @@
     <script src="./js/common.js"></script>
     <script>
         var formData = null;
-        let urlParams = new URLSearchParams(window.location.search);
+        var urlParams = new URLSearchParams(window.location.search);
         if (urlParams.get('id') !== null) {
             $.holdReady(true);
             $.when(getData("./API/news/news.php?id=" + urlParams.get('id'), false)).done(function(data) {
@@ -110,8 +110,8 @@
                 })
                 .fail(function(jqXHR, exception) {
                     $("form [type='submit']").removeAttr('disabled');
-                    let response = jqXHR.responseJSON;
-                    let msg = '';
+                    var response = jqXHR.responseJSON;
+                    var msg = '';
                     if (response === undefined)
                         msg = exception + "\n" + "./API/news/news.php" + "\n" + jqXHR.responseText;
                     else if (response.hasOwnProperty('message')) {

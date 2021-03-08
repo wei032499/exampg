@@ -408,8 +408,8 @@
                 })
                 .fail(function(jqXHR, exception) {
                     $("form [type='submit']").removeAttr('disabled');
-                    let response = jqXHR.responseJSON;
-                    let msg = '';
+                    var response = jqXHR.responseJSON;
+                    var msg = '';
                     if (response === undefined)
                         msg = exception + "\n" + "./API/signup/form.php" + "\n" + jqXHR.responseText;
                     else if (response.hasOwnProperty('message')) {

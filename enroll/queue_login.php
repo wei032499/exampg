@@ -73,8 +73,8 @@
                 .fail(function(jqXHR, exception) {
                     // toastr.remove();
                     toastr.clear();
-                    let response = jqXHR.responseJSON;
-                    let msg = '';
+                    var response = jqXHR.responseJSON;
+                    var msg = '';
                     if (response === undefined)
                         msg = exception + "\n" + './API/auth/login.php' + "\n" + jqXHR.responseText;
                     else if (response.hasOwnProperty('message')) {

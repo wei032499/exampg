@@ -13,7 +13,7 @@ function formReadOnly() {
     $("form select").addClass('text-confirm');
     $("form [type='number']").attr('type', 'text');
     $("form select").each(function () {
-        let input = "<div class='" + $(this).attr('class') + "' style='" + $(this).attr('style') + "' >" + $(this).children("option:selected").text() + "</div>";
+        var input = "<div class='" + $(this).attr('class') + "' style='" + $(this).attr('style') + "' >" + $(this).children("option:selected").text() + "</div>";
         input += "<input type='hidden' class='" + $(this).attr('class') + "' style='" + $(this).attr('style') + "' name='" + $(this).attr('name') + "' value='" + $(this).val() + "'>";
         $(this).replaceWith(input);
     });

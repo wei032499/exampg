@@ -77,8 +77,8 @@
                 .fail(function(jqXHR, exception) {
                     $("form [type='submit']").removeAttr('disabled');
                     toastr.clear();
-                    let response = jqXHR.responseJSON;
-                    let msg = '';
+                    var response = jqXHR.responseJSON;
+                    var msg = '';
                     if (response === undefined)
                         msg = exception + "\n" + './API/auth/forget.php' + "\n" + jqXHR.responseText;
                     else if (response.hasOwnProperty('message')) {

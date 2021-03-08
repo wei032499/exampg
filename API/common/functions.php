@@ -1,9 +1,10 @@
 <?php
+define("ROOTDIR", "/" . basename(dirname(dirname(dirname(__FILE__)))) . "/");
 require_once(dirname(__FILE__) . '/jwt.php');
 require_once(dirname(__FILE__) . '/config.php'); //set config variables from database
 $cookie_options_httponly = array(
     // 'expires' => time() + 3600,
-    'path' => explode("/API", substr(str_replace('\\', '/',  __DIR__ . "/"), str_replace('\\', '/', strlen($_SERVER['DOCUMENT_ROOT']))))[0] . "/",
+    'path' => ROOTDIR,
     'httponly' => true,    // or false
     // 'domain' => '.example.com', // leading dot for compatibility or use subdomain
     // 'secure' => true,     // or false
@@ -11,7 +12,7 @@ $cookie_options_httponly = array(
 );
 $cookie_options = array(
     // 'expires' => time() + 3600,
-    'path' => explode("/API", substr(str_replace('\\', '/',  __DIR__ . "/"), str_replace('\\', '/', strlen($_SERVER['DOCUMENT_ROOT']))))[0] . "/",
+    'path' => ROOTDIR,
     'httponly' => false,    // or false
     // 'domain' => '.example.com', // leading dot for compatibility or use subdomain
     // 'secure' => true,     // or false
@@ -65,7 +66,7 @@ function getCookieOptions($array)
 function clearCookie()
 {
     foreach ($_COOKIE as $name => $value) {
-        setcookie($name, null, time() - 3600, explode("/API", substr(str_replace('\\', '/', __DIR__ . "/"), str_replace('\\', '/', strlen($_SERVER['DOCUMENT_ROOT']))))[0] . "/");
+        setcookie($name, null, time() - 3600, ROOTDIR);
     }
 }
 
@@ -460,7 +461,7 @@ function sendMail($msg_type, $payload)
             $to = $payload['to'];
             $mail_msg = "";
             while (!feof($finc)) {
-                $mail_msg .= str_replace("act_year_no", $ACT_YEAR_NO, str_replace("su_end_date", $SU_END_DATE, str_replace("stud_name", $payload['stud_name'], str_replace("dept_name", $payload['dept_name'], str_replace("r_name", $payload['r_name'], str_replace("r_token", $payload['r_token'], (fgets($finc, 4096))))))));
+                $mail_msg .= str_replace("ROOTDIR", basename(ROOTDIR), str_replace("act_year_no", $ACT_YEAR_NO, str_replace("su_end_date", $SU_END_DATE, str_replace("stud_name", $payload['stud_name'], str_replace("dept_name", $payload['dept_name'], str_replace("r_name", $payload['r_name'], str_replace("r_token", $payload['r_token'], (fgets($finc, 4096)))))))));
             }
             //$to = "bob@cc.ncue.edu.tw";
             mail($to, $subject, $mail_msg, $headers);

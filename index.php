@@ -24,13 +24,13 @@
                 cache: false
             }).done(function(response) {
                 $(function() {
-                    for (let i = 0; i < response['data'].length; i++)
+                    for (var i = 0; i < response['data'].length; i++)
                         $("table tbody").append("<tr><td>" + response['data'][i]['content'] + "</td><td>" + response['data'][i]['date'] + "</td></tr>")
                 });
             })
             .fail(function(jqXHR, exception) {
-                let response = jqXHR.responseJSON;
-                let msg = '';
+                var response = jqXHR.responseJSON;
+                var msg = '';
                 if (response === undefined)
                     msg = exception + "\n" + "./API/news/news.php" + "\n" + jqXHR.responseText;
                 else if (response.hasOwnProperty('message')) {

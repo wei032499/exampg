@@ -1,8 +1,8 @@
 $(function () {
   $("form [name='token']").val(urlParams.get('token'));
 
-  let keys = Object.keys(formData);
-  for (let i = 0; i < keys.length; i++) {
+  var keys = Object.keys(formData);
+  for (var i = 0; i < keys.length; i++) {
     if ($("#" + keys[i]).prop("tagName") === "INPUT")
       $("#" + keys[i]).val(formData[keys[i]]);
     else
@@ -35,8 +35,8 @@ $("#form1").validate({
         window.location.replace('./');
       })
       .fail(function (jqXHR, exception) {
-        let response = jqXHR.responseJSON;
-        let msg = '';
+        var response = jqXHR.responseJSON;
+        var msg = '';
         if (response === undefined)
           msg = exception + "\n" + "./API/signup/letter_fill.php" + "\n" + jqXHR.responseText;
         else if (response.hasOwnProperty('message')) {

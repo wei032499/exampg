@@ -99,7 +99,7 @@
                         su_end_date </span
                       >前至本校網路報名系統《
                       <a
-                        href="https://aps.ncue.edu.tw/exampg_d/letter_fill.php?token=r_token"
+                        href="https://aps.ncue.edu.tw/ROOTDIR/letter_fill.php?token=r_token"
                         target="_blank"
                         >線上填寫推薦函</a
                       >

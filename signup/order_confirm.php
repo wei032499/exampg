@@ -115,11 +115,16 @@
     <link rel="stylesheet" href="./css/toastr.min.css" />
     <script src="./js/toastr.min.js"></script>
 
+    <!--jQuery Validation Plugin-->
+    <script src="./js/jquery.validate.min.js"></script>
+    <script src="./js/additional-methods.min.js"></script>
+    <script src="./js/messages_zh_TW.min.js"></script>
+
     <!--custom-->
     <script src="./js/order.js"></script>
     <script>
         $(function() {
-            let formData = getSessionItems('order');
+            var formData = getSessionItems('order');
             fillForm(formData);
             formReadOnly();
         });
@@ -146,8 +151,8 @@
                 .fail(function(jqXHR, exception) {
                     $("form [type='submit']").removeAttr('disabled');
 
-                    let response = jqXHR.responseJSON;
-                    let msg = '';
+                    var response = jqXHR.responseJSON;
+                    var msg = '';
                     if (response === undefined)
                         msg = exception + "\n" + "./API/order/order.php" + "\n" + jqXHR.responseText;
                     else if (response.hasOwnProperty('message')) {
