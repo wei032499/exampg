@@ -78,15 +78,15 @@
                                 <br>
                                 圖一、填寫申請單：請務必留下正確的資料。<br>
                                 <br>
-                                <img src="https://aps.ncue.edu.tw/exampg_m/images/account_1.jpg" /><br>(點擊圖片放大)<br>
+                                <img src="./images/account_1.jpg" /><br>(點擊圖片放大)<br>
                                 <br>
                                 圖二、資料確認：若因資料錯誤而造成權益的損失，概由填表人自負。<br>
                                 <br>
-                                <img src="https://aps.ncue.edu.tw/exampg_m/images/account_2.jpg" /><br>(點擊圖片放大)<br>
+                                <img src="./images/account_2.jpg" /><br>(點擊圖片放大)<br>
                                 <br>
                                 圖三、申請作業完成：請記下系統給您的繳費帳號，進行繳費並確認銷帳完成，請參考「流程說明」功能裡的「<a href="./intro_payment.php">報名費繳費方式及銷帳查詢方式說明</a>」。<br>
                                 <br>
-                                <img src="https://aps.ncue.edu.tw/exampg_m/images/account_3.jpg" /><br>(點擊圖片放大)<br>
+                                <img src="./images/account_3.jpg" /><br>(點擊圖片放大)<br>
                                 <br>
                                 ◆系統會在確認您繳費後，自動將序號、密碼傳送至您所登錄之E-mail信箱；當您收到序號密碼通知後，即可登入「<a href="./signup.php">填寫報名表</a>」，填寫您的報名資料。<br>
                             </p>
@@ -103,28 +103,28 @@
                                 <br>
                                 圖一、輸入序號及密碼：請輸入序號及密碼，請注意所有英文字母皆為大寫。<br>
                                 <br>
-                                <img src="https://aps.ncue.edu.tw/exampg_m/images/sign1.jpg" /><br>(點擊圖片放大)<br>
+                                <img src="./images/sign1.jpg" /><br>(點擊圖片放大)<br>
                                 <br>
                                 圖二、個人資料提供同意書：請詳細閱讀，若您同意請勾選「我已詳閱本同意書，瞭解並同意」進行下一步。<br>
                                 <br>
-                                <img src="https://aps.ncue.edu.tw/exampg_m/images/sign2.jpg" /><br>(點擊圖片放大)<br>
+                                <img src="./images/sign2.jpg" /><br>(點擊圖片放大)<br>
                                 <br>
                                 圖三、選擇您所要報考的系所。<br>
                                 <br>
-                                <img src="https://aps.ncue.edu.tw/exampg_m/images/sign3.jpg" /><br>(點擊圖片放大)<br>
+                                <img src="./images/sign3.jpg" /><br>(點擊圖片放大)<br>
                                 <br>
                                 圖四、填寫報名資料：請確實填寫各項資料或上傳審查資料，並詳為校核，以免權益受損。<br>
                                 若報考系所備審資料係採「上傳至網路報名系統」，報考考生可於填寫報名表時一併上傳或暫時先不上傳，完成報名作業後，欲再上傳或修改者，可至網路報名系統/網路報名/修改報名資料進行上傳作業。<br>
                                 <br>
-                                <img src="https://aps.ncue.edu.tw/exampg_m/images/sign4.jpg" /><br>(點擊圖片放大)<br>
+                                <img src="./images/sign4.jpg" /><br>(點擊圖片放大)<br>
                                 <br>
                                 圖五、確認報名資料：請仔細檢查資料是否正確。<br>
                                 <br>
-                                <img src="https://aps.ncue.edu.tw/exampg_m/images/sign5.jpg" /><br>(點擊圖片放大)<br>
+                                <img src="./images/sign5.jpg" /><br>(點擊圖片放大)<br>
                                 <br>
                                 圖六、初步報名完成，請在報名期間內完成「<a href="./confirm.php">資料確認</a>」，在完成「<a href="./confirm.php">資料確認</a>」前，您的資料可以不限次數進行修改、上傳或更新已上傳的備審資料等。<br>
                                 <br>
-                                <img src="https://aps.ncue.edu.tw/exampg_m/images/sign6.jpg" /><br>(點擊圖片放大)<br>
+                                <img src="./images/sign6.jpg" /><br>(點擊圖片放大)<br>
                                 <br>
                                 ◆每組序號、密碼僅可填寫一次報名表，若資料需修改/上傳備審資料/更新已上傳備審資料，請利用網路報名功能裡的「<a href="./alter.php">修改報名資料</a>」。<br>
                             </p>
@@ -139,23 +139,23 @@
                                 <br>
                                 圖一、登入：「<a href="./alter.php">修改報名資料</a>」除了需輸入序號及密碼外，還需輸入您於報名表中所填的身分證字號。<br>
                                 <br>
-                                <img src="https://aps.ncue.edu.tw/exampg_m/images/alter1.jpg" /><br>(點擊圖片放大)<br>
+                                <img src="./images/alter1.jpg" /><br>(點擊圖片放大)<br>
                                 <br>
                                 圖二、變更報名系所：選擇要報考的系所。<br>
                                 <br>
-                                <img src="https://aps.ncue.edu.tw/exampg_m/images/alter2.jpg" /><br>(點擊圖片放大)<br>
+                                <img src="./images/alter2.jpg" /><br>(點擊圖片放大)<br>
                                 <br>
                                 圖三、變更報名資料：直接把原有資料清除，填入新的資料即可。<br>
                                 <br>
-                                <img src="https://aps.ncue.edu.tw/exampg_m/images/alter3.jpg" /><br>(點擊圖片放大)<br>
+                                <img src="./images/alter3.jpg" /><br>(點擊圖片放大)<br>
                                 <br>
                                 圖四、確認報名資料：請仔細檢查資料是否正確。<br>
                                 <br>
-                                <img src="https://aps.ncue.edu.tw/exampg_m/images/alter4.jpg" /><br>(點擊圖片放大)<br>
+                                <img src="./images/alter4.jpg" /><br>(點擊圖片放大)<br>
                                 <br>
                                 圖五、報名資料修改完成：請在報名期間完成「<a href="./confirm.php">資料確認</a>」。<br>
                                 <br>
-                                <img src="https://aps.ncue.edu.tw/exampg_m/images/alter5.jpg" /><br>(點擊圖片放大)<br>
+                                <img src="./images/alter5.jpg" /><br>(點擊圖片放大)<br>
                             </p>
                         </div>
                     </div>
@@ -173,17 +173,17 @@
                                 <br>
                                 圖一、登入：「<a href="./confirm.php">資料確認</a>」除了需輸入序號及密碼外，還需輸入您於報名表中所填的身分證字號。<br>
                                 <br>
-                                <img src="https://aps.ncue.edu.tw/exampg_m/images/confirm1.jpg" /><br>(點擊圖片放大)<br>
+                                <img src="./images/confirm1.jpg" /><br>(點擊圖片放大)<br>
                                 <br>
                                 圖二、請仔細檢視所有資料，並確定無誤後，按下"確認"，即完成「<a href="./confirm.php">資料確認</a>」；若發現資料有誤可按"取消"，進行「<a href="./alter.php">修改報名資料</a>」。<br>
                                 <br>
-                                <img src="https://aps.ncue.edu.tw/exampg_m/images/confirm2.jpg" /><br>(點擊圖片放大)<br>
+                                <img src="./images/confirm2.jpg" /><br>(點擊圖片放大)<br>
                                 <br>
                                 ◆當您完成修改後，若要進行資料確認，請重新登入「<a href="./confirm.php">資料確認</a>」。<br>
                                 <br>
                                 圖三、資料確認完成，日後請密切注意網頁上的相關資料。<br>
                                 <br>
-                                <img src="https://aps.ncue.edu.tw/exampg_m/images/confirm3.jpg" /><br>(點擊圖片放大)<br>
+                                <img src="./images/confirm3.jpg" /><br>(點擊圖片放大)<br>
                                 <br>
                                 ◆進行「填寫報名表」、「<a href="./alter.php">修改報名資料</a>」、「<a href="./confirm.php">資料確認</a>」等動作後，系統會自動寄送E-mail通知信至您登錄之電子郵件信箱。<br>
                             </p>

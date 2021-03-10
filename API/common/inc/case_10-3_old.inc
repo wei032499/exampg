@@ -14,14 +14,14 @@ td { color:#464646; font: 10pt; line-height: 150% }
 	<tr>
 	  <td><table width="100%" border="0" cellspacing="0" cellpadding="0">
 				<tr bgcolor="#FFFFFF"> 
-					<td><img src="http://aps.ncue.edu.tw/exampg_m/images/bn_mail.jpg" width="500" height="75" border="0" usemap="#Map"></td>
+					<td><img src="https://aps.ncue.edu.tw/exampg_m_new/images/bn_mail.jpg" width="500" height="75" border="0" usemap="#Map"></td>
 				</tr>
 				<tr bgcolor="#FFFFFF"> 
-					<td bgcolor="#009900"><img src="http://aps.ncue.edu.tw/exampg_m/images/space.gif" width="1" height="2"></td>
+					<td bgcolor="#009900"><img src="https://aps.ncue.edu.tw/exampg_m_new/images/space.gif" width="1" height="2"></td>
 				</tr>				
 				<tr>
-				    <td background = "http://aps.ncue.edu.tw/exampg_m/images/shadow.jpg" >
-				    <img src="http://aps.ncue.edu.tw/exampg_m/images/space.gif" width="1" height="15"></td>
+				    <td background = "https://aps.ncue.edu.tw/exampg_m_new/images/shadow.jpg" >
+				    <img src="https://aps.ncue.edu.tw/exampg_m_new/images/space.gif" width="1" height="15"></td>
 				</tr>
 				<tr bgcolor="#FFFFFF"> 
 					<td><table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#FFFFFF">
@@ -63,7 +63,7 @@ td { color:#464646; font: 10pt; line-height: 150% }
 	</tr>
 </table>
 <map name="Map">
-    <area shape="rect" coords="424,55,492,71" href="http://aps.ncue.edu.tw/exampg_m/" target="_blank">
+    <area shape="rect" coords="424,55,492,71" href="https://aps.ncue.edu.tw/exampg_m_new/" target="_blank">
 </map>
 </body>
 </html>

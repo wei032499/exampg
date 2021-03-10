@@ -10,14 +10,14 @@ td { color:#464646; font: 10pt; line-height: 150% }
 	<tr>
 	  <td><table width="100%" border="0" cellspacing="0" cellpadding="0">
 				<tr bgcolor="#FFFFFF"> 
-					<td><img src="http://aps.ncue.edu.tw/exampg_m/images/bn_mail.jpg" width="500" height="75" border="0" usemap="#Map"></td>
+					<td><img src="https://aps.ncue.edu.tw/exampg_m_new/images/bn_mail.jpg" width="500" height="75" border="0" usemap="#Map"></td>
 				</tr>
 				<tr bgcolor="#FFFFFF"> 
-					<td bgcolor="#009900"><img src="http://aps.ncue.edu.tw/exampg_m/images/space.gif" width="1" height="2"></td>
+					<td bgcolor="#009900"><img src="https://aps.ncue.edu.tw/exampg_m_new/images/space.gif" width="1" height="2"></td>
 				</tr>				
 				<tr>
-				    <td background = "http://aps.ncue.edu.tw/exampg_m/images/shadow.jpg" >
-				    <img src="http://aps.ncue.edu.tw/exampg_m/images/space.gif" width="1" height="15"></td>
+				    <td background = "https://aps.ncue.edu.tw/exampg_m_new/images/shadow.jpg" >
+				    <img src="https://aps.ncue.edu.tw/exampg_m_new/images/space.gif" width="1" height="15"></td>
 				</tr>
 				<tr bgcolor="#FFFFFF"> 
 					<td><table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#FFFFFF">
@@ -30,7 +30,7 @@ td { color:#464646; font: 10pt; line-height: 150% }
 							<tr> 
 								<td><font color=blue>　序號：snum </font>(共10碼，<font color=red>第1碼為大寫英文字母，2-10碼為數字</font>。)<br>
 								<font color=blue>　密碼：pswd </font>(共10碼，<font color=red>由英文字母和數字組成，英文字母一律大寫</font>。)<br>
-									<font color=red><br>　　您可以利用此組序號密碼登入系統進行<a href=http://aps.ncue.edu.tw/exampg_m/signup_login.php traget=_blank>網路報名</a>作業。<br></font></font>
+									<font color=red><br>　　您可以利用此組序號密碼登入系統進行<a href=https://aps.ncue.edu.tw/exampg_m_new/signup.php traget=_blank>網路報名</a>作業。<br></font></font>
 								</td>
 							</tr>
 							<tr> 
@@ -54,7 +54,7 @@ td { color:#464646; font: 10pt; line-height: 150% }
 	</tr>
 </table>
 <map name="Map">
-    <area shape="rect" coords="424,55,492,71" href="http://aps.ncue.edu.tw/exampg_m/" target="_blank">
+    <area shape="rect" coords="424,55,492,71" href="https://aps.ncue.edu.tw/exampg_m_new/" target="_blank">
 </map>
 </body>
 </html>
