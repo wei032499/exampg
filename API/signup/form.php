@@ -159,6 +159,15 @@ try {
         if ($payload['status'] !== 1)
             throw new Exception("Forbidden", 403);
 
+        // 若有取得報名費優惠，需檢查繳費人與報名人是否相同(同一身分證字號)
+        $sql = "SELECT substr(ACCOUNT_NO,7,2) AS ACCOUNT_TYPE, ID FROM SN_DB WHERE SCHOOL_ID='$SCHOOL_ID' AND YEAR='$ACT_YEAR_NO' AND SN=:sn ";
+        $stmt = oci_parse($conn, $sql);
+        oci_bind_by_name($stmt, ':sn',  $payload['sn']);
+        oci_execute($stmt, OCI_DEFAULT);
+        $nrows = oci_fetch_all($stmt, $result1); //$nrows -->總筆數
+        oci_free_statement($stmt);
+        if ($result1['ACCOUNT_TYPE'][0] !== '31' && $_POST['id'] !== $result1['ID'][0])
+            throw new Exception("已取得報名優惠，繳費人需與報名人相同(需為同一身分證字號)");
 
         $ac_school = null;
         $ac_dept = null;
@@ -318,6 +327,16 @@ try {
             throw new Exception("Forbidden", 403);
 
         parse_str(file_get_contents("php://input"), $post_vars);
+
+        // 若有取得報名費優惠，需檢查繳費人與報名人是否相同(同一身分證字號)
+        $sql = "SELECT substr(ACCOUNT_NO,7,2) AS ACCOUNT_TYPE, ID FROM SN_DB WHERE SCHOOL_ID='$SCHOOL_ID' AND YEAR='$ACT_YEAR_NO' AND SN=:sn ";
+        $stmt = oci_parse($conn, $sql);
+        oci_bind_by_name($stmt, ':sn',  $payload['sn']);
+        oci_execute($stmt, OCI_DEFAULT);
+        $nrows = oci_fetch_all($stmt, $result1); //$nrows -->總筆數
+        oci_free_statement($stmt);
+        if ($result1['ACCOUNT_TYPE'][0] !== '31' && $post_vars['id'] !== $result1['ID'][0])
+            throw new Exception("已取得報名優惠，繳費人需與報名人相同(需為同一身分證字號)");
 
         $ac_school = null;
         $ac_dept = null;
