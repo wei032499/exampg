@@ -166,7 +166,7 @@ try {
         oci_execute($stmt, OCI_DEFAULT);
         $nrows = oci_fetch_all($stmt, $result1); //$nrows -->總筆數
         oci_free_statement($stmt);
-        if ($result1['ACCOUNT_TYPE'][0] !== '31' && $_POST['id'] !== $result1['ID'][0])
+        if ($result1['ACCOUNT_TYPE'][0] !== '31' && $result1['ACCOUNT_TYPE'][0] !== '35' && $_POST['id'] !== $result1['ID'][0])
             throw new Exception("已取得報名優惠，繳費人需與報名人相同(需為同一身分證字號)");
 
         $ac_school = null;
@@ -335,7 +335,7 @@ try {
         oci_execute($stmt, OCI_DEFAULT);
         $nrows = oci_fetch_all($stmt, $result1); //$nrows -->總筆數
         oci_free_statement($stmt);
-        if ($result1['ACCOUNT_TYPE'][0] !== '31' && $post_vars['id'] !== $result1['ID'][0])
+        if ($result1['ACCOUNT_TYPE'][0] !== '31' && $result1['ACCOUNT_TYPE'][0] !== '35' && $post_vars['id'] !== $result1['ID'][0])
             throw new Exception("已取得報名優惠，繳費人需與報名人相同(需為同一身分證字號)");
 
         $ac_school = null;
