@@ -124,11 +124,11 @@ else
 
 <table width="95%" border="0" cellpadding="0" cellspacing="0" bordercolor="#009900">
   <tr>
-    <td width="1" bgcolor="#009900"><img src="https://aps.ncue.edu.tw/exampg_m_new/images/space.gif" width="1" height="1"></td>
+    <td width="1" bgcolor="#009900"><img src="BASEURL/images/space.gif" width="1" height="1"></td>
     <td>
       <table width="100%" border="0" cellspacing="0" cellpadding="0">
         <tr onMouseOver="this.style.backgroundColor='#CCFFCC'" onMouseOut="this.style.backgroundColor=''">
-          <td bgcolor="#009900"><img src="https://aps.ncue.edu.tw/exampg_m_new/images/space.gif" width="1" height="1"></td>
+          <td bgcolor="#009900"><img src="BASEURL/images/space.gif" width="1" height="1"></td>
         </tr>
         <tr>
           <td></td>
@@ -326,10 +326,10 @@ else
           </td>
         </tr>
         <tr>
-          <td width="1" bgcolor="#009900"><img src="https://aps.ncue.edu.tw/exampg_m_new/images/space.gif" width="1" height="1"></td>
+          <td width="1" bgcolor="#009900"><img src="BASEURL/images/space.gif" width="1" height="1"></td>
         </tr>
       </table>
     </td>
-    <td width="1" bgcolor="#009900"><img src="https://aps.ncue.edu.tw/exampg_m_new/images/space.gif" width="1" height="1"></td>
+    <td width="1" bgcolor="#009900"><img src="BASEURL/images/space.gif" width="1" height="1"></td>
   </tr>
 </table>

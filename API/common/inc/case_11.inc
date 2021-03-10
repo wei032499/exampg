@@ -10,14 +10,14 @@ td { color:#464646; font: 10pt; line-height: 150% }
 	<tr>
 	  <td><table width="100%" border="0" cellspacing="0" cellpadding="0">
 				<tr bgcolor="#FFFFFF"> 
-					<td><img src="https://aps.ncue.edu.tw/exampg_m_new/images/bn_mail.jpg" width="500" height="75" border="0" usemap="#Map"></td>
+					<td><img src="BASEURL/images/bn_mail.jpg" width="500" height="75" border="0" usemap="#Map"></td>
 				</tr>
 				<tr bgcolor="#FFFFFF"> 
-					<td bgcolor="#009900"><img src="https://aps.ncue.edu.tw/exampg_m_new/images/space.gif" width="1" height="2"></td>
+					<td bgcolor="#009900"><img src="BASEURL/images/space.gif" width="1" height="2"></td>
 				</tr>				
 				<tr>
-				    <td background = "https://aps.ncue.edu.tw/exampg_m_new/images/shadow.jpg" >
-				    <img src="https://aps.ncue.edu.tw/exampg_m_new/images/space.gif" width="1" height="15"></td>
+				    <td background = "BASEURL/images/shadow.jpg" >
+				    <img src="BASEURL/images/space.gif" width="1" height="15"></td>
 				</tr>
 				<tr bgcolor="#FFFFFF"> 
 					<td><table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#FFFFFF">
@@ -25,7 +25,7 @@ td { color:#464646; font: 10pt; line-height: 150% }
 								<td>親愛的考生您好：</td>
 							</tr>
 							<tr> 
-								<td>　　您已繳交本校act_year_no學年度碩士班網路報名費( 繳費帳號：account_no，金額：pay_money 元 )，再次提醒您務必於本校網路報名期間上網進行<a href=https://aps.ncue.edu.tw/exampg_m_new/signup.php traget=_blank>填寫報名表</a>作業。網路報名日期為【startdate】 至 【enddate】 止 。<br/>以下是您個人專用的序號及密碼，使用本系統各項服務時，將會需要您輸入序號及密碼(<font color=red>建議使用複製、貼上，以避免輸入錯誤</font>)，請您務必妥善保存。<font color=#FF0000>本校人員不會主動要求您提供序號及密碼</font>。</td>
+								<td>　　您已繳交本校act_year_no學年度碩士班網路報名費( 繳費帳號：account_no，金額：pay_money 元 )，再次提醒您務必於本校網路報名期間上網進行<a href=BASEURL/signup.php traget=_blank>填寫報名表</a>作業。網路報名日期為【startdate】 至 【enddate】 止 。<br/>以下是您個人專用的序號及密碼，使用本系統各項服務時，將會需要您輸入序號及密碼(<font color=red>建議使用複製、貼上，以避免輸入錯誤</font>)，請您務必妥善保存。<font color=#FF0000>本校人員不會主動要求您提供序號及密碼</font>。</td>
 							</tr>							
 							<tr> 
 								<td><font color=blue>　序號：snum </font>(共10碼，<font color=red>第1碼為大寫英文字母，2-10碼為數字</font>。)<br>
@@ -50,7 +50,7 @@ td { color:#464646; font: 10pt; line-height: 150% }
 	</tr>
 </table>
 <map name="Map">
-    <area shape="rect" coords="424,55,492,71" href="https://aps.ncue.edu.tw/exampg_m_new/" target="_blank">
+    <area shape="rect" coords="424,55,492,71" href="BASEURL/" target="_blank">
 </map>
 </body>
 </html>

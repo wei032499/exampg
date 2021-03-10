@@ -10,13 +10,13 @@ td { color:#464646; font: 10pt; line-height: 150% }
 	<tr>
 		<td><table width="100%" border="0" cellspacing="0" cellpadding="0">
 				<tr bgcolor="#FFFFFF"> 
-					<td><img src="https://aps.ncue.edu.tw/exampg_m_new/images/bn_mail.jpg" width="500" height="75" border="0" usemap="#Map"></td>
+					<td><img src="BASEURL/images/bn_mail.jpg" width="500" height="75" border="0" usemap="#Map"></td>
 				</tr>
 				<tr bgcolor="#FFFFFF"> 
-					<td bgcolor="#009900"><img src="https://aps.ncue.edu.tw/exampg_m_new/images/space.gif" width="1" height="2"></td>
+					<td bgcolor="#009900"><img src="BASEURL/images/space.gif" width="1" height="2"></td>
 				</tr>
 				<tr> 
-					<td background="https://aps.ncue.edu.tw/exampg_m_new/images/shadow.jpg"><img src="https://aps.ncue.edu.tw/exampg_m_new/images/space.gif" width="1" height="15"></td>
+					<td background="BASEURL/images/shadow.jpg"><img src="BASEURL/images/space.gif" width="1" height="15"></td>
 				</tr>
 				<tr bgcolor="#FFFFFF"> 
 					<td><table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#FFFFFF">
@@ -27,10 +27,10 @@ td { color:#464646; font: 10pt; line-height: 150% }
 								<td>　　感謝您使用本校網路招生系統，您所繳交之費用業已入帳。</td>
 							</tr>
 							<tr> 
-								<td>　　網路訂購之紙本簡章，於<font color=red>每星期二、星期五</font>寄發。姓名或地址如有罕用字，請另填寫<a href='https://aps.ncue.edu.tw/exampg_m_new/code_reply.doc' target=_blank>罕用字回覆表</a>傳真本校處理。若最近之寄發日期後三日仍未收到簡章，請儘速與本校招生組聯絡。</td>
+								<td>　　網路訂購之紙本簡章，於<font color=red>每星期二、星期五</font>寄發。姓名或地址如有罕用字，請另填寫<a href='BASEURL/code_reply.doc' target=_blank>罕用字回覆表</a>傳真本校處理。若最近之寄發日期後三日仍未收到簡章，請儘速與本校招生組聯絡。</td>
 							</tr>
 							<tr>
-								<td>　　簡章內頁附有一組序號、密碼及繳費帳號，此為網路報名使用；您必須先利用報名費繳費帳號(<font color=red>99216-81xxxxxx-x</font>)繳完報名費後，才可進行<a href=https://aps.ncue.edu.tw/exampg_m_new/signup.php traget=_blank>網路報名</a>作業。</td>
+								<td>　　簡章內頁附有一組序號、密碼及繳費帳號，此為網路報名使用；您必須先利用報名費繳費帳號(<font color=red>99216-81xxxxxx-x</font>)繳完報名費後，才可進行<a href=BASEURL/signup.php traget=_blank>網路報名</a>作業。</td>
 							</tr>							
 							<tr> 
 								<td>　　　　祝您　金榜題名</td>
@@ -47,7 +47,7 @@ td { color:#464646; font: 10pt; line-height: 150% }
 	</tr>
 </table>
 <map name="Map">
-    <area shape="rect" coords="424,55,492,71" href="https://aps.ncue.edu.tw/exampg_m_new/" target="_blank">
+    <area shape="rect" coords="424,55,492,71" href="BASEURL/" target="_blank">
 </map>
 </body>
 </html>

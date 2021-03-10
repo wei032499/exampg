@@ -10,13 +10,13 @@ td { color:#464646; font: 10pt; line-height: 150% }
 	<tr>
 		<td><table width="100%" border="0" cellspacing="0" cellpadding="0">
 				<tr bgcolor="#FFFFFF"> 
-					<td><img src="https://aps.ncue.edu.tw/exampg_m_new/images/bn_mail.jpg" width="500" height="75" border="0" usemap="#Map"></td>
+					<td><img src="BASEURL/images/bn_mail.jpg" width="500" height="75" border="0" usemap="#Map"></td>
 				</tr>
 				<tr bgcolor="#FFFFFF"> 
-					<td bgcolor="#009900"><img src="https://aps.ncue.edu.tw/exampg_m_new/images/space.gif" width="1" height="2"></td>
+					<td bgcolor="#009900"><img src="BASEURL/images/space.gif" width="1" height="2"></td>
 				</tr>
 				<tr> 
-					<td background="https://aps.ncue.edu.tw/exampg_m_new/images/shadow.jpg"><img src="https://aps.ncue.edu.tw/exampg_m_new/images/space.gif" width="1" height="15"></td>
+					<td background="BASEURL/images/shadow.jpg"><img src="BASEURL/images/space.gif" width="1" height="15"></td>
 				</tr>
 				<tr bgcolor="#FFFFFF"> 
 					<td><table width="100%" border="0" cellspacing="0" cellpadding="5">
@@ -33,7 +33,7 @@ td { color:#464646; font: 10pt; line-height: 150% }
 								<td>　　身心障礙考生如欲申請各項應考需求，請另寄交申請表及證明文件至本校招生委員會。</td>
 							</tr>
 							<tr> 
-								<td>　　報名資料如有罕用字，致電腦無法正常顯示者，請另填<a href='https://aps.ncue.edu.tw/exampg_m_new/code_reply.doc' target=_blank>罕用字回覆表</a>傳真本校處理。</td>
+								<td>　　報名資料如有罕用字，致電腦無法正常顯示者，請另填<a href='BASEURL/code_reply.doc' target=_blank>罕用字回覆表</a>傳真本校處理。</td>
 							</tr>
 							<tr><td>　　准考證由考生自行下載列印，請於開放列印日期：card_start_date 起至 card_end_date 止，至<b>網路報名系統 / 網路報名 / 准考證列印</b> 下載(不限次數)後，以A4白紙單面紙張自行列印，並妥為保存，本校不再另行寄發。</td></tr> 
 				
@@ -73,7 +73,7 @@ td { color:#464646; font: 10pt; line-height: 150% }
 	</tr>
 </table>
 <map name="Map">
-    <area shape="rect" coords="424,55,492,71" href="https://aps.ncue.edu.tw/exampg_m_new/" target="_blank">
+    <area shape="rect" coords="424,55,492,71" href="BASEURL/" target="_blank">
 </map>
 </body>
 </html>

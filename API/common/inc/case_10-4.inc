@@ -14,14 +14,14 @@ td { color:#464646; font: 10pt; line-height: 150% }
 	<tr>
 	  <td><table width="100%" border="0" cellspacing="0" cellpadding="0">
 				<tr bgcolor="#FFFFFF"> 
-					<td><img src="https://aps.ncue.edu.tw/exampg_m_new/images/bn_mail.jpg" width="500" height="75" border="0" usemap="#Map"></td>
+					<td><img src="BASEURL/images/bn_mail.jpg" width="500" height="75" border="0" usemap="#Map"></td>
 				</tr>
 				<tr bgcolor="#FFFFFF"> 
-					<td bgcolor="#009900"><img src="https://aps.ncue.edu.tw/exampg_m_new/images/space.gif" width="1" height="2"></td>
+					<td bgcolor="#009900"><img src="BASEURL/images/space.gif" width="1" height="2"></td>
 				</tr>				
 				<tr>
-				    <td background = "https://aps.ncue.edu.tw/exampg_m_new/images/shadow.jpg" >
-				    <img src="https://aps.ncue.edu.tw/exampg_m_new/images/space.gif" width="1" height="15"></td>
+				    <td background = "BASEURL/images/shadow.jpg" >
+				    <img src="BASEURL/images/space.gif" width="1" height="15"></td>
 				</tr>
 				<tr bgcolor="#FFFFFF"> 
 					<td><table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#FFFFFF">
@@ -49,7 +49,7 @@ td { color:#464646; font: 10pt; line-height: 150% }
                                     <tr>
                                       <td>&nbsp;</td>
                                       <td width="25" valign="top">(一)</td>
-                                      <td width="421" colspan="2"><p>本階段以網路登錄方式辦理。請在截止日前至本校「網路報名系統」(<a href="https://aps.ncue.edu.tw/exampg_m_new/" target="_blank">https://aps.ncue.edu.tw/exampg_m_new/</a>)選擇「報到相關」項下之「正（備）取生申明就讀（遞補）意願」功能，輸入您的認證碼後登錄遞補意願，<span class="style1"><u>逾期視同放棄備取遞補資格</u></span>。 <br>
+                                      <td width="421" colspan="2"><p>本階段以網路登錄方式辦理。請在截止日前至本校「網路報名系統」(<a href="BASEURL/" target="_blank">BASEURL/</a>)選擇「報到相關」項下之「正（備）取生申明就讀（遞補）意願」功能，輸入您的認證碼後登錄遞補意願，<span class="style1"><u>逾期視同放棄備取遞補資格</u></span>。 <br>
                                       <strong><u>※您的認證碼為：auth_code</u></strong> </p></td>
                                     </tr>
                                     <tr>
@@ -102,7 +102,7 @@ td { color:#464646; font: 10pt; line-height: 150% }
 	</tr>
 </table>
 <map name="Map">
-    <area shape="rect" coords="424,55,492,71" href="https://aps.ncue.edu.tw/exampg_m_new/" target="_blank">
+    <area shape="rect" coords="424,55,492,71" href="BASEURL/" target="_blank">
 </map>
 </body>
 </html>

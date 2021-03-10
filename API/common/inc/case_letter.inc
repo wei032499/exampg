@@ -47,7 +47,7 @@
             <tr bgcolor="#FFFFFF">
               <td>
                 <img
-                  src="http://aps.ncue.edu.tw/exampg_d/images/bn_mail.jpg"
+                  src="BASEURL/images/bn_mail.jpg"
                   width="500"
                   height="75"
                   border="0"
@@ -58,7 +58,7 @@
             <tr bgcolor="#FFFFFF">
               <td bgcolor="#009900">
                 <img
-                  src="http://aps.ncue.edu.tw/exampg_d/images/space.gif"
+                  src="BASEURL/images/space.gif"
                   width="1"
                   height="2"
                 />
@@ -66,7 +66,7 @@
             </tr>
             <tr>
               <td
-                background="http://aps.ncue.edu.tw/exampg_d/images/shadow.jpg"
+                background="BASEURL/images/shadow.jpg"
               ></td>
             </tr>
             <tr bgcolor="#FFFFFF">
@@ -99,7 +99,7 @@
                         su_end_date </span
                       >前至本校網路報名系統《
                       <a
-                        href="https://aps.ncue.edu.tw/ROOTDIR/letter_fill.php?token=r_token"
+                        href="BASEURL/letter_fill.php?token=r_token"
                         target="_blank"
                         >線上填寫推薦函</a
                       >
@@ -132,7 +132,7 @@
       <area
         shape="rect"
         coords="424,55,492,71"
-        href="http://aps.ncue.edu.tw/exampg_d/"
+        href="BASEURL/"
         target="_blank"
       />
     </map>

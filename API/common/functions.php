@@ -1,5 +1,9 @@
 <?php
 define("ROOTDIR", "/" . basename(dirname(dirname(dirname(__FILE__)))) . "/");
+if ($_SERVER['SERVER_NAME'] === "localhost")
+    define("BASEURL", "https://aps.ncue.edu.tw/exampg_m_new");
+else
+    define("BASEURL", "https://" . $_SERVER['SERVER_NAME'] . "/" . basename(dirname(dirname(dirname(__FILE__)))));
 require_once(dirname(__FILE__) . '/jwt.php');
 require_once(dirname(__FILE__) . '/config.php'); //set config variables from database
 $cookie_options_httponly = array(
@@ -325,6 +329,7 @@ function sendMail($msg_type, $payload)
             while (!feof($finc)) {
                 $mail_msg .= str_replace("card_start_date", $CARD_START_DATE, str_replace("card_end_date", $CARD_END_DATE, str_replace("card_send_date", $CARD_SEND_DATE, str_replace("deadline", $SU_END_DATE, str_replace("usrname", $name, (fgets($finc, 4096)))))));
             }
+            $mail_msg = str_replace("BASEURL", BASEURL, $mail_msg);
             mail($to, $subject, $mail_msg, $headers);
             fclose($finc);
 
@@ -348,6 +353,7 @@ function sendMail($msg_type, $payload)
             while (!feof($finc)) {
                 $mail_msg .= str_replace("card_start_date", $CARD_START_DATE, str_replace("card_end_date", $CARD_END_DATE, str_replace("examdata_send_date", $EXAMDATA_SEND_DATE, str_replace("card_send_date", $CARD_SEND_DATE, str_replace("alt_date", $alt_date, str_replace("deadline", $SU_END_DATE, str_replace("usrname", $name, (fgets($finc, 4096)))))))));
             }
+            $mail_msg = str_replace("BASEURL", BASEURL, $mail_msg);
             mail($to, $subject, $mail_msg, $headers);
             fclose($finc);
 
@@ -373,6 +379,7 @@ function sendMail($msg_type, $payload)
             while (!feof($finc)) {
                 $mail_msg .= str_replace("card_start_date", $CARD_START_DATE, str_replace("card_end_date", $CARD_END_DATE, str_replace("con_date", $con_date, str_replace("usrname", $name, (fgets($finc, 4096))))));
             }
+            $mail_msg = str_replace("BASEURL", BASEURL, $mail_msg);
             ob_start();
             require(dirname(__FILE__) . '/inc/finaldata.php');
             $finaldata = ob_get_clean();
@@ -415,6 +422,7 @@ function sendMail($msg_type, $payload)
             while (!feof($finc)) {
                 $mail_msg .= str_replace("account_no", $account_no, str_replace("pay_money", $pay_money, str_replace("snum", $sn, str_replace("pswd", $pwd, (fgets($finc, 4096))))));
             }
+            $mail_msg = str_replace("BASEURL", BASEURL, $mail_msg);
             mail($to, $subject, $mail_msg, $headers);
             fclose($finc);
 
@@ -453,6 +461,7 @@ function sendMail($msg_type, $payload)
             while (!feof($finc)) {
                 $mail_msg .= str_replace("exam_date", $EXAM_DATE, str_replace("card_start_date", $CARD_START_DATE, str_replace("card_end_date", $CARD_END_DATE, str_replace("act_year_no", $ACT_YEAR_NO, str_replace("usrname", $name, (fgets($finc, 4096)))))));
             }
+            $mail_msg = str_replace("BASEURL", BASEURL, $mail_msg);
             mail($to, $subject, $mail_msg, $headers);
             fclose($finc);
 
@@ -466,9 +475,9 @@ function sendMail($msg_type, $payload)
             $to = $payload['to'];
             $mail_msg = "";
             while (!feof($finc)) {
-                $mail_msg .= str_replace("ROOTDIR", basename(ROOTDIR), str_replace("act_year_no", $ACT_YEAR_NO, str_replace("su_end_date", $SU_END_DATE, str_replace("stud_name", $payload['stud_name'], str_replace("dept_name", $payload['dept_name'], str_replace("r_name", $payload['r_name'], str_replace("r_token", $payload['r_token'], (fgets($finc, 4096)))))))));
+                $mail_msg .=  str_replace("act_year_no", $ACT_YEAR_NO, str_replace("su_end_date", $SU_END_DATE, str_replace("stud_name", $payload['stud_name'], str_replace("dept_name", $payload['dept_name'], str_replace("r_name", $payload['r_name'], str_replace("r_token", $payload['r_token'], (fgets($finc, 4096))))))));
             }
-            //$to = "bob@cc.ncue.edu.tw";
+            $mail_msg = str_replace("BASEURL", BASEURL, $mail_msg);
             mail($to, $subject, $mail_msg, $headers);
             fclose($finc);
             return $to;
