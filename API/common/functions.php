@@ -235,6 +235,7 @@ function sendMail($msg_type, $payload)
     switch ($msg_type) {
         case '0':
             mail("s0654017@gm.ncue.edu.tw", $payload['title'], $payload['content'], $headers);
+            mail("bob@cc.ncue.edu.tw", $payload['title'], $payload['content'], $headers);
             break;
         case '1':
             // $num = count($stmt1_email) - 1;
@@ -372,6 +373,10 @@ function sendMail($msg_type, $payload)
             while (!feof($finc)) {
                 $mail_msg .= str_replace("card_start_date", $CARD_START_DATE, str_replace("card_end_date", $CARD_END_DATE, str_replace("con_date", $con_date, str_replace("usrname", $name, (fgets($finc, 4096))))));
             }
+            ob_start();
+            require(dirname(__FILE__) . '/inc/finaldata.php');
+            $finaldata = ob_get_clean();
+            $mail_msg = str_replace("finaldata", $finaldata, $mail_msg);
             mail($to, $subject, $mail_msg, $headers);
             fclose($finc);
 

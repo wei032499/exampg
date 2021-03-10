@@ -295,7 +295,7 @@
                                     </div>
                                     <div class="row form-group">
                                         <label for="inputGrad_date" class="col-sm-2" style="min-width: 7rem;">畢業年月：</label>
-                                        <div class=" col-sm-3 align-items-center" style="min-width: 10rem;">
+                                        <div class="col-sm-4 align-items-center">
                                             <input type="month" class="form-control " aria-describedby="grad_dateHelp" id="inputGrad_date" placeholder="yyyy-mm" pattern="(1\d{3}|2\d{3})-(0[1-9]|1[0-2])" name="grad_date" required>
                                         </div>
                                         <small id="grad_dateHelp" class="form-text text-muted col-sm">(yyyy-mm)<br>*西元年 = 民國年 + 1911</small>
@@ -331,7 +331,7 @@
                                     </div>
                                     <div class="  form-group align-items-center" style="padding-left: 15px;">
                                         <div class="row form-group align-items-center">
-                                            於&nbsp;<input type="month" style="max-width:7.5rem;min-width:7.5rem" class="form-control col-sm-4" aria-describedby="ac_dateHelp" placeholder="yyyy-mm" pattern="(1\d{3}|2\d{3})-(0[1-9]|1[0-2])" name="ac_date" required>&nbsp;
+                                            於&nbsp;<input type="month" class="form-control col-sm-4" aria-describedby="ac_dateHelp" placeholder="yyyy-mm" pattern="(1\d{3}|2\d{3})-(0[1-9]|1[0-2])" name="ac_date" required>
                                             <select style="max-width:5rem;min-width:5rem" class="form-control col-sm-4" name="ac_g" required>
                                                 <option value="1">畢業</option>
                                                 <option value="2">肄業</option>

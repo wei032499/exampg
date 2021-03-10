@@ -24,7 +24,7 @@ try {
         }
         oci_free_statement($stmt);
 
-        $sql = "SELECT ID,NAME,SEX,DEPT_ID,ORGANIZE_ID,ORASTATUS_ID, to_char(BIRTHDAY, 'yyyy-mm-dd') as BIRTHDAY,EMAIL,ZIP,ADDRESS,TEL_H,TEL_O,TEL_M,LIAISONER,LIAISON_TEL,LIAISON_REL,CRIPPLE_TYPE,COMMENTS,PROVE_TYPE,SUBJECT_ID,ZIP_O,ADDRESS_O,E_PLACE,
+        $sql = "SELECT SIGNUP_SN,ID,NAME,SEX,DEPT_ID,ORGANIZE_ID,ORASTATUS_ID, to_char(BIRTHDAY, 'yyyy-mm-dd') as BIRTHDAY,EMAIL,ZIP,ADDRESS,TEL_H,TEL_O,TEL_M,LIAISONER,LIAISON_TEL,LIAISON_REL,CRIPPLE_TYPE,COMMENTS,PROVE_TYPE,SUBJECT_ID,ZIP_O,ADDRESS_O,E_PLACE,
         AC_SCHOOL_NAME,AC_DEPT_NAME,AC_SCHOOL_TYPE,AC_GRADUATED,to_char(AC_DATE, 'yyyy-mm') as AC_DATE,AC_YEAR_OF_LEAVE,AC_YEAR_OF_STUDY FROM SIGNUPDATA WHERE SIGNUP_SN=:sn AND YEAR='$ACT_YEAR_NO' AND SCHOOL_ID='$SCHOOL_ID'";
         $stmt = oci_parse($conn, $sql);
         oci_bind_by_name($stmt, ':sn',  $payload['sn']);
@@ -110,7 +110,8 @@ try {
                 'place' => oci_result($stmt, 'E_PLACE'), 'grad_date' => oci_result($stmt, 'AC_DATE'),
                 'grad_schol' => oci_result($stmt, 'AC_SCHOOL_NAME'),
                 'grad_dept' => oci_result($stmt, 'AC_DEPT_NAME'),
-                'union_priority' => $union_priority
+                'union_priority' => $union_priority,
+                'sn' => oci_result($stmt, 'SIGNUP_SN')
             );
         } else if (oci_result($stmt, 'PROVE_TYPE') === "2") {
 
@@ -132,7 +133,8 @@ try {
                 'ac_school' => oci_result($stmt, 'AC_SCHOOL_NAME'), 'ac_school_type' => oci_result($stmt, 'AC_SCHOOL_TYPE'),
                 'ac_dept' => oci_result($stmt, 'AC_DEPT_NAME'), 'ac_date' => oci_result($stmt, 'AC_DATE'),
                 'ac_g' => oci_result($stmt, 'AC_GRADUATED'), 'ac_m_y' => oci_result($stmt, 'AC_YEAR_OF_STUDY'), 'ac_leave_y' => oci_result($stmt, 'AC_YEAR_OF_LEAVE'),
-                'union_priority' => $union_priority
+                'union_priority' => $union_priority,
+                'sn' => oci_result($stmt, 'SIGNUP_SN')
             );
         } else {
             $result['data'] = array(
@@ -150,7 +152,8 @@ try {
                 'subject' => $subjects, 'section' => $section,
                 'zipcode2' => oci_result($stmt, 'ZIP_O'), 'address2' => oci_result($stmt, 'ADDRESS_O'),
                 'place' => oci_result($stmt, 'E_PLACE'),
-                'union_priority' => $union_priority
+                'union_priority' => $union_priority,
+                'sn' => oci_result($stmt, 'SIGNUP_SN')
             );
         }
 

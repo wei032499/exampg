@@ -143,7 +143,7 @@ try {
 			} else if ($data['prove_type'] === "2") {
 				$school_type = array("1" => "大學", "2" => "三專", "3" => "二專或五專");
 				$graduate = array("1" => "畢業", "2" => "肄業");
-				$grade_from = $data['ac_school'] . " (" . $school_type[$data['ac_school_type']] . "), " . $data['ac_dept'] . "), " . $data['ac_date'] . " " . $graduate[$data['ac_g']] . ", 修業 " . $data['ac_m_y'] . "年, 已離校 " . $data['ac_leave_y'] . " 年";
+				$grade_from = $data['ac_school'] . " (" . $school_type[$data['ac_school_type']] . "), " . $data['ac_dept'] . ", " . $data['ac_date'] . " " . $graduate[$data['ac_g']] . ", 修業 " . $data['ac_m_y'] . "年, 已離校 " . $data['ac_leave_y'] . " 年";
 			}
 
 			$stmt = oci_parse($conn, "SELECT NAME,LOCATION FROM DEPARTMENT WHERE  SCHOOL_ID='$SCHOOL_ID' AND YEAR='$ACT_YEAR_NO' AND ID=:dept_id");
