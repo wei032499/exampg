@@ -53,9 +53,7 @@ try {
             $cookieOpt = "token=" . $token . ";" . getCookieOptions($cookie_options_httponly);
             header("Set-Cookie: " . $cookieOpt, false);
             $mail_msg = $sql;
-            $post_processing[] = function () use ($mail_msg) {
-                sendMail(0, array('title' => "無符合條件的資料！(queue_anno.php)", 'content' => $mail_msg));
-            };
+            sendMail(0, array('title' => "無符合條件的資料！(queue_anno.php)", 'content' => $mail_msg));
             throw new  Exception('無符合條件的資料');
         }
         $result['name'] = $results['NAME'][0];

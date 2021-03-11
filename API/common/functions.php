@@ -31,9 +31,7 @@ set_error_handler(function ($err_severity, $err_msg, $err_file, $err_line, array
 
     global $post_processing;
     $mail_msg = $err_file . "<br>" . $err_msg . " on line " . $err_line;
-    $post_processing[] = function () use ($mail_msg) {
-        sendMail(0, array('title' => "招生系統錯誤", 'content' => $mail_msg));
-    };
+    sendMail(0, array('title' => "招生系統錯誤", 'content' => $mail_msg));
 
     if (strpos($err_msg, 'Undefined index') !== false)
         throw new ErrorException("Bad Request", 400, $err_severity, $err_file, $err_line);
@@ -252,7 +250,8 @@ function sendMail($msg_type, $payload)
     switch ($msg_type) {
         case '0':
             mail("s0654017@gm.ncue.edu.tw", $payload['title'], $payload['content'], $headers);
-            mail("bob@cc.ncue.edu.tw", $payload['title'], $payload['content'], $headers);
+            if ($_SERVER['SERVER_NAME'] !== "localhost")
+                mail("bob@cc.ncue.edu.tw", $payload['title'], $payload['content'], $headers);
             break;
         case '1':
             // $num = count($stmt1_email) - 1;
@@ -507,20 +506,17 @@ register_shutdown_function("shutdown_function");
 function shutdown_function()
 {
     global $post_processing;
-    try {
-        $last_error = error_get_last();
-        if ($last_error['type'] === E_ERROR) {
-            $mail_msg = $last_error['file'] . "<br>" . $last_error['message'] . " on line " . $last_error['line'];
-            sendMail(0, array('title' => "招生系統錯誤", 'content' => $mail_msg));
-            header($_SERVER["SERVER_PROTOCOL"] . " 500 Internal Server Error");
-            $result = array();
-            $result['message'] = "系統發生錯誤，請聯繫系統管理員。\n" . $last_error['message'];
-            echo json_encode($result);
-        }
-
+    $last_error = error_get_last();
+    if ($last_error['type'] === E_ERROR) {
+        $mail_msg = $last_error['file'] . "<br>" . $last_error['message'] . " on line " . $last_error['line'];
+        sendMail(0, array('title' => "招生系統錯誤", 'content' => $mail_msg));
+        header($_SERVER["SERVER_PROTOCOL"] . " 500 Internal Server Error");
+        $result = array();
+        $result['message'] = "系統發生錯誤，請聯繫系統管理員。\n" . $last_error['message'];
+        echo json_encode($result);
+    } else {
         foreach ($post_processing as $function) {
             $function();
         }
-    } catch (Exception $e) {
     }
 }

@@ -60,6 +60,12 @@
                         </select>
                     </div>
                 </div>
+                <div class="form-group row">
+                    <label for="inputPriority" class="col-sm-2">優先序<br><span style="color:red">(數字愈大愈往前)</span></label>
+                    <div class="col-sm-3">
+                        <input class="form-control " id="inputPriority" name="priority" value="0" required>
+                    </div>
+                </div>
                 <div class="form-group">
                     <label for="editor1">公告內容：</label>
                     <textarea id="editor1" rows="10" cols="80"></textarea>

@@ -79,9 +79,7 @@ try {
 
             if (count($result1['R_NAME']) == 0) {
                 $mail_msg = $sql;
-                $post_processing[] = function () use ($mail_msg) {
-                    sendMail(0, array('title' => "寄發Email通知失敗(查無推薦人資料)", 'content' => $mail_msg));
-                };
+                sendMail(0, array('title' => "寄發Email通知失敗(查無推薦人資料)", 'content' => $mail_msg));
                 throw new Exception("寄發Email通知失敗(查無推薦人資料)");
             } else {
                 //sendmail
@@ -97,9 +95,7 @@ try {
                 oci_free_statement($stmt);
                 if (count($result2['STUD_NAME']) == 0) {
                     $mail_msg = $sql;
-                    $post_processing[] = function () use ($mail_msg) {
-                        sendMail(0, array('title' => "寄發Email通知失敗(查無考生資料)", 'content' => $mail_msg));
-                    };
+                    sendMail(0, array('title' => "寄發Email通知失敗(查無考生資料)", 'content' => $mail_msg));
                     throw new Exception("寄發Email通知失敗(查無考生資料)");
                 } else {
 
@@ -109,21 +105,19 @@ try {
                     $payload['r_name'] = $result1['R_NAME'][0];
                     $payload['r_token'] = $result1['TOKEN'][0];
 
-                    $post_processing[] = function () use ($payload) {
-                        /**
-                         * 寄發通知信
-                         */
-                        $msg_type = 9;
-                        $email = sendMail($msg_type, $payload);
+                    /**
+                     * 寄發通知信
+                     */
+                    $msg_type = 9;
+                    $email = sendMail($msg_type, $payload);
 
 
-                        /**
-                         * 寫入log
-                         */
-                        $fp = fopen(dirname(__FILE__) . "/../logs/dbg_msg.log", "a+");
-                        fwrite($fp, "推薦函填寫通知 - API/signup/letter.php - $msg_type - " . $payload['sn'] . " - $email - \n");
-                        fclose($fp);
-                    };
+                    /**
+                     * 寫入log
+                     */
+                    $fp = fopen(dirname(__FILE__) . "/../logs/dbg_msg.log", "a+");
+                    fwrite($fp, "推薦函填寫通知 - API/signup/letter.php - $msg_type - " . $payload['sn'] . " - $email - \n");
+                    fclose($fp);
                 }
 
                 //update data

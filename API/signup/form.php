@@ -310,20 +310,18 @@ try {
         oci_bind_by_name($stmt, ':sn',  $payload['sn']);
         oci_execute($stmt, OCI_DEFAULT);
 
-        $post_processing[] = function () use ($payload) {
-            /**
-             * 寄發通知信
-             */
-            $email = sendMail(3, $payload);
+        /**
+         * 寄發通知信
+         */
+        $email = sendMail(3, $payload);
 
 
-            /**
-             * 寫入log
-             */
-            $fp = fopen(dirname(__FILE__) . "/../logs/dbg_msg.log", "a+");
-            fwrite($fp, "報名資料初填通知 - API/signup/form.php  - $email - \n");
-            fclose($fp);
-        };
+        /**
+         * 寫入log
+         */
+        $fp = fopen(dirname(__FILE__) . "/../logs/dbg_msg.log", "a+");
+        fwrite($fp, "報名資料初填通知 - API/signup/form.php  - $email - \n");
+        fclose($fp);
     } else if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
 
         if ($payload['status'] !== 2 || $payload['authority'] !== 1)
@@ -479,19 +477,17 @@ try {
 
 
 
-        $post_processing[] = function () use ($payload) {
-            /**
-             * 寄發通知信
-             */
-            $email = sendMail(4, $payload);
+        /**
+         * 寄發通知信
+         */
+        $email = sendMail(4, $payload);
 
-            /**
-             * 寫入log
-             */
-            $fp = fopen(dirname(__FILE__) . "/../logs/dbg_msg.log", "a+");
-            fwrite($fp, "資料修改通知 - API/signup/form.php - $email - \n");
-            fclose($fp);
-        };
+        /**
+         * 寫入log
+         */
+        $fp = fopen(dirname(__FILE__) . "/../logs/dbg_msg.log", "a+");
+        fwrite($fp, "資料修改通知 - API/signup/form.php - $email - \n");
+        fclose($fp);
     } else
         throw new Exception("Method Not Allowed", 405);
 

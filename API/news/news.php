@@ -6,17 +6,17 @@ try {
     require_once('../common/db.php');
     if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         if (isset($_GET['id'])) {
-            $sql = "SELECT ID,POSITION,CONTENT,to_char(POST_DATE,'yyyy-mm-dd') AS POST_DATE FROM NEWS WHERE SCHOOL_ID='$SCHOOL_ID' AND ID=:id ORDER BY POSITION ASC, POST_DATE DESC, ID DESC";
+            $sql = "SELECT ID,POSITION,PRIORITY,CONTENT,to_char(POST_DATE,'yyyy-mm-dd') AS POST_DATE, to_char(POST_DATE,'yyyy-mm-dd HH24:MI:SS') AS POST_TIMESTAMP FROM NEWS WHERE SCHOOL_ID='$SCHOOL_ID' AND ID=:id ORDER BY POSITION ASC, PRIORITY DESC, POST_TIMESTAMP DESC";
             $stmt = oci_parse($conn, $sql);
             oci_bind_by_name($stmt, ':id',  $_GET['id']);
             oci_execute($stmt, OCI_DEFAULT);
             $nrows = oci_fetch_all($stmt, $results); //$nrows -->總筆數
             oci_free_statement($stmt);
             for ($i = 0; $i < $nrows; $i++) {
-                $result['data'][] = array('id' => $results['ID'][$i], 'date' => $results['POST_DATE'][$i], "content" => $results['CONTENT'][$i], "position" => $results['POSITION'][$i]);
+                $result['data'][] = array('id' => $results['ID'][$i], 'date' => $results['POST_DATE'][$i], "content" => $results['CONTENT'][$i], "position" => $results['POSITION'][$i], 'priority' => $results['PRIORITY'][$i]);
             }
         } else {
-            $sql = "SELECT ID,POSITION,CONTENT,to_char(POST_DATE,'yyyy-mm-dd') AS POST_DATE FROM NEWS WHERE SCHOOL_ID='$SCHOOL_ID' ORDER BY POSITION ASC, POST_DATE DESC, ID DESC";
+            $sql = "SELECT ID,POSITION,PRIORITY,CONTENT,to_char(POST_DATE,'yyyy-mm-dd') AS POST_DATE, to_char(POST_DATE,'yyyy-mm-dd HH24:MI:SS') AS POST_TIMESTAMP FROM NEWS WHERE SCHOOL_ID='$SCHOOL_ID' ORDER BY POSITION ASC, PRIORITY DESC, POST_TIMESTAMP DESC";
             $stmt = oci_parse($conn, $sql);
             oci_execute($stmt, OCI_DEFAULT);
             $nrows = oci_fetch_all($stmt, $results); //$nrows -->總筆數
@@ -32,9 +32,9 @@ try {
 
         $timestamp = time();
         $time = date("Y-m-d H:i:s");
-        $sql = "INSERT INTO NEWS (ID,POSITION,CONTENT,POST_DATE,SCHOOL_ID) VALUES ('$timestamp',:position,:content,to_date('$time','yyyy-mm-dd HH24:MI:SS'),'$SCHOOL_ID')";
+        $sql = "INSERT INTO NEWS (ID,POSITION,PRIORITY,CONTENT,POST_DATE,SCHOOL_ID) VALUES ('$timestamp',:position,:priority,:content,to_date('$time','yyyy-mm-dd HH24:MI:SS'),'$SCHOOL_ID')";
         $stmt = oci_parse($conn, $sql);
-        $params = array($_POST['position'], $_POST['content']);
+        $params = array($_POST['position'], $_POST['priority'], $_POST['content']);
         bind_by_array($stmt, $sql, $params);
         oci_execute($stmt, OCI_DEFAULT);
     } else if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
@@ -44,9 +44,9 @@ try {
 
         parse_str(file_get_contents("php://input"), $post_vars);
         $time = date("Y-m-d H:i:s");
-        $sql = "UPDATE NEWS SET POSITION=:position,CONTENT=:content,POST_DATE=to_date('$time','yyyy-mm-dd HH24:MI:SS') WHERE ID=:id AND SCHOOL_ID=$SCHOOL_ID";
+        $sql = "UPDATE NEWS SET POSITION=:position,PRIORITY=:priority,CONTENT=:content,POST_DATE=to_date('$time','yyyy-mm-dd HH24:MI:SS') WHERE ID=:id AND SCHOOL_ID=$SCHOOL_ID";
         $stmt = oci_parse($conn, $sql);
-        $params = array($post_vars['position'], $post_vars['content'], $post_vars['id']);
+        $params = array($post_vars['position'], $post_vars['priority'], $post_vars['content'], $post_vars['id']);
         bind_by_array($stmt, $sql, $params);
         oci_execute($stmt, OCI_DEFAULT);
     } else if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {

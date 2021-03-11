@@ -22,9 +22,7 @@ try {
         }
         if (strlen($token) != 32 || count($result1['R_NAME']) == 0) {
             $mail_msg =   $sql . "<br>token=" . $token;
-            $post_processing[] = function () use ($mail_msg) {
-                sendMail(0, array('title' => "推薦函連結錯誤(letter_fill.php)", 'content' => $mail_msg));
-            };
+            sendMail(0, array('title' => "推薦函連結錯誤(letter_fill.php)", 'content' => $mail_msg));
             throw new Exception('推薦函連結錯誤，請重新點選Email中的連結');
         } else {
             if ($result1['APPLY_REL'][0] != "") {
@@ -55,9 +53,7 @@ try {
             oci_free_statement($stmt);
             if (count($result2['STUD_NAME']) == 0) {
                 $mail_msg = $sql . "<br>sn=" . $signup_sn;
-                $post_processing[] = function () use ($mail_msg) {
-                    sendMail(0, array('title' => "考生基本資料錯誤(查無考生資料)", 'content' => $mail_msg));
-                };
+                sendMail(0, array('title' => "考生基本資料錯誤(查無考生資料)", 'content' => $mail_msg));
                 throw new Exception('考生基本資料錯誤！');
             } else {
                 $result['data']['stud_name'] = $result2['STUD_NAME'][0];
@@ -82,9 +78,7 @@ try {
         }
         if (strlen($token) != 32 || count($result1['R_NAME']) == 0) {
             $mail_msg = $_SERVER['PHP_SELF'] . "<br>" . $sql . "<br>token=" . $token . "<br>推薦函網址錯誤";
-            $post_processing[] = function () use ($mail_msg) {
-                sendMail(0, array('title' => "推薦函資料寫入失敗!!", 'content' => $mail_msg));
-            };
+            sendMail(0, array('title' => "推薦函資料寫入失敗!!", 'content' => $mail_msg));
             throw new Exception('推薦函網址錯誤，請重新點選Email中的連結！');
         } else {
             $signup_sn = $result1['SIGNUP_SN'][0];
@@ -92,9 +86,7 @@ try {
 
         if ($result1['APPLY_REL'][0] != "") {
             $mail_msg = $_SERVER['PHP_SELF'] . "<br>" . $sql . "<br>" . "推薦函已填寫 " . $token;
-            $post_processing[] = function () use ($mail_msg) {
-                sendMail(0, array('title' => "推薦函資料寫入失敗!!", 'content' => $mail_msg));
-            };
+            sendMail(0, array('title' => "推薦函資料寫入失敗!!", 'content' => $mail_msg));
             throw new Exception('推薦函已填寫，不可重複填寫！');
         }
         //存檔
@@ -103,9 +95,7 @@ try {
             $apply_desc = $apply_desc_1 . $apply_desc_2 . $apply_desc_3 . $apply_desc_4 . $apply_desc_5 . $apply_desc_6 . $apply_desc_7 . $apply_desc_8;
             if (strlen($apply_desc) != 8) {
                 $mail_msg = $_SERVER['PHP_SELF'] . "<br>" . $sql . "<br>" . "描述申請人的選項數量錯誤 " . $apply_desc;
-                $post_processing[] = function () use ($mail_msg) {
-                    sendMail(0, array('title' => "推薦函資料寫入失敗!!", 'content' => $mail_msg));
-                };
+                sendMail(0, array('title' => "推薦函資料寫入失敗!!", 'content' => $mail_msg));
                 throw new Exception('描述申請人的選項數量錯誤！');
             }
             $arr_apply_manner = $_POST['apply_manner'];
@@ -115,9 +105,7 @@ try {
             }
             if (strlen($apply_manner_all) < 1) {
                 $mail_msg = $_SERVER['PHP_SELF'] . "<br>" . $sql . "<br>" . "申請人在學期間的求學態度資料錯誤 " . $apply_manner_all;
-                $post_processing[] = function () use ($mail_msg) {
-                    sendMail(0, array('title' => "推薦函資料寫入失敗!!", 'content' => $mail_msg));
-                };
+                sendMail(0, array('title' => "推薦函資料寫入失敗!!", 'content' => $mail_msg));
                 throw new Exception('申請人在學期間的求學態度資料錯誤！');
             }
             $sql = "update recom_letter set apply_rel='$apply_rel',apply_years='$apply_years',apply_desc='$apply_desc',apply_manner='$apply_manner_all',apply_course='$apply_course',apply_special='$apply_special',apply_notice='$apply_notice',apply_agree='$apply_agree',apply_remark='$apply_remark',r_filltime='$acttime',r_fillip='$actip'  where year='$ACT_YEAR_NO' and school_id='$SCHOOL_ID' and signup_sn='$signup_sn' and  token=:token ";
@@ -128,9 +116,7 @@ try {
             oci_free_statement($stmt);
             if (!empty($result["message"]) || $result == 0) {
                 $mail_msg = $_SERVER['PHP_SELF'] . "<br>" . $sql . "<br>token=" . $token . "<br>推薦函資料寫入失敗 " . $result["message"];
-                $post_processing[] = function () use ($mail_msg) {
-                    sendMail(0, array('title' => "推薦函資料寫入失敗!!", 'content' => $mail_msg));
-                };
+                sendMail(0, array('title' => "推薦函資料寫入失敗!!", 'content' => $mail_msg));
                 throw new Exception('推薦函資料寫入失敗！');
             } else {
                 $result['message'] = "資料存檔成功！";

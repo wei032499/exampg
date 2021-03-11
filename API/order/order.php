@@ -17,10 +17,8 @@ try {
         oci_fetch($stmt);
         $ip_cnt = oci_result($stmt, 1);
         if ($ip_cnt > 30) {
-            $post_processing[] = function () use ($ip) {
-                $mail_msg = $ip . '申請次數超過上限';
-                sendMail(0, array('title' => "招生報名費帳號申請次數異常通知(碩士班推薦甄試)", 'content' => $mail_msg));
-            };
+            $mail_msg = $ip . '申請次數超過上限';
+            sendMail(0, array('title' => "招生報名費帳號申請次數異常通知(碩士班推薦甄試)", 'content' => $mail_msg));
             throw new Exception("申請次數超過上限！如有問題請與本校招生事務人員聯絡", 429);
         }
         $id = strtoupper($_POST['id']);
@@ -69,25 +67,23 @@ try {
         {
             $to = $_POST['email'];
             $pay_money = 0;
-            $post_processing[] = function () use ($to, $account_no, $sn, $pwd) {
-                $headers = "MIME-Version: 1.0\r\n";
-                $headers .= "From: <edoc@cc2.ncue.edu.tw>\r\n";
-                $headers .= "Reply-To: wan@cc.ncue.edu.tw\r\n"; //970310 add!寄給招生承辦單位承辦人
-                $headers .= "Content-type: text/html; charset=utf-8\r\n";
-                $headers .= "X-Priority: 1\n";
-                $headers .= "X-MSMail-Priority: High\n";
+            $headers = "MIME-Version: 1.0\r\n";
+            $headers .= "From: <edoc@cc2.ncue.edu.tw>\r\n";
+            $headers .= "Reply-To: wan@cc.ncue.edu.tw\r\n"; //970310 add!寄給招生承辦單位承辦人
+            $headers .= "Content-type: text/html; charset=utf-8\r\n";
+            $headers .= "X-Priority: 1\n";
+            $headers .= "X-MSMail-Priority: High\n";
 
-                $subject = "國立彰化師範大學 網路報名系統::報名專用序號密碼通知";
-                $subject = "=?UTF-8?B?" . base64_encode($subject) . "?="; //轉換編碼
-                $finc = fopen("../common/inc/case_6.inc", "r");
-                $mail_msg = "";
+            $subject = "國立彰化師範大學 網路報名系統::報名專用序號密碼通知";
+            $subject = "=?UTF-8?B?" . base64_encode($subject) . "?="; //轉換編碼
+            $finc = fopen("../common/inc/case_6.inc", "r");
+            $mail_msg = "";
 
-                while (!feof($finc)) {
-                    $mail_msg .= str_replace("account_no", $account_no, str_replace("pay_money", 0, str_replace("snum", $sn, str_replace("pswd", $pwd, (fgets($finc, 4096))))));
-                }
-                mail($to, $subject, $mail_msg, $headers);
-                fclose($finc);
-            };
+            while (!feof($finc)) {
+                $mail_msg .= str_replace("account_no", $account_no, str_replace("pay_money", 0, str_replace("snum", $sn, str_replace("pswd", $pwd, (fgets($finc, 4096))))));
+            }
+            mail($to, $subject, $mail_msg, $headers);
+            fclose($finc);
         }
         $result['data'] = array("account_no" => $account_no, "pay_money" => $pay_money, "email" => $_POST['email'], "low_income_end_date" => $LOW_INCOME_END_DATE, "acc2_end_date" => $ACC2_END_DATE,);
     } else

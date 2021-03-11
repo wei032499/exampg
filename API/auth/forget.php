@@ -18,20 +18,18 @@ try {
 
         for ($i = 0; $i < $nrows; $i++) {
             $sm_payload = array('sn' => $result1['SN'][$i], 'pwd' => $result1['PWD'][$i], 'email' => $result1['EMAIL'][$i], 'account_no' => $result1['ACCOUNT_NO'][$i]);
-            $post_processing[] = function () use ($sm_payload) {
-                /**
-                 * 寄發通知信
-                 */
-                $to = sendMail(6, $sm_payload);
+            /**
+             * 寄發通知信
+             */
+            $to = sendMail(6, $sm_payload);
 
 
-                /**
-                 * 寫入log
-                 */
-                $fp = fopen(dirname(__FILE__) . "/../logs/dbg_msg.log", "a+");
-                fwrite($fp, "查詢序號密碼回覆 - API/auth/forget.php - $to - \n");
-                fclose($fp);
-            };
+            /**
+             * 寫入log
+             */
+            $fp = fopen(dirname(__FILE__) . "/../logs/dbg_msg.log", "a+");
+            fwrite($fp, "查詢序號密碼回覆 - API/auth/forget.php - $to - \n");
+            fclose($fp);
         }
     } else throw new Exception("Method Not Allowed", 405);
 } catch (Exception $e) {

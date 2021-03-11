@@ -73,20 +73,18 @@ try {
         oci_execute($stmt, OCI_DEFAULT);
         oci_free_statement($stmt);
 
-        $post_processing[] = function () use ($payload) {
-            /**
-             * 寄發通知信
-             */
-            $email = sendMail(5, $payload);
+        /**
+         * 寄發通知信
+         */
+        $email = sendMail(5, $payload);
 
 
-            /**
-             * 寫入log
-             */
-            $fp = fopen(dirname(__FILE__) . "/../logs/dbg_msg.log", "a+");
-            fwrite($fp, "資料確認通知 - API/signup/confirm.php - $email - \n");
-            fclose($fp);
-        };
+        /**
+         * 寫入log
+         */
+        $fp = fopen(dirname(__FILE__) . "/../logs/dbg_msg.log", "a+");
+        fwrite($fp, "資料確認通知 - API/signup/confirm.php - $email - \n");
+        fclose($fp);
     } else
         throw new Exception("Method Not Allowed", 405);
 
