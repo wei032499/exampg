@@ -92,7 +92,10 @@ if (!oci_fetch($stmt))
   throw new Exception("No Data");
 $organize = oci_result($stmt, 'NAME');
 oci_free_statement($stmt);
-$subj_id = substr($data['subject'][0], 6, 1);
+if (isset($data['subject']) && count($data['subject']) > 0)
+  $subj_id = substr($data['subject'][0], 6, 1);
+else
+  $subj_id = null;
 foreach ($data['subject'] as $key => $val) {
   $stmt = oci_parse($conn, "SELECT NAME FROM SUBJECT WHERE SCHOOL_ID='$SCHOOL_ID' AND YEAR='$ACT_YEAR_NO' AND ID=:subject_id");
   oci_bind_by_name($stmt, ':subject_id',  $data['subject'][$key]);
