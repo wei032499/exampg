@@ -29,7 +29,7 @@ try {
 
 
     $acttime = date("Y/m/d H:i:s");
-    $actip = $_SERVER["REMOTE_ADDR"];
+    $actip = getClientIP();
 
 
     if ($_SERVER['REQUEST_METHOD'] === 'GET') {
@@ -144,8 +144,6 @@ try {
             oci_execute($stmt, OCI_DEFAULT);
             oci_free_statement($stmt);
 
-            // $acttime = date("Y/m/d H:i:s");
-            // $actip = $_SERVER["REMOTE_ADDR"];
             for ($i = 0; $i < sizeof($_POST['r_seq']); $i++) {
                 $token = md5($signup_sn . $r_email[$i]);
                 $sql = "select * from recom_letter where year='$ACT_YEAR_NO' and school_id='$SCHOOL_ID' and signup_sn=:sn and r_seq='" . $r_seq[$i] . "' ";

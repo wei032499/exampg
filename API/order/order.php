@@ -9,7 +9,7 @@ try {
     require_once('./functions.php');
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-        $ip = $_SERVER["REMOTE_ADDR"];
+        $ip = getClientIP();
         $sql = "SELECT count(*)  from sn_db where  SCHOOL_ID='$SCHOOL_ID' and year='$ACT_YEAR_NO' and from_ip=:ip";
         $stmt = oci_parse($conn, $sql);
         oci_bind_by_name($stmt, ":ip", $ip);

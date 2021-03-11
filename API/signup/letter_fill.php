@@ -6,7 +6,7 @@ $result = array();
 try {
     require_once('../common/db.php');
     $acttime = date("Y/m/d H:i:s");
-    $actip = $_SERVER["REMOTE_ADDR"];
+    $actip = getClientIP();
     if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
         $token = $_GET['token'];
