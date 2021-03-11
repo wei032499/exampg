@@ -137,8 +137,10 @@
                 $("form [type='submit']").text("修改");
                 fillForm(formData);
                 ckeditor.setData(formData.content);
-            } else
+            } else {
                 $("form").attr('method', 'POST');
+                ckeditor.setData(' ');
+            }
         });
     </script>
 
