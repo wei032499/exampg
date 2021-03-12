@@ -96,7 +96,7 @@
     <script>
         var ckeditor = CKEDITOR.replace('editor1');
         $("form").on('reset', function() {
-            ckeditor.setData('');
+            ckeditor.setData(' ');
         });
         $("form").on('submit', function(e) {
             e.preventDefault();

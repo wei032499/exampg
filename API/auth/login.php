@@ -14,7 +14,7 @@
 header('Content-Type:application/json');
 header("Cache-Control: private");
 $result = array();
-$payload = array('iss' => 'ncue', 'iat' => time(), 'exp' => time() + 3600);
+$payload = array('iss' => 'ncue');
 
 try {
     require_once('../common/db.php');
@@ -27,7 +27,7 @@ try {
                 $Token = new Token($conn, $_COOKIE['token']);
                 $payload = $Token->verify();
                 if ($payload === false)
-                    $payload = array('iss' => 'ncue', 'iat' => time(), 'exp' => time() + 3600);
+                    $payload = array('iss' => 'ncue');
             }
 
             // I don't know why !!
@@ -86,13 +86,13 @@ try {
 
             $Token = new Token($conn, JWT::getToken($payload));
             $token = $Token->refresh();
-            setcookie('username', $username, time() + 3600, ROOTDIR);
+            setcookie('username', $username, 0, ROOTDIR);
         }
 
 
         $result['access_token'] = $token;
         $result['token_type'] = "Bearer";
-        $result['expires_in'] = 3600;
+        // $result['expires_in'] = 1800;
 
         // setcookie('token', $token, $cookie_options_httponly);
         $cookieOpt = "token=" . $token . ";" . getCookieOptions($cookie_options_httponly);

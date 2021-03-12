@@ -80,7 +80,7 @@
             $("#email").text(sessionStorage.getItem('email'));
             $("#card_start_date").text(sessionStorage.getItem('card_start_date'));
             $("#card_end_date").text(sessionStorage.getItem('card_end_date'));
-
+            logout(false);
         });
     </script>
 

@@ -7,7 +7,7 @@ else
 require_once(dirname(__FILE__) . '/jwt.php');
 require_once(dirname(__FILE__) . '/config.php'); //set config variables from database
 $cookie_options_httponly = array(
-    // 'expires' => time() + 3600,
+    // 'expires' => time() + 1800,
     'path' => ROOTDIR,
     'httponly' => true,    // or false
     // 'domain' => '.example.com', // leading dot for compatibility or use subdomain
@@ -15,7 +15,7 @@ $cookie_options_httponly = array(
     'samesite' => 'Lax' // None || Lax  || Strict
 );
 $cookie_options = array(
-    // 'expires' => time() + 3600,
+    // 'expires' => time() + 1800,
     'path' => ROOTDIR,
     'httponly' => false,    // or false
     // 'domain' => '.example.com', // leading dot for compatibility or use subdomain
@@ -68,7 +68,7 @@ function getCookieOptions($array)
 function clearCookie()
 {
     foreach ($_COOKIE as $name => $value) {
-        setcookie($name, null, time() - 3600, ROOTDIR);
+        setcookie($name, null, time() - 1800, ROOTDIR);
     }
 }
 
@@ -174,15 +174,12 @@ class Token
         global $SCHOOL_ID, $ACT_YEAR_NO;
         if ($this->payload === false)
             return false;
-        $stmt = oci_parse($this->conn, "SELECT SN_DB.PWD, to_char(SIGNUPDATA.L_ALT_DATE,'yyyy-mm-dd HH24:MI:SS') as L_ALT_DATE FROM SN_DB LEFT JOIN SIGNUPDATA ON SN_DB.SCHOOL_ID=SIGNUPDATA.SCHOOL_ID AND SN_DB.YEAR=SIGNUPDATA.YEAR AND SN_DB.SN=SIGNUPDATA.SIGNUP_SN WHERE SN_DB.SCHOOL_ID='$SCHOOL_ID' AND SN_DB.YEAR='$ACT_YEAR_NO' AND SN_DB.SN=:sn");
+        $stmt = oci_parse($this->conn, "SELECT to_char(SIGNUPDATA.L_ALT_DATE,'yyyy-mm-dd HH24:MI:SS') as L_ALT_DATE FROM SN_DB LEFT JOIN SIGNUPDATA ON SN_DB.SCHOOL_ID=SIGNUPDATA.SCHOOL_ID AND SN_DB.YEAR=SIGNUPDATA.YEAR AND SN_DB.SN=SIGNUPDATA.SIGNUP_SN WHERE SN_DB.SCHOOL_ID='$SCHOOL_ID' AND SN_DB.YEAR='$ACT_YEAR_NO' AND SN_DB.SN=:sn");
         oci_bind_by_name($stmt, ':sn', $this->payload['sn']);
         if (!oci_execute($stmt, OCI_DEFAULT)) //oci_execute($stmt) 
             return false;
         if (oci_fetch($stmt)) {
-            $this->payload['pwd'] = hash('sha256', oci_result($stmt, "PWD"));
             $this->payload['last_modified'] = oci_result($stmt, "L_ALT_DATE");
-            $this->payload['iat'] = time();
-            $this->payload['exp'] =  time() + 3600;
             $this->payload['status'] = $this->getStatus();
         } else
             return false;
@@ -202,9 +199,9 @@ class Token
             return false;
         }
 
-        $stmt = oci_parse($this->conn, "SELECT SN_DB.PWD, to_char(SIGNUPDATA.L_ALT_DATE,'yyyy-mm-dd HH24:MI:SS') as L_ALT_DATE FROM SN_DB LEFT JOIN SIGNUPDATA ON SN_DB.SCHOOL_ID=SIGNUPDATA.SCHOOL_ID AND SN_DB.YEAR=SIGNUPDATA.YEAR AND SN_DB.SN=SIGNUPDATA.SIGNUP_SN WHERE SN_DB.SCHOOL_ID='$SCHOOL_ID' AND SN_DB.YEAR='$ACT_YEAR_NO' AND SN_DB.SN=:sn");
+        $stmt = oci_parse($this->conn, "SELECT to_char(SIGNUPDATA.L_ALT_DATE,'yyyy-mm-dd HH24:MI:SS') as L_ALT_DATE FROM SN_DB LEFT JOIN SIGNUPDATA ON SN_DB.SCHOOL_ID=SIGNUPDATA.SCHOOL_ID AND SN_DB.YEAR=SIGNUPDATA.YEAR AND SN_DB.SN=SIGNUPDATA.SIGNUP_SN WHERE SN_DB.SCHOOL_ID='$SCHOOL_ID' AND SN_DB.YEAR='$ACT_YEAR_NO' AND SN_DB.SN=:sn");
         oci_bind_by_name($stmt, ':sn', $this->payload['sn']);
-        if (!oci_execute($stmt, OCI_DEFAULT) || !oci_fetch($stmt) || $this->payload['last_modified'] !== oci_result($stmt, "L_ALT_DATE") || $this->payload['pwd'] !== hash('sha256', oci_result($stmt, "PWD"))) {
+        if (!oci_execute($stmt, OCI_DEFAULT) || !oci_fetch($stmt) || $this->payload['last_modified'] !== oci_result($stmt, "L_ALT_DATE")) {
             return false;
         }
         oci_free_statement($stmt);

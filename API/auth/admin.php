@@ -1,6 +1,6 @@
 <?php
 header('Content-Type:application/json');
-$payload = array('iss' => 'ncue', 'iat' => time(), 'exp' => time() + 3600);
+$payload = array('iss' => 'ncue');
 $result = array();
 try {
     require_once('../common/functions.php');
@@ -25,7 +25,7 @@ try {
                 if (isset($_COOKIE['token'])) {
                     $payload = JWT::verifyToken($_COOKIE['token']);
                     if ($payload === false)
-                        $payload = array('iss' => 'ncue', 'iat' => time(), 'exp' => time() + 3600);
+                        $payload = array('iss' => 'ncue');
                 }
                 $payload['admin'] = 0;
                 $token = JWT::getToken($payload);

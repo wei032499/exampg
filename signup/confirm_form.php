@@ -398,6 +398,7 @@
                         data: $("form").serialize(),
                         dataType: 'json'
                     }).done(function(response) {
+                        logout(false);
                         alert("確認完成！");
                         $(window).off('beforeunload');
                         window.location.replace('./');
